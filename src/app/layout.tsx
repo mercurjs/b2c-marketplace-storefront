@@ -3,7 +3,6 @@ import { Funnel_Display } from 'next/font/google';
 import './globals.css';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-import { Suspense } from 'react';
 
 const funnelDisplay = Funnel_Display({
   variable: '--font-funnel-sans',
@@ -42,15 +41,13 @@ export default async function RootLayout({
   const { locale } = await params;
   return (
     <html lang={locale} className=''>
-      <Suspense>
-        <NextIntlClientProvider messages={messages}>
-          <body
-            className={`${funnelDisplay.className} antialiased bg-primary text-secondary`}
-          >
-            {children}
-          </body>
-        </NextIntlClientProvider>
-      </Suspense>
+      <NextIntlClientProvider messages={messages}>
+        <body
+          className={`${funnelDisplay.className} antialiased bg-primary text-secondary`}
+        >
+          {children}
+        </body>
+      </NextIntlClientProvider>
     </html>
   );
 }
