@@ -88,14 +88,16 @@ export const listProducts = async ({
       const nextPage =
         count > offset + limit ? pageParam + 1 : null;
 
-      const formattedProducts = products.map((product) => ({
-        ...product,
-        images: product.images?.map((image) => ({
-          ...image,
-          url: getImageUrl(image.url),
-        })),
-        thumbnail: getImageUrl(product.thumbnail || ''),
-      }));
+      const formattedProducts =
+        products?.map((product) => ({
+          ...product,
+          images:
+            product.images?.map((image) => ({
+              ...image,
+              url: getImageUrl(image.url),
+            })) || [],
+          thumbnail: getImageUrl(product.thumbnail || ''),
+        })) || null;
 
       return {
         response: {
