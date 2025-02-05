@@ -51,7 +51,7 @@ export async function retrieveCart(cartId?: string) {
       }
     )
     .then(({ cart }) => {
-      const formattedCart = {
+      const formattedCart: HttpTypes.StoreCart | null = {
         ...cart,
         items:
           cart.items?.map((item) => ({
@@ -59,7 +59,6 @@ export async function retrieveCart(cartId?: string) {
             thumbnail: getImageUrl(item.thumbnail || ''),
           })) || [],
       };
-      console.log({ cart, formattedCart });
       return formattedCart;
     })
     .catch(() => null);
