@@ -33,25 +33,18 @@ export const ProductCard = ({
           />
         </div>
         <Link href={`/products/${product.handle}`}>
-          <div className='overflow-hidden rounded-sm h-full flex justify-center align-center max-w-[342px] '>
-            {product.thumbnail ? (
-              <Image
-                src={product.thumbnail}
-                alt={product.title}
-                width={342}
-                height={424}
-                className='object-cover w-full object-center h-full aspect-[7/8] lg:group-hover:-mt-14 transition-all duration-300 rounded-xs'
-                priority
-              />
-            ) : (
-              <Image
-                src='/images/placeholder.svg'
-                alt='Product placeholder'
-                width={100}
-                height={100}
-                className='flex margin-auto w-[100px] h-auto'
-              />
-            )}
+          <div className='overflow-hidden rounded-sm h-full flex justify-center align-center max-w-[400px] lg:max-w-none'>
+            <Image
+              src={
+                product.thumbnail ||
+                '/images/product/placeholder.jpg'
+              }
+              alt={product.title}
+              width={400}
+              height={424}
+              className='object-cover w-full h-auto object-center h-full aspect-[7/8] lg:group-hover:-mt-14 transition-all duration-300 rounded-xs'
+              priority
+            />
           </div>
         </Link>
         <Button
@@ -62,8 +55,8 @@ export const ProductCard = ({
         </Button>
       </div>
       <Link href={`/products/${product.handle}`}>
-        <div className='flex justify-between p-4'>
-          <div className='max-w-full'>
+        <div className='grid grid-cols-1 md:grid-cols-12 p-4'>
+          <div className='max-w-full md:col-span-10'>
             <h3 className='heading-sm truncate'>
               {product.title}
             </h3>
@@ -79,8 +72,10 @@ export const ProductCard = ({
               )}
             </div>
           </div>
-          <div className='label-sm border rounded-sm flex items-center justify-center px-3 py-2 max-h-10 absolute bottom-32 right-3 bg-component lg:relative lg:bottom-0 lg:right-0 whitespace-nowrap'>
-            {productSize}
+          <div className='md:col-span-2 md:flex md:justify-end absolute md:static right-2 bottom-24'>
+            <div className='w-10 h-10 label-sm border rounded-sm flex items-center justify-center bg-component whitespace-nowrap'>
+              {productSize}
+            </div>
           </div>
         </div>
       </Link>

@@ -6,6 +6,7 @@ import { HttpTypes } from '@medusajs/types';
 import { SortOptions } from '@/types/product';
 import { getAuthHeaders, getCacheOptions } from './cookies';
 import { getRegion, retrieveRegion } from './regions';
+import { getImageUrl } from '../helpers/get-image-url';
 
 export const listProducts = async ({
   pageParam = 1,
@@ -87,9 +88,18 @@ export const listProducts = async ({
       const nextPage =
         count > offset + limit ? pageParam + 1 : null;
 
+      const formattedProducts = products.map((product) => ({
+        ...product,
+        images: product.images?.map((image) => ({
+          ...image,
+          url: getImageUrl(image.url),
+        })),
+        thumbnail: getImageUrl(product.thumbnail || ''),
+      }));
+
       return {
         response: {
-          products,
+          products: formattedProducts,
           count,
         },
         nextPage: nextPage,
