@@ -9,7 +9,7 @@ export const blogPosts: BlogPost[] = [
       "Discover this season's most sophisticated accessories that blend timeless elegance with modern design.",
     image: '/images/blog/post-1.jpg',
     category: 'ACCESSORIES',
-    href: '/blog/summers-most-elegant-accessories',
+    href: '#',
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ export const blogPosts: BlogPost[] = [
       'From bold colors to nostalgic silhouettes, explore the must-have looks defining this season’s fashion narrative.',
     image: '/images/blog/post-2.jpg',
     category: 'STYLE GUIDE',
-    href: '/blog/art-of-layering-fall',
+    href: '#',
   },
   {
     id: 3,
@@ -27,7 +27,7 @@ export const blogPosts: BlogPost[] = [
       'Explore the latest minimalist outerwear pieces that combine functionality with clean aesthetics.',
     image: '/images/blog/post-3.jpg',
     category: 'TRENDS',
-    href: '/blog/minimalist-outerwear-trends',
+    href: '#',
   },
 ];
 

@@ -82,7 +82,7 @@ export const listProducts = async ({
       },
       headers,
       next,
-      cache: 'force-cache',
+      cache: 'no-cache',
     })
     .then(({ products, count }) => {
       const nextPage =
