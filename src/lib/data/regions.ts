@@ -16,7 +16,7 @@ export const listRegions = async () => {
       {
         method: 'GET',
         next,
-        cache: 'force-cache',
+        cache: 'no-cache',
       }
     )
     .then(({ regions }) => regions)
@@ -34,7 +34,7 @@ export const retrieveRegion = async (id: string) => {
       {
         method: 'GET',
         next,
-        cache: 'force-cache',
+        cache: 'no-cache',
       }
     )
     .then(({ region }) => region)
