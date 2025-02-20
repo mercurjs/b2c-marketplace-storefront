@@ -11,6 +11,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@medusajs/js-sdk": "^2.2.0",
+    "algoliasearch": "^5.20.3",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.5.2",
@@ -20,6 +21,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
+    "react-instantsearch": "^7.15.3",
+    "react-instantsearch-nextjs": "^0.4.4",
     "tailwind-merge": "^2.6.0",
     "uuid": "^11.0.5",
     "zod": "^3.24.1"

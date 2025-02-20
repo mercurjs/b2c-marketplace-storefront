@@ -1,3 +1,3 @@
-export const PRODUCT_LIMIT = 15;
+export const PRODUCT_LIMIT = 12
 
-export const PARENT_CATEGORIES = ['menswear', 'womenswear'];
+export const PARENT_CATEGORIES = ["menswear", "womenswear"]
