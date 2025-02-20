@@ -4,11 +4,11 @@ import { ReadonlyURLSearchParams } from "next/navigation"
 const getOption = (label: string) => {
   switch (label) {
     case "size":
-      return "options.title:Size"
+      return "variants.size"
     case "color":
-      return "options.title:Color"
+      return "variants.color"
     case "condition":
-      return "options.title:Condition"
+      return "variants.condition"
     default:
       return ""
   }
@@ -39,14 +39,14 @@ export const getFacedFilters = (
       if (splittedSize.length > 1) {
         splittedSize.map(
           (value, index) =>
-            (values += `options.values.value:"${value}" ${
+            (values += `${getOption(key)}:"${value}" ${
               index + 1 < splittedSize.length ? "OR " : ""
             }`)
         )
       } else {
-        values += `options.values.value:"${splittedSize[0]}"`
+        values += `${getOption(key)}:"${splittedSize[0]}"`
       }
-      facet += ` AND ${getOption(key)} AND ${values}`
+      facet += ` AND ${values}`
     } else {
       if (key === "min_price") minPrice = value
       if (key === "max_price") maxPrice = value

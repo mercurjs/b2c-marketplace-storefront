@@ -2,20 +2,14 @@
 
 import { HttpTypes } from "@medusajs/types"
 import {
+  AlgoliaProductSidebar,
   ProductCard,
   ProductListingActiveFilters,
-  ProductSidebar,
+  ProductsPagination,
 } from "@/components/organisms"
 import { client } from "@/lib/client"
 import { Hit as AlgoliaHit } from "instantsearch.js"
-import {
-  Hits,
-  RefinementList,
-  DynamicWidgets,
-  Configure,
-  Pagination,
-  Stats,
-} from "react-instantsearch"
+import { Hits, Configure, useStats } from "react-instantsearch"
 import { InstantSearchNext } from "react-instantsearch-nextjs"
 import { FacetFilters } from "algoliasearch/lite"
 import { useSearchParams } from "next/navigation"
@@ -23,6 +17,7 @@ import { getFacedFilters } from "@/lib/helpers/get-faced-filters"
 import { SelectField } from "@/components/molecules"
 import useUpdateSearchParams from "@/hooks/useUpdateSearchParams"
 import { PRODUCT_LIMIT } from "@/const"
+import { useEffect, useState } from "react"
 
 type HitProps = {
   hit: AlgoliaHit<HttpTypes.StoreProduct>
@@ -39,31 +34,40 @@ export const AlgoliaProductsListing = ({
 }: {
   category_id: string
 }) => {
-  let productsCount = 0
+  const [pagesCount, setPagesCount] = useState(1)
   const searchParamas = useSearchParams()
   const updateSearchParams = useUpdateSearchParams()
 
   const facetFilters: FacetFilters = getFacedFilters(searchParamas)
+  const page: number = +(searchParamas.get("page") || 1)
 
   const filters = `categories.id:${category_id} ${facetFilters}`
+
+  console.log(filters)
 
   const selectOptionHandler = (value: string) => {
     updateSearchParams("sortBy", value)
   }
 
+  const ListingCount = () => {
+    const { nbHits } = useStats()
+
+    useEffect(() => {
+      setPagesCount(Math.ceil(nbHits / PRODUCT_LIMIT))
+    }, [])
+
+    return <div className="my-4 label-md">{`${nbHits} listings`}</div>
+  }
+
   return (
     <InstantSearchNext searchClient={client} indexName="products" routing>
-      <Configure hitsPerPage={PRODUCT_LIMIT} filters={filters} />
+      <Configure
+        hitsPerPage={PRODUCT_LIMIT}
+        filters={filters}
+        page={page - 1}
+      />
       <div className="flex justify-between w-full items-center">
-        <Stats
-          className="my-4 label-md"
-          translations={{
-            rootElementText({ nbHits }) {
-              productsCount = nbHits
-              return `${nbHits} listings`
-            },
-          }}
-        />
+        <ListingCount />
         <div className="hidden md:flex gap-2 items-center">
           Sort by:{" "}
           <SelectField
@@ -79,8 +83,7 @@ export const AlgoliaProductsListing = ({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 mt-6">
         <div>
-          {/* <DynamicWidgets fallbackComponent={FallbackComponent} /> */}
-          <ProductSidebar />
+          <AlgoliaProductSidebar />
         </div>
         <div className="w-full col-span-3">
           <Hits
@@ -93,27 +96,7 @@ export const AlgoliaProductsListing = ({
           />
         </div>
       </div>
-      <Pagination
-        showFirst={false}
-        showLast={false}
-        classNames={{
-          root: "flex justify-center items-center mt-4",
-          list: "flex gap-2",
-          item: "border rounded-sm ",
-          link: "w-10 h-10 flex items-center justify-center",
-          selectedItem: "border-primary",
-          disabledItem: "bg-secondary text-disabled",
-        }}
-      />
+      <ProductsPagination pages={pagesCount} />
     </InstantSearchNext>
   )
 }
-
-// function FallbackComponent({ attribute }: { attribute: string }) {
-//   return (
-//     <div>
-//       <h2>{attribute}</h2>
-//       <RefinementList attribute={attribute} />
-//     </div>
-//   )
-// }

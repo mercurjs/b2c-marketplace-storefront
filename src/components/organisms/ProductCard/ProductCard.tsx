@@ -7,6 +7,7 @@ import tailwindConfig from "../../../../tailwind.config"
 import { HttpTypes } from "@medusajs/types"
 import { Link } from "@/i18n/routing"
 import { getSellerProductPrice } from "@/lib/helpers/get-seller-product-price"
+import { getProductPrice } from "@/lib/helpers/get-product-price"
 
 export const ProductCard = ({
   product,
@@ -17,7 +18,11 @@ export const ProductCard = ({
     product?.options?.find((option) => option.title === "Size")?.values?.[0]
       .value || "-"
 
-  const { cheapestPrice } = getSellerProductPrice({
+  const { cheapestPrice } = getProductPrice({
+    product,
+  })
+
+  const { cheapestPrice: sellerCheapestPrice } = getSellerProductPrice({
     product,
   })
 
@@ -61,13 +66,23 @@ export const ProductCard = ({
           <div className="max-w-[85%]">
             <h3 className="heading-sm truncate">{product.title}</h3>
             <div className="flex items-center gap-2 mt-2">
-              <p className="font-medium">{cheapestPrice?.calculated_price}</p>
-              {cheapestPrice?.calculated_price !==
-                cheapestPrice?.original_price && (
-                <p className="text-sm text-gray-500 line-through">
-                  {cheapestPrice?.original_price}
-                </p>
-              )}
+              <p className="font-medium">
+                {sellerCheapestPrice?.calculated_price ||
+                  cheapestPrice?.calculated_price}
+              </p>
+              {sellerCheapestPrice?.calculated_price
+                ? sellerCheapestPrice?.calculated_price !==
+                    sellerCheapestPrice?.original_price && (
+                    <p className="text-sm text-gray-500 line-through">
+                      {sellerCheapestPrice?.original_price}
+                    </p>
+                  )
+                : cheapestPrice?.calculated_price !==
+                    cheapestPrice?.original_price && (
+                    <p className="text-sm text-gray-500 line-through">
+                      {cheapestPrice?.original_price}
+                    </p>
+                  )}
             </div>
           </div>
           <div className="label-sm border rounded-sm flex items-center justify-center px-3 py-2 w-10 h-10 absolute bottom-32 right-3 bg-component lg:relative lg:bottom-0 lg:right-0 whitespace-nowrap">
