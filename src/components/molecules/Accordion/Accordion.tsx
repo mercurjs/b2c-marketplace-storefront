@@ -24,7 +24,7 @@ export const Accordion = ({
         accordionRef.current["scrollHeight"] || defaultOpen ? "100%" : 0
       )
     }
-  }, [accordionRef?.current?.["scrollHeight"], defaultOpen])
+  }, [accordionRef?.current, defaultOpen])
 
   const openHandler = () => {
     setOpen(!open)

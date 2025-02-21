@@ -20,7 +20,7 @@ export async function generateMetadata({
 }
 
 async function Category({ params }: { params: { category: string } }) {
-  const { category: handle } = await params
+  const { category: handle } = params
 
   const category = await getCategoryByHandle([handle])
 
