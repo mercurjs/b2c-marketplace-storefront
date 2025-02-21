@@ -5,12 +5,12 @@ import { Suspense } from "react"
 import type { Metadata } from "next"
 import { generateCategoryMetadata } from "@/lib/helpers/seo"
 import { Breadcrumbs } from "@/components/atoms"
-import { AlgoliaProductsListing, ProductListing } from "@/components/sections"
+import { AlgoliaProductsListing } from "@/components/sections"
 
 export async function generateMetadata({
   params,
 }: {
-  params: { category: Promise<any> }
+  params: { category: string }
 }): Promise<Metadata> {
   const { category } = await params
 
@@ -19,15 +19,7 @@ export async function generateMetadata({
   return generateCategoryMetadata(cat)
 }
 
-async function Category({
-  params,
-}: // searchParams,
-{
-  params: { category: Promise<any> }
-  // searchParams: Promise<{
-  //   [key: string]: string | string[] | undefined
-  // }>
-}) {
+async function Category({ params }: { params: { category: string } }) {
   const { category: handle } = await params
 
   const category = await getCategoryByHandle([handle])
@@ -49,10 +41,6 @@ async function Category({
 
       <Suspense fallback={<ProductListingSkeleton />}>
         <AlgoliaProductsListing category_id={category.id} />
-        {/* <ProductListing
-          searchParams={searchParams}
-          category_id={category.id}
-        /> */}
       </Suspense>
     </main>
   )

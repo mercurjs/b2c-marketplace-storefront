@@ -39,9 +39,7 @@ export const listCategories = async ({
   }
 }
 
-export const getCategoryByHandle = async (
-  categoryHandle: Promise<string>[]
-) => {
+export const getCategoryByHandle = async (categoryHandle: string[]) => {
   const handle = `${categoryHandle.join("/")}`
 
   return sdk.client
