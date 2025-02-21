@@ -9,6 +9,8 @@ const getOption = (label: string) => {
       return "variants.color"
     case "condition":
       return "variants.condition"
+    case "rating":
+      return "average_rating"
     default:
       return ""
   }
@@ -23,6 +25,7 @@ export const getFacedFilters = (
   let maxPrice = null
 
   let search = ""
+  let rating = ""
 
   for (const [key, value] of filters.entries()) {
     if (
@@ -32,7 +35,8 @@ export const getFacedFilters = (
       key !== "search" &&
       key !== "page" &&
       key !== "products[page]" &&
-      key !== "sortBy"
+      key !== "sortBy" &&
+      key !== "rating"
     ) {
       let values = ""
       const splittedSize = value.split(",")
@@ -52,6 +56,22 @@ export const getFacedFilters = (
       if (key === "max_price") maxPrice = value
 
       if (key === "search") search = ` AND products.title:"${value}"`
+
+      if (key === "rating") {
+        let values = ""
+        const splited = value.split(",")
+        if (splited.length > 1) {
+          splited.map(
+            (value, index) =>
+              (values += `${getOption(key)} >= ${value} ${
+                index + 1 < splited.length ? "OR " : ""
+              }`)
+          )
+        } else {
+          values += `${getOption(key)} >=${splited[0]}`
+        }
+        rating += ` AND ${values}`
+      }
     }
   }
 
@@ -64,5 +84,5 @@ export const getFacedFilters = (
       ? ` AND variants.prices.amount <= ${maxPrice}`
       : ""
 
-  return facet + priceFilter + search
+  return facet + priceFilter + search + rating
 }

@@ -43,8 +43,6 @@ export const AlgoliaProductsListing = ({
 
   const filters = `categories.id:${category_id} ${facetFilters}`
 
-  console.log(filters)
-
   const selectOptionHandler = (value: string) => {
     updateSearchParams("sortBy", value)
   }

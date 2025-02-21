@@ -20,7 +20,9 @@ export const Accordion = ({
 
   useEffect(() => {
     if (accordionRef.current) {
-      setContentHeight(accordionRef.current["scrollHeight"] || 0)
+      setContentHeight(
+        accordionRef.current["scrollHeight"] || defaultOpen ? "100%" : 0
+      )
     }
   }, [accordionRef?.current?.["scrollHeight"]])
 

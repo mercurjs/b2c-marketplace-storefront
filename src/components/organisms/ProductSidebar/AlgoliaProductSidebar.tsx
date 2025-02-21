@@ -1,6 +1,6 @@
 "use client"
 
-import { Chip, Input } from "@/components/atoms"
+import { Chip, Input, StarRating } from "@/components/atoms"
 import { Accordion, FilterCheckboxOption } from "@/components/molecules"
 import useFilters from "@/hooks/useFilters"
 import useUpdateSearchParams from "@/hooks/useUpdateSearchParams"
@@ -10,6 +10,14 @@ import { useSearchParams } from "next/navigation"
 import React, { useEffect, useState } from "react"
 import { useRefinementList } from "react-instantsearch"
 
+const filters = [
+  { label: "5", amount: 40 },
+  { label: "4", amount: 78 },
+  { label: "3", amount: 0 },
+  { label: "2", amount: 0 },
+  { label: "1", amount: 0 },
+]
+
 export const AlgoliaProductSidebar = () => {
   return (
     <div>
@@ -17,6 +25,7 @@ export const AlgoliaProductSidebar = () => {
       <SizeFilter />
       <ColorFilter />
       <ConditionFilter />
+      <RatingFilter />
     </div>
   )
 }
@@ -33,7 +42,7 @@ function ConditionFilter() {
     updateFilters(option)
   }
   return (
-    <Accordion heading="Condition" defaultOpen={false}>
+    <Accordion heading="Condition">
       <ul className="px-4">
         {items.map(({ label, count }) => (
           <li key={label} className="mb-4">
@@ -65,7 +74,7 @@ function ColorFilter() {
     updateFilters(option)
   }
   return (
-    <Accordion heading="Color" defaultOpen={false}>
+    <Accordion heading="Color">
       <ul className="px-4">
         {items.map(({ label, count }) => (
           <li key={label} className="mb-4 flex items-center justify-between">
@@ -103,7 +112,7 @@ function SizeFilter() {
   }
 
   return (
-    <Accordion heading="Size" defaultOpen={false}>
+    <Accordion heading="Size">
       <ul className="grid grid-cols-4 mt-2 gap-2">
         {items.map(({ label }) => (
           <li key={label} className="mb-4">
@@ -171,6 +180,34 @@ function PriceFilter() {
           <input type="submit" className="hidden" />
         </form>
       </div>
+    </Accordion>
+  )
+}
+
+function RatingFilter() {
+  const { updateFilters, isFilterActive } = useFilters("rating")
+
+  const selectHandler = (option: string) => {
+    updateFilters(option)
+  }
+
+  return (
+    <Accordion heading="Rating">
+      <ul className="px-4">
+        {filters.map(({ label }) => (
+          <li
+            key={label}
+            className={cn("mb-4 flex items-center gap-2 cursor-pointer")}
+            onClick={() => selectHandler(label)}
+          >
+            <FilterCheckboxOption
+              checked={isFilterActive(label)}
+              label={label}
+            />
+            <StarRating rate={+label} />
+          </li>
+        ))}
+      </ul>
     </Accordion>
   )
 }

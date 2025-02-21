@@ -15,7 +15,8 @@
         "sale": "Sale",
         "min_price": "Min price",
         "max_price": "Max price",
-        "search": "Search"
+        "search": "Search",
+        "rating": "Rating"
       }
     }
   }

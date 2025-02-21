@@ -23,7 +23,7 @@ async function Category({
   params,
   searchParams,
 }: {
-  params: { category: string }
+  params: Promise<{ category: string }>
   searchParams: Promise<{
     [key: string]: string | string[] | undefined
   }>
