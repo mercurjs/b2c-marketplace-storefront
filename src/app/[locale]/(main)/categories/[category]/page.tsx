@@ -12,7 +12,7 @@ export async function generateMetadata({
 }: {
   params: { category: string }
 }): Promise<Metadata> {
-  const { category } = await params
+  const { category } = params
 
   const cat = await getCategoryByHandle([category])
 
