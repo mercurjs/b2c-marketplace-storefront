@@ -2,7 +2,6 @@ import { wishlistTabs } from "@/app/[locale]/(main)/wishlist/page"
 import { TabsContent, TabsList } from "@/components/molecules"
 import { Suspense } from "react"
 import { ProductsList } from "../ProductsList/ProductsList"
-import { products } from "@/data/productsMock"
 import { ProductsPagination } from "../ProductsPagination/ProductsPagination"
 
 export const WishlistTabs = ({ tab }: { tab: string }) => {
