@@ -1,15 +1,15 @@
-import { WishlistPage } from '@/components/sections';
+import { WishlistPage } from "@/components/sections"
 
 export default async function Wishlist({
   params,
 }: {
-  params: { tab: string };
+  params: Promise<{ tab: string }>
 }) {
-  const { tab } = await params;
+  const { tab } = await params
 
   return (
-    <main className='container'>
+    <main className="container">
       <WishlistPage tab={tab} />
     </main>
-  );
+  )
 }
