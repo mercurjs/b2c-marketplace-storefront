@@ -21,12 +21,12 @@ export async function generateMetadata({
 
 async function Category({
   params,
-  searchParams,
-}: {
+}: // searchParams,
+{
   params: { category: Promise<string> }
-  searchParams: Promise<{
-    [key: string]: string | string[] | undefined
-  }>
+  // searchParams: Promise<{
+  //   [key: string]: string | string[] | undefined
+  // }>
 }) {
   const { category: handle } = await params
 

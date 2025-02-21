@@ -52,7 +52,7 @@ export const AlgoliaProductsListing = ({
 
     useEffect(() => {
       setPagesCount(Math.ceil(nbHits / PRODUCT_LIMIT))
-    }, [])
+    }, [nbHits])
 
     return <div className="my-4 label-md">{`${nbHits} listings`}</div>
   }
