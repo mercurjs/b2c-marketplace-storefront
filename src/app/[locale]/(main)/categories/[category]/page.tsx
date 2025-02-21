@@ -10,7 +10,7 @@ import { AlgoliaProductsListing, ProductListing } from "@/components/sections"
 export async function generateMetadata({
   params,
 }: {
-  params: { category: Promise<string> }
+  params: { category: Promise<any> }
 }): Promise<Metadata> {
   const { category } = await params
 
@@ -23,7 +23,7 @@ async function Category({
   params,
 }: // searchParams,
 {
-  params: { category: Promise<string> }
+  params: { category: Promise<any> }
   // searchParams: Promise<{
   //   [key: string]: string | string[] | undefined
   // }>
