@@ -19,28 +19,28 @@ export async function generateMetadata({
   return generateCategoryMetadata(cat)
 }
 
-function Category({ params }: { params: { category: string } }) {
-  const { category: handle } = params
+async function Category({ params }: { params: Promise<{ category: string }> }) {
+  const { category: handle } = await params
 
-  // const category = await getCategoryByHandle([handle])
+  const category = await getCategoryByHandle([handle])
 
-  // const breadcrumbsItems = [
-  //   {
-  //     path: category.handle,
-  //     label: category.name,
-  //   },
-  // ]
+  const breadcrumbsItems = [
+    {
+      path: category.handle,
+      label: category.name,
+    },
+  ]
 
   return (
     <main className="container">
       <div className="hidden md:block mb-2">
-        {/* <Breadcrumbs items={breadcrumbsItems} /> */}
+        <Breadcrumbs items={breadcrumbsItems} />
       </div>
 
-      <h1 className="heading-xl uppercase">{handle}</h1>
+      <h1 className="heading-xl uppercase">{category.name}</h1>
 
       <Suspense fallback={<ProductListingSkeleton />}>
-        {/* <AlgoliaProductsListing category_id={category.id} /> */}
+        <AlgoliaProductsListing category_id={category.id} />
       </Suspense>
     </main>
   )
