@@ -30,7 +30,7 @@ export const ProductDetailsHeader = ({
   product,
   locale,
 }: {
-  product: Hit<HttpTypes.StoreProduct> | Hit<BaseHit>
+  product: HttpTypes.StoreProduct
   locale: string
 }) => {
   const [isAdding, setIsAdding] = useState(false)

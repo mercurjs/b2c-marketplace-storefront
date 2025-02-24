@@ -10,7 +10,7 @@ export const ProductVariants = ({
   product,
   selectedVariant,
 }: {
-  product: Hit<HttpTypes.StoreProduct> | Hit<BaseHit>
+  product: HttpTypes.StoreProduct
   selectedVariant: Record<string, string>
 }) => {
   const updateSearchParams = useUpdateSearchParams()
