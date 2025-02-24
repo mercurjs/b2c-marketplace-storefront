@@ -8,6 +8,7 @@ import useGetAllSearchParams from "@/hooks/useGetAllSearchParams"
 import { getProductPrice } from "@/lib/helpers/get-product-price"
 import { useState } from "react"
 import { addToCart } from "@/lib/data/cart"
+import { BaseHit, Hit } from "instantsearch.js"
 
 const optionsAsKeymap = (
   variantOptions: HttpTypes.StoreProductVariant["options"]
@@ -29,7 +30,7 @@ export const ProductDetailsHeader = ({
   product,
   locale,
 }: {
-  product: HttpTypes.StoreProduct & { brand?: string }
+  product: Hit<HttpTypes.StoreProduct> | Hit<BaseHit>
   locale: string
 }) => {
   const [isAdding, setIsAdding] = useState(false)
@@ -43,8 +44,8 @@ export const ProductDetailsHeader = ({
 
   // get selected variant id
   const variantId =
-    product.variants?.find(({ options }) =>
-      options?.every((option) =>
+    product.variants?.find(({ options }: { options: any }) =>
+      options?.every((option: any) =>
         selectedVariant[option.option?.title.toLowerCase() || ""]?.includes(
           option.value
         )
@@ -77,7 +78,7 @@ export const ProductDetailsHeader = ({
       <div className="flex justify-between">
         <div>
           <h2 className="label-md text-secondary">
-            {product?.brand || "No brand"}
+            {/* {product?.brand || "No brand"} */}
           </h2>
           <h1 className="heading-lg text-primary">{product.title}</h1>
           <div className="mt-2 flex gap-2 items-center">
