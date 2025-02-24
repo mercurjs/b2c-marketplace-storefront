@@ -13,7 +13,7 @@ import { BaseHit, Hit } from "instantsearch.js"
 export const ProductCard = ({
   product,
 }: {
-  product: Hit<HttpTypes.StoreProduct> | Hit<BaseHit>
+  product: Hit<HttpTypes.StoreProduct> | Partial<Hit<BaseHit>>
 }) => {
   const productSize =
     product?.options?.find((option: any) => option.title === "Size")
