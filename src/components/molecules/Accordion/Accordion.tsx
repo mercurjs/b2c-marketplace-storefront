@@ -13,21 +13,20 @@ export const Accordion = ({
   heading: string
   defaultOpen?: boolean
 }) => {
-  const [open, setOpen] = useState(defaultOpen)
-  const [contentHeight, setContentHeight] = useState(defaultOpen ? "100%" : 0)
-
-  const accordionRef = useRef(null)
+  const [isOpen, setIsOpen] = useState(defaultOpen)
+  const [height, setHeight] = useState(0)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (accordionRef.current) {
-      setContentHeight(
-        accordionRef.current["scrollHeight"] || defaultOpen ? "100%" : 0
-      )
-    }
-  }, [accordionRef?.current?.["scrollHeight"], defaultOpen])
+    setTimeout(() => {
+      if (contentRef.current) {
+        setHeight(contentRef.current.scrollHeight)
+      }
+    }, 100)
+  }, [children])
 
   const openHandler = () => {
-    setOpen(!open)
+    setIsOpen(!isOpen)
   }
 
   return (
@@ -39,15 +38,20 @@ export const Accordion = ({
         <h4 className="label-lg uppercase">{heading}</h4>
         <CollapseIcon
           size={20}
-          className={cn("transition-all duration-300", open && "rotate-180")}
+          className={cn("transition-all duration-300", isOpen && "rotate-180")}
         />
       </div>
       <div
-        ref={accordionRef}
-        className={cn("transition-all duration-300 h-full overflow-hidden")}
-        style={{ maxHeight: open ? contentHeight : 0 }}
+        className={cn("transition-all duration-300 overflow-hidden")}
+        style={{
+          maxHeight: isOpen ? `${height}px` : "0px",
+          opacity: isOpen ? 1 : 0,
+          transition: "max-height 0.3s ease-in-out, opacity 0.2s ease-in-out",
+        }}
       >
-        <div className="pt-4">{children}</div>
+        <div ref={contentRef} className="pt-4">
+          {children}
+        </div>
       </div>
     </Card>
   )

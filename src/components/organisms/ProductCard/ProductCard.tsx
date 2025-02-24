@@ -8,15 +8,16 @@ import { HttpTypes } from "@medusajs/types"
 import { Link } from "@/i18n/routing"
 import { getSellerProductPrice } from "@/lib/helpers/get-seller-product-price"
 import { getProductPrice } from "@/lib/helpers/get-product-price"
+import { BaseHit, Hit } from "instantsearch.js"
 
 export const ProductCard = ({
   product,
 }: {
-  product: HttpTypes.StoreProduct
+  product: Hit<HttpTypes.StoreProduct> | Hit<BaseHit>
 }) => {
   const productSize =
-    product?.options?.find((option) => option.title === "Size")?.values?.[0]
-      .value || "-"
+    product?.options?.find((option: any) => option.title === "Size")
+      ?.values?.[0].value || "-"
 
   const { cheapestPrice } = getProductPrice({
     product,
@@ -40,7 +41,7 @@ export const ProductCard = ({
                 alt={product.title}
                 width={342}
                 height={424}
-                className="object-cover w-full object-center h-full aspect-[7/8] lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
+                className="object-contain w-full object-center h-full aspect-[7/8] lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
                 priority
               />
             ) : (
@@ -63,7 +64,7 @@ export const ProductCard = ({
       </div>
       <Link href={`/products/${product.handle}`}>
         <div className="flex justify-between p-4">
-          <div className="max-w-[85%]">
+          <div className="w-full">
             <h3 className="heading-sm truncate">{product.title}</h3>
             <div className="flex items-center gap-2 mt-2">
               <p className="font-medium">
@@ -84,9 +85,6 @@ export const ProductCard = ({
                     </p>
                   )}
             </div>
-          </div>
-          <div className="label-sm border rounded-sm flex items-center justify-center px-3 py-2 w-10 h-10 absolute bottom-32 right-3 bg-component lg:relative lg:bottom-0 lg:right-0 whitespace-nowrap">
-            {productSize}
           </div>
         </div>
       </Link>

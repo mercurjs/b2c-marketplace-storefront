@@ -34,7 +34,6 @@ export const ProductDetailsHeader = ({
 }) => {
   const [isAdding, setIsAdding] = useState(false)
   const { allSearchParams } = useGetAllSearchParams()
-  console.log(product)
 
   // set default variant
   const selectedVariant = {

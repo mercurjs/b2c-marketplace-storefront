@@ -1,4 +1,5 @@
 import {
+  AlgoliaTrendingListings,
   BannerSection,
   BlogSection,
   Hero,
@@ -34,6 +35,7 @@ export default async function Home({
       />
       <div className="px-4 lg:px-8 w-full">
         <HomeProductSection heading="trending listings" locale={locale} />
+        {/* <AlgoliaTrendingListings /> */}
       </div>
       <HomePopularBrandsSection />
       <div className="px-4 lg:px-8 w-full">

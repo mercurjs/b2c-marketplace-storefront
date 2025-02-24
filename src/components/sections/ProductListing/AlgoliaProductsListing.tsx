@@ -1,6 +1,5 @@
 "use client"
 
-import { HttpTypes } from "@medusajs/types"
 import {
   AlgoliaProductSidebar,
   ProductCard,
@@ -8,8 +7,7 @@ import {
   ProductsPagination,
 } from "@/components/organisms"
 import { client } from "@/lib/client"
-import { Hit as AlgoliaHit } from "instantsearch.js"
-import { Hits, Configure, useStats } from "react-instantsearch"
+import { Configure, useHits } from "react-instantsearch"
 import { InstantSearchNext } from "react-instantsearch-nextjs"
 import { FacetFilters } from "algoliasearch/lite"
 import { useSearchParams } from "next/navigation"
@@ -17,11 +15,7 @@ import { getFacedFilters } from "@/lib/helpers/get-faced-filters"
 import { SelectField } from "@/components/molecules"
 import useUpdateSearchParams from "@/hooks/useUpdateSearchParams"
 import { PRODUCT_LIMIT } from "@/const"
-import { useEffect, useState } from "react"
-
-type HitProps = {
-  hit: AlgoliaHit<HttpTypes.StoreProduct>
-}
+import { ProductListingSkeleton } from "@/components/organisms/ProductListingSkeleton/ProductListingSkeleton"
 
 const selectOptions = [
   { label: "Newest", value: "created_at" },
@@ -34,28 +28,12 @@ export const AlgoliaProductsListing = ({
 }: {
   category_id: string
 }) => {
-  const [pagesCount, setPagesCount] = useState(1)
   const searchParamas = useSearchParams()
-  const updateSearchParams = useUpdateSearchParams()
 
   const facetFilters: FacetFilters = getFacedFilters(searchParamas)
   const page: number = +(searchParamas.get("page") || 1)
 
   const filters = `categories.id:${category_id} ${facetFilters}`
-
-  const selectOptionHandler = (value: string) => {
-    updateSearchParams("sortBy", value)
-  }
-
-  const ListingCount = () => {
-    const { nbHits } = useStats()
-
-    useEffect(() => {
-      setPagesCount(Math.ceil(nbHits / PRODUCT_LIMIT))
-    }, [nbHits])
-
-    return <div className="my-4 label-md">{`${nbHits} listings`}</div>
-  }
 
   return (
     <InstantSearchNext searchClient={client} indexName="products" routing>
@@ -64,8 +42,38 @@ export const AlgoliaProductsListing = ({
         filters={filters}
         page={page - 1}
       />
+      <ProductsListing />
+    </InstantSearchNext>
+  )
+}
+
+const ProductsListing = () => {
+  const {
+    items,
+    results,
+    // sendEvent,
+  } = useHits()
+  const updateSearchParams = useUpdateSearchParams()
+
+  const selectOptionHandler = (value: string) => {
+    updateSearchParams("sortBy", value)
+  }
+
+  if (!results?.processingTimeMS) return <ProductListingSkeleton />
+
+  if (!items.length)
+    return (
+      <div className="text-center w-full my-10">
+        <h2 className="uppercase text-primary heading-lg">no results</h2>
+        <p className="mt-4 text-lg">
+          Sorry, we can't find any results for your criteria
+        </p>
+      </div>
+    )
+  return (
+    <>
       <div className="flex justify-between w-full items-center">
-        <ListingCount />
+        <div className="my-4 label-md">{`${results?.nbHits} listings`}</div>
         <div className="hidden md:flex gap-2 items-center">
           Sort by:{" "}
           <SelectField
@@ -75,7 +83,6 @@ export const AlgoliaProductsListing = ({
           />
         </div>
       </div>
-
       <div className="hidden md:block">
         <ProductListingActiveFilters />
       </div>
@@ -84,17 +91,16 @@ export const AlgoliaProductsListing = ({
           <AlgoliaProductSidebar />
         </div>
         <div className="w-full col-span-3">
-          <Hits
-            hitComponent={({ hit }: HitProps) => <ProductCard product={hit} />}
-            escapeHTML={false}
-            classNames={{
-              root: "w-full",
-              list: "grid grid-cols-3 w-full",
-            }}
-          />
+          <div className="w-full">
+            <ul className="grid grid-cols-3 w-full">
+              {items.map((hit) => (
+                <ProductCard key={hit.objectID} product={hit} />
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
-      <ProductsPagination pages={pagesCount} />
-    </InstantSearchNext>
+      <ProductsPagination pages={results?.nbPages || 1} />
+    </>
   )
 }
