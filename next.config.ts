@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "mercur-connect.s3.eu-central-1.amazonaws.com",
+      },
+      {
+        protocol: "https",
         hostname: "api.mercurjs.com",
       },
       {

@@ -61,15 +61,6 @@ const ProductsListing = () => {
 
   if (!results?.processingTimeMS) return <ProductListingSkeleton />
 
-  if (!items.length)
-    return (
-      <div className="text-center w-full my-10">
-        <h2 className="uppercase text-primary heading-lg">no results</h2>
-        <p className="mt-4 text-lg">
-          Sorry, we can&apos;t find any results for your criteria
-        </p>
-      </div>
-    )
   return (
     <>
       <div className="flex justify-between w-full items-center">
@@ -91,13 +82,22 @@ const ProductsListing = () => {
           <AlgoliaProductSidebar />
         </div>
         <div className="w-full col-span-3">
-          <div className="w-full">
-            <ul className="grid grid-cols-3 w-full">
-              {items.map((hit) => (
-                <ProductCard key={hit.objectID} product={hit} />
-              ))}
-            </ul>
-          </div>
+          {!items.length ? (
+            <div className="text-center w-full my-10">
+              <h2 className="uppercase text-primary heading-lg">no results</h2>
+              <p className="mt-4 text-lg">
+                Sorry, we can&apos;t find any results for your criteria
+              </p>
+            </div>
+          ) : (
+            <div className="w-full">
+              <ul className="grid grid-cols-3 w-full">
+                {items.map((hit) => (
+                  <ProductCard key={hit.objectID} product={hit} />
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
       <ProductsPagination pages={results?.nbPages || 1} />
