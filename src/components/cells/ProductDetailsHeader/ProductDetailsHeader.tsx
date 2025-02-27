@@ -73,6 +73,10 @@ export const ProductDetailsHeader = ({
     setIsAdding(false)
   }
 
+  const variantStock =
+    product.variants?.find(({ id }) => id === variantId)
+      ?.inventory_quantity || 0;
+
   return (
     <div className="border rounded-sm p-5">
       <div className="flex justify-between">
@@ -108,12 +112,12 @@ export const ProductDetailsHeader = ({
       {/* Add to Cart */}
       <Button
         onClick={handleAddToCart}
-        disabled={isAdding}
+        disabled={isAdding || !variantStock}
         loading={isAdding}
         className="w-full uppercase mb-4 py-3 flex justify-center"
         size="large"
       >
-        ADD TO CART
+        {variantStock ? 'ADD TO CART' : 'OUT OF STOCK'}
       </Button>
       {/* Seller message */}
       <Button className="w-full uppercase py-3 " size="large" variant="tonal">

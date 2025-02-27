@@ -16,9 +16,6 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "api.mercurjs.com",
       },
-      {
-        hostname: "localhost",
-      },
     ],
   },
 }

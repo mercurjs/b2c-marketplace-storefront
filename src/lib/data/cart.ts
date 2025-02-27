@@ -14,6 +14,7 @@ import {
   setCartId,
 } from './cookies';
 import { getRegion } from './regions';
+import { getImageUrl } from '../helpers/get-image-url';
 
 /**
  * Retrieves a cart by its ID. If no ID is provided, it will use the cart ID from the cookies.
@@ -49,7 +50,17 @@ export async function retrieveCart(cartId?: string) {
         cache: 'force-cache',
       }
     )
-    .then(({ cart }) => cart)
+    .then(({ cart }) => {
+      const formattedCart: HttpTypes.StoreCart | null = {
+        ...cart,
+        items:
+          cart.items?.map((item) => ({
+            ...item,
+            thumbnail: getImageUrl(item.thumbnail || ''),
+          })) || [],
+      };
+      return formattedCart;
+    })
     .catch(() => null);
 }
 

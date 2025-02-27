@@ -4,7 +4,6 @@ import { Suspense } from "react"
 import { ProductsList } from "../ProductsList/ProductsList"
 import { ProductsPagination } from "../ProductsPagination/ProductsPagination"
 
-export const WishlistTabs = ({ tab }: { tab: string }) => {
   return (
     <div>
       <TabsList list={wishlistTabs} activeTab={tab} />

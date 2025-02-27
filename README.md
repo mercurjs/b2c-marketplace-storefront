@@ -1,4 +1,45 @@
-<h1>Mercur storefront</h1>
+![B2C Storefront Cover](https://cdn.prod.website-files.com/6790aeffc4b432ccaf1b56e5/67a21bd27b4ac8b812c1d84f_B2C%20Storefront%20Cover.png)
+<div align="center">
+  <h1> B2C Storefront
+    <br> 
+for <a href="https://github.com/mercurjs/mercur">Mercur</a> - Open Source Marketplace Platform  </h1>
+  <!-- Shields.io Badges -->
+  <a href="https://github.com/mercurjs/mercur/tree/main?tab=MIT-1-ov-file">
+    <img alt="License" src="https://img.shields.io/badge/license-MIT-blue.svg" />
+  </a>
+  <a href="#">
+    <img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" />
+  </a>
+  <a href="https://mercurjs.com/contact">
+    <img alt="Support" src="https://img.shields.io/badge/support-contact%20author-blueviolet.svg" />
+  </a>
+  <!-- Website Links -->
+  <p>
+  <a href="https://b2c.mercurjs.com/">🛍️ B2C Marketplace Storefront Demo </a> · <a href="https://mercurjs.com/">Mercur Website</a> · <a href="https://docs.mercurjs.com/">📃 Explore the docs</a> 
+  </p> 
+</div>
+
+## B2C Storefront for Marketplace [Under development]
+Customizable storefront designed for B2C with all elements including browsing and buying products across multiple vendors at once. 
+
+Ready to go:
+-   Home Page - <a href="https://b2c.mercurjs.com/">🛍️ Check demo </a>
+
+Work in progress:
+-   Listing
+-   Product Page
+-   Shopping Cart
+-   Seller Page
+-   Wishlist
+-   Selling Hub 
+
+# Part of Mercur
+
+<a href="https://github.com/mercurjs/mercur">Mercur</a> is an open source marketplace platform that allows you to create high-quality experiences for shoppers and vendors while having the most popular Open Source commerce platform MedusaJS as a foundation. 
+
+Mercur is a platform to start, customize, manage, and scale your marketplace for every business model with a modern technology stack.
+
+![Mercur](https://cdn.prod.website-files.com/6790aeffc4b432ccaf1b56e5/67a1020f202572832c954ead_6b96703adfe74613f85133f83a19b1f0_Fleek%20Tilt%20-%20Readme.png)
 
 ## Quickstart
 
