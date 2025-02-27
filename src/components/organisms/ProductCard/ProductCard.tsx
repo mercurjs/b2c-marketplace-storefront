@@ -15,10 +15,6 @@ export const ProductCard = ({
 }: {
   product: Hit<HttpTypes.StoreProduct> | Partial<Hit<BaseHit>>
 }) => {
-  const productSize =
-    product?.options?.find((option: any) => option.title === "Size")
-      ?.values?.[0].value || "-"
-
   const { cheapestPrice } = getProductPrice({
     product,
   })
@@ -28,20 +24,20 @@ export const ProductCard = ({
   })
 
   return (
-    <div className="relative group min-w-[320px] h-[500px] border rounded-sm flex flex-col justify-between">
+    <div className="relative group lg:h-[500px] border rounded-sm flex flex-col justify-between">
       <div className="relative p-1 lg:min-h-[350px] h-full bg-primary">
         <div className="absolute right-3 top-3 lg:hidden z-10 cursor-pointer">
           <HeartIcon color={tailwindConfig.theme.extend.colors.tertiary} />
         </div>
         <Link href={`/products/${product.handle}`}>
-          <div className="overflow-hidden rounded-sm h-full flex justify-center align-center w-full ">
+          <div className="overflow-hidden rounded-sm h-full flex justify-center align-center w-full">
             {product.thumbnail ? (
               <Image
                 src={product.thumbnail}
                 alt={product.title}
                 width={342}
                 height={424}
-                className="object-contain w-full object-center h-full aspect-[7/8] lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
+                className="object-contain w-full object-center h-full lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
                 priority
               />
             ) : (

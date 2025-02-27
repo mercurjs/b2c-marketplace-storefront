@@ -91,7 +91,7 @@ const ProductsListing = () => {
             </div>
           ) : (
             <div className="w-full">
-              <ul className="grid grid-cols-3 w-full">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
                 {items.map((hit) => (
                   <ProductCard key={hit.objectID} product={hit} />
                 ))}
