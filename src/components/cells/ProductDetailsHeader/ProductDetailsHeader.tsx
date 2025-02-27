@@ -108,12 +108,12 @@ export const ProductDetailsHeader = ({
       {/* Add to Cart */}
       <Button
         onClick={handleAddToCart}
-        disabled={isAdding}
+        disabled={isAdding || !variantStock}
         loading={isAdding}
         className="w-full uppercase mb-4 py-3 flex justify-center"
         size="large"
       >
-        ADD TO CART
+        {variantStock ? 'ADD TO CART' : 'OUT OF STOCK'}
       </Button>
       {/* Seller message */}
       <Button className="w-full uppercase py-3 " size="large" variant="tonal">

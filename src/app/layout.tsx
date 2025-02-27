@@ -13,11 +13,16 @@ const funnelDisplay = Funnel_Display({
 export const metadata: Metadata = {
   title: {
     template: `%s | ${
-      process.env.NEXT_PUBLIC_SITE_NAME || "Fleek Marketplace"
+      process.env.NEXT_PUBLIC_SITE_NAME ||
+      'Mercur B2C Demo - Marketplace Storefront'
     }`,
-    default: process.env.NEXT_PUBLIC_SITE_NAME || "Fleek Marketplace",
+    default:
+      process.env.NEXT_PUBLIC_SITE_NAME ||
+      'Mercur B2C Demo - Marketplace Storefront',
   },
-  description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION || "Fleek Marketplace",
+  description:
+    process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||
+    'Mercur B2C Demo - Marketplace Storefront',
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
   ),

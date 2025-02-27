@@ -17,6 +17,8 @@ export const HomeProductsCarousel = async ({
     },
   });
 
+  if (!products.length) return null;
+
   return (
     <div className='flex justify-center w-full'>
       <Carousel

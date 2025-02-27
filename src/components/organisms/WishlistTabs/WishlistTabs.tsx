@@ -2,7 +2,6 @@ import { wishlistTabs } from "@/app/[locale]/(main)/wishlist/page"
 import { TabsContent, TabsList } from "@/components/molecules"
 import { Suspense } from "react"
 
-export const WishlistTabs = ({ tab }: { tab: string }) => {
   return (
     <div>
       <TabsList list={wishlistTabs} activeTab={tab} />

@@ -7,25 +7,25 @@ const brands: Brand[] = [
     id: 1,
     name: 'Balenciaga',
     logo: '/images/brands/Balenciaga.svg',
-    href: '/brands/balenciaga',
+    href: '#',
   },
   {
     id: 2,
     name: 'Nike',
     logo: '/images/brands/Nike.svg',
-    href: '/brands/nike',
+    href: '#',
   },
   {
     id: 3,
     name: 'Prada',
     logo: '/images/brands/Prada.svg',
-    href: '/brands/prada',
+    href: '#',
   },
   {
     id: 4,
     name: 'Miu Miu',
     logo: '/images/brands/Miu-Miu.svg',
-    href: '/brands/miu-miu',
+    href: '#',
   },
 ];
 

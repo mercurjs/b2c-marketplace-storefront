@@ -19,7 +19,7 @@ export const BannerSection = () => {
               and embrace the beauty of the unconventional.
             </p>
           </div>
-          <Link href='/collection/boho'>
+          <Link href='#'>
             <Button
               size='large'
               className='w-fit bg-secondary/10'

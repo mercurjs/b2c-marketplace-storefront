@@ -7,6 +7,7 @@ import { retrieveCart } from '@/lib/data/cart';
 export const Cart = async () => {
   const cart = await retrieveCart();
 
+  console.log(cart);
   return (
     <>
       <div className='col-span-12 lg:col-span-6'>
