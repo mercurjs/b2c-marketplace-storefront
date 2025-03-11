@@ -23,8 +23,6 @@ export const ProductCard = ({
     product,
   })
 
-  console.log(product, cheapestPrice, sellerCheapestPrice)
-
   return (
     <div className="relative group border rounded-sm flex flex-col justify-between">
       <div className="relative p-1 w-full bg-primary aspect-square">
