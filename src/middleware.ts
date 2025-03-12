@@ -6,7 +6,7 @@ export default createMiddleware(routing);
 export const config = {
   matcher: [
     '/',
-    `/(gb)/:path*`,
+    `/(uy)/:path*`,
     '/((?!api|_next|_vercel|.*\\..*).*)',
   ],
 };
