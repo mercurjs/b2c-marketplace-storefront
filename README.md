@@ -80,7 +80,11 @@ REVALIDATE_SECRET=supersecret
 // Your site name in metadata
 NEXT_PUBLIC_SITE_NAME="Fleek Marketplace" 
 // Your site description in metadata
-NEXT_PUBLIC_SITE_DESCRIPTION="Fleek Markeplace"  
+NEXT_PUBLIC_SITE_DESCRIPTION="Fleek Markeplace"
+// Algolia Application ID
+NEXT_PUBLIC_ALGOLIA_ID=supersecret
+// Algolia Search API Key
+NEXT_PUBLIC_ALGOLIA_SEARCH_KEY=supersecret
 ```
 &nbsp;
 

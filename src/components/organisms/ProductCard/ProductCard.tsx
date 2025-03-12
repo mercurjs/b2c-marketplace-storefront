@@ -23,21 +23,23 @@ export const ProductCard = ({
     product,
   })
 
+  console.log(product, cheapestPrice, sellerCheapestPrice)
+
   return (
-    <div className="relative group lg:h-[500px] border rounded-sm flex flex-col justify-between">
-      <div className="relative p-1 lg:min-h-[350px] h-full bg-primary">
+    <div className="relative group border rounded-sm flex flex-col justify-between">
+      <div className="relative p-1 w-full bg-primary aspect-square">
         <div className="absolute right-3 top-3 lg:hidden z-10 cursor-pointer">
           <HeartIcon color={tailwindConfig.theme.extend.colors.tertiary} />
         </div>
         <Link href={`/products/${product.handle}`}>
-          <div className="overflow-hidden rounded-sm h-full flex justify-center align-center w-full">
+          <div className="overflow-hidden rounded-sm w-full h-full flex justify-center align-center ">
             {product.thumbnail ? (
               <Image
                 src={product.thumbnail}
                 alt={product.title}
-                width={342}
-                height={424}
-                className="object-contain w-full object-center h-full lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
+                width={512}
+                height={512}
+                className="object-cover aspect-square w-full object-center h-full lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
                 priority
               />
             ) : (
