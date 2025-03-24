@@ -43,7 +43,7 @@ Mercur is a platform to start, customize, manage, and scale your marketplace for
 
 ## Quickstart
 
-### Instalation
+### Installation
 Clone the repository
 
 ```js
