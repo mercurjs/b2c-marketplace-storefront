@@ -2,16 +2,12 @@ import {
   CartItemsFooter,
   CartItemsHeader,
   CartItemsProducts,
-} from '@/components/cells';
-import { HttpTypes } from '@medusajs/types';
-import { seller } from '@/data/sellerMock';
+} from "@/components/cells"
+import { HttpTypes } from "@medusajs/types"
+import { seller } from "@/data/sellerMock"
 
-export const CartItems = ({
-  cart,
-}: {
-  cart: HttpTypes.StoreCart | null;
-}) => {
-  if (!cart) return;
+export const CartItems = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
+  if (!cart) return
 
   return (
     <div>
@@ -25,5 +21,5 @@ export const CartItems = ({
         price={cart.shipping_total}
       />
     </div>
-  );
-};
+  )
+}
