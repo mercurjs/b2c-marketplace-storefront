@@ -6,39 +6,33 @@ import {
   ProductDetailsSellerReviews,
   ProductDetailsShipping,
   ProductPageDetails,
-} from '@/components/cells';
-import { seller } from '@/data/sellerMock';
-import { singleProduct } from '@/data/singleProductMock';
-import { HttpTypes } from '@medusajs/types';
+} from "@/components/cells"
+import { seller } from "@/data/sellerMock"
+import { singleProduct } from "@/data/singleProductMock"
+import { SingleProductSeller } from "@/types/product"
+import { HttpTypes } from "@medusajs/types"
 
 export const ProductDetails = ({
   product,
   locale,
 }: {
-  product: HttpTypes.StoreProduct;
-  locale: string;
+  product: HttpTypes.StoreProduct & { seller?: SingleProductSeller }
+  locale: string
 }) => {
   return (
     <div>
-      <ProductDetailsHeader
-        product={product}
-        locale={locale}
-      />
-      <ProductPageDetails
-        details={product.description || ''}
-      />
-      <ProductDetailsMeasurements
-        measurements={singleProduct.measurements}
-      />
+      <ProductDetailsHeader product={product} locale={locale} />
+      <ProductPageDetails details={product.description || ""} />
+      <ProductDetailsMeasurements measurements={singleProduct.measurements} />
       <ProductDetailsShipping />
-      <ProductDetailsSeller seller={seller} />
-      <ProductDetailsSellerReviews
+      <ProductDetailsSeller seller={product?.seller} />
+      {/* <ProductDetailsSellerReviews
         reviews={seller.reviews}
-      />
+      /> */}
       <ProductDetailsFooter
         tags={product.tags || []}
         posted={product.created_at}
       />
     </div>
-  );
-};
+  )
+}

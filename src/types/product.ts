@@ -30,11 +30,11 @@ export interface SingleProductReview {
 export interface SingleProductSeller {
   id: string
   name: string
-  avatar: string
+  photo: string
   rating: number
   reviewCount: number
   verified: boolean
-  page: string
+  handle: string
   joinDate: string
   sold: number
   description: string
