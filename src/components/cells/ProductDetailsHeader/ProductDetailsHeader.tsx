@@ -7,8 +7,8 @@ import { ProductVariants } from "@/components/molecules"
 import useGetAllSearchParams from "@/hooks/useGetAllSearchParams"
 import { getProductPrice } from "@/lib/helpers/get-product-price"
 import { useState } from "react"
-import { addToCart } from "@/lib/data/cart"
 import { BaseHit, Hit } from "instantsearch.js"
+import { addToCart } from "@/lib/data/cart"
 
 const optionsAsKeymap = (
   variantOptions: HttpTypes.StoreProductVariant["options"]
@@ -77,6 +77,13 @@ export const ProductDetailsHeader = ({
     product.variants?.find(({ id }) => id === variantId)?.inventory_quantity ||
     0
 
+  const variantHasPrice = product.variants?.find(({ id }) => id === variantId)
+    ?.calculated_price
+    ? true
+    : false
+
+  console.log({ product })
+
   return (
     <div className="border rounded-sm p-5">
       <div className="flex justify-between">
@@ -112,7 +119,7 @@ export const ProductDetailsHeader = ({
       {/* Add to Cart */}
       <Button
         onClick={handleAddToCart}
-        disabled={isAdding || !variantStock}
+        disabled={isAdding || !variantStock || !variantHasPrice}
         loading={isAdding}
         className="w-full uppercase mb-4 py-3 flex justify-center"
         size="large"

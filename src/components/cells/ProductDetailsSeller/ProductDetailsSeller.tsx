@@ -21,12 +21,6 @@ export const ProductDetailsSeller = ({
           </Link>
         </div>
       </div>
-      {/*{seller.verified && (
-        <div className='flex items-center gap-2 label-md text-secondary p-4 border-t'>
-          <DoneIcon size={20} />
-          Verified seller
-        </div>
-      )} */}
     </div>
   )
 }
