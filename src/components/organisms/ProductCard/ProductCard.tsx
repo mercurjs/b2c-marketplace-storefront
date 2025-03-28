@@ -23,10 +23,8 @@ export const ProductCard = ({
     product,
   })
 
-  console.log(product, cheapestPrice, sellerCheapestPrice)
-
   return (
-    <div className="relative group border rounded-sm flex flex-col justify-between">
+    <div className="relative group border rounded-sm flex flex-col justify-between w-[360px]">
       <div className="relative p-1 w-full bg-primary aspect-square">
         <div className="absolute right-3 top-3 lg:hidden z-10 cursor-pointer">
           <HeartIcon color={tailwindConfig.theme.extend.colors.tertiary} />
