@@ -6,10 +6,10 @@ export default async function SellerPage({
   params,
   searchParams,
 }: {
-  params: { params: Promise<string[]> }
+  params: { params: string[] }
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const urlParams = (await params?.params) ?? []
+  const urlParams = params?.params ?? []
   const sellerHandle = urlParams[0]
 
   if (!sellerHandle) {
