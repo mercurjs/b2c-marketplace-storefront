@@ -24,7 +24,7 @@ export const CartDropdownItem = ({
       <div className="w-[100px] h-[132px] flex items-center justify-center">
         {item.thumbnail ? (
           <Image
-            src={item.thumbnail}
+            src={decodeURIComponent(item.thumbnail)}
             alt={item.product_title || ""}
             width={80}
             height={90}

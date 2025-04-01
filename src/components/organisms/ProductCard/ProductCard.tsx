@@ -33,7 +33,7 @@ export const ProductCard = ({
           <div className="overflow-hidden rounded-sm w-full h-full flex justify-center align-center ">
             {product.thumbnail ? (
               <Image
-                src={product.thumbnail}
+                src={decodeURIComponent(product.thumbnail)}
                 alt={product.title}
                 width={512}
                 height={512}
