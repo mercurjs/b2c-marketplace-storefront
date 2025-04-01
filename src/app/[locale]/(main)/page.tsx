@@ -12,26 +12,26 @@ import {
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: 'Home',
+  title: "Home",
   description:
-    'Welcome to Mercur B2C Demo! Create a modern marketplace that you own and customize in every aspect with high-performance, fully customizable storefront.',
+    "Welcome to Mercur B2C Demo! Create a modern marketplace that you own and customize in every aspect with high-performance, fully customizable storefront.",
   openGraph: {
-    title: 'Mercur B2C Demo - Marketplace Storefront',
+    title: "Mercur B2C Demo - Marketplace Storefront",
     description:
-      'Welcome to Mercur B2C Demo! Create a modern marketplace that you own and customize in every aspect with high-performance, fully customizable storefront.',
+      "Welcome to Mercur B2C Demo! Create a modern marketplace that you own and customize in every aspect with high-performance, fully customizable storefront.",
     url: process.env.NEXT_PUBLIC_BASE_URL,
-    siteName: 'Mercur B2C Demo - Marketplace Storefront',
-    type: 'website',
+    siteName: "Mercur B2C Demo - Marketplace Storefront",
+    type: "website",
     images: [
       {
-        url: '/B2C_Storefront_Open_Graph.png',
+        url: "/B2C_Storefront_Open_Graph.png",
         width: 1200,
         height: 630,
-        alt: 'Mercur B2C Demo - Marketplace Storefront',
+        alt: "Mercur B2C Demo - Marketplace Storefront",
       },
     ],
   },
-};
+}
 
 export default async function Home({
   params,
@@ -55,10 +55,10 @@ export default async function Home({
         <HomeProductSection heading="trending listings" locale={locale} />
         {/* <AlgoliaTrendingListings /> */}
       </div>
-      <HomePopularBrandsSection />
+      {/* <HomePopularBrandsSection />
       <div className="px-4 lg:px-8 w-full">
         <HomeCategories heading="SHOP BY CATEGORY" />
-      </div>
+      </div> */}
       <BannerSection />
       <ShopByStyleSection />
       <BlogSection />

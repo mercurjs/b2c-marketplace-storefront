@@ -41,6 +41,7 @@ export interface SingleProductSeller {
   reviews?: SingleProductReview[]
   parcel?: string
   date?: string
+  created_at?: string
 }
 
 export interface SingleProductMeasurement {

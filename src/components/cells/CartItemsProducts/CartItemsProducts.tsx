@@ -16,7 +16,6 @@ export const CartItemsProducts = ({
     <div>
       {products.map((product) => {
         const { options } = product.variant ?? {}
-
         const original_total = convertToLocale({
           amount: product.original_total,
           currency_code,
@@ -28,13 +27,26 @@ export const CartItemsProducts = ({
         })
         return (
           <div key={product.id} className="border rounded-sm p-1 flex gap-2">
-            <Image
-              src={product.thumbnail || ""}
-              alt="Product thumbnail"
-              width={100}
-              height={132}
-              className="rounded-xs w-[100px] h-[132px] object-contain"
-            />
+            <div className="w-[100px] h-[132px] flex items-center justify-center">
+              {product.thumbnail ? (
+                <Image
+                  src={decodeURIComponent(product.thumbnail)}
+                  alt="Product thumbnail"
+                  width={100}
+                  height={132}
+                  className="rounded-xs w-[100px] h-[132px] object-contain"
+                />
+              ) : (
+                <Image
+                  src={"/images/placeholder.svg"}
+                  alt="Product thumbnail"
+                  width={50}
+                  height={66}
+                  className="rounded-xs w-[50px] h-[66px] object-contain opacity-30"
+                />
+              )}
+            </div>
+
             <div className="w-full p-2">
               <div className="flex justify-between lg:mb-4">
                 <div className="w-[150px] md:w-[200px] lg:w-[300px] xl:w-[calc(100%-120px)]">
@@ -46,12 +58,6 @@ export const CartItemsProducts = ({
                   </h3>
                 </div>
                 <div className="lg:flex">
-                  <Button
-                    variant="text"
-                    className="w-10 h-10 flex items-center justify-center p-0"
-                  >
-                    <HeartIcon size={20} />
-                  </Button>
                   <DeleteCartItemButton id={product.id} />
                 </div>
               </div>

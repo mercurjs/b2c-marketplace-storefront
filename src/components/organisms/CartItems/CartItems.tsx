@@ -4,16 +4,17 @@ import {
   CartItemsProducts,
 } from "@/components/cells"
 import { HttpTypes } from "@medusajs/types"
-import { seller } from "@/data/sellerMock"
 
 export const CartItems = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
-  if (!cart) return
+  if (!cart) return null
 
-  return (
-    <div>
-      <CartItemsHeader seller={seller} />
+  const groupedItems: any = groupItemsBySeller(cart)
+
+  return Object.keys(groupedItems).map((key) => (
+    <div key={key}>
+      <CartItemsHeader seller={groupedItems[key].seller} />
       <CartItemsProducts
-        products={cart.items || []}
+        products={groupedItems[key].items || []}
         currency_code={cart.currency_code}
       />
       <CartItemsFooter
@@ -21,5 +22,24 @@ export const CartItems = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
         price={cart.shipping_total}
       />
     </div>
-  )
+  ))
+}
+
+function groupItemsBySeller(cart: HttpTypes.StoreCart) {
+  const groupedBySeller: any = {}
+
+  cart.items?.forEach((item: any) => {
+    const seller = item.product?.seller
+    if (seller) {
+      if (!groupedBySeller[seller.id]) {
+        groupedBySeller[seller.id] = {
+          seller: seller,
+          items: [],
+        }
+      }
+      groupedBySeller[seller.id].items.push(item)
+    }
+  })
+
+  return groupedBySeller
 }

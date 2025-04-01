@@ -18,6 +18,15 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "api.mercurjs.com",
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
+      {
+        protocol: "https",
+        hostname: "api-sandbox.mercurjs.com",
+        pathname: "/static/**",
+      },
     ],
   },
 }

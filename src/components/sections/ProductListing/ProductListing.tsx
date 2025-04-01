@@ -7,32 +7,28 @@ import {
 } from "@/components/organisms"
 import { PRODUCT_LIMIT } from "@/const"
 import { listProductsWithSort } from "@/lib/data/products"
-import { SortOptions } from "@/types/product"
 
 export const ProductListing = async ({
-  searchParams,
   category_id,
+  seller_id,
 }: {
-  searchParams: Promise<{
-    [key: string]: string | string[] | undefined
-  }>
   category_id?: string
+  seller_id?: string
 }) => {
-  const { sortBy, page } = await searchParams
-
   const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "gb"
 
   const { response } = await listProductsWithSort({
+    seller_id,
     category_id,
     countryCode: DEFAULT_REGION,
-    page: parseInt((page || "1") as string),
-    sortBy: (sortBy || "created_at") as SortOptions,
+    sortBy: "created_at",
     queryParams: {
       limit: PRODUCT_LIMIT,
     },
   })
 
-  const { count, products } = await response
+  const { products } = await response
+  const count = products.length
 
   const pages = Math.ceil(count / PRODUCT_LIMIT) || 1
 
@@ -40,7 +36,7 @@ export const ProductListing = async ({
     <div className="py-4">
       <ProductListingHeader total={count} />
       <div className="hidden md:block">
-        <ProductListingActiveFilters />
+        {/* <ProductListingActiveFilters /> */}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 mt-6">
         {/* <ProductSidebar /> */}

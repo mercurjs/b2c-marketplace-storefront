@@ -16,9 +16,7 @@ const getOption = (label: string) => {
   }
 }
 
-export const getFacedFilters = (
-  filters: ReadonlyURLSearchParams
-): FacetFilters => {
+export const getFacedFilters = (filters: ReadonlyURLSearchParams): string => {
   let facet = ""
 
   let minPrice = null

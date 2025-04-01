@@ -14,11 +14,13 @@ export const ProductDetailsPage = async ({
     queryParams: { handle },
   }).then(({ response }) => response.products[0])
 
+  if (!prod) return null
+
   return (
     <>
       <div className="flex flex-col md:flex-row lg:gap-12">
         <div className="md:w-1/2 md:px-2">
-          <ProductGallery images={prod.images} />
+          <ProductGallery images={prod?.images || []} />
         </div>
         <div className="md:w-1/2 md:px-2">
           <ProductDetails product={prod} locale={locale} />

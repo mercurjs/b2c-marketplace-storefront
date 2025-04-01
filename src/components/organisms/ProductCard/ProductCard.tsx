@@ -24,7 +24,7 @@ export const ProductCard = ({
   })
 
   return (
-    <div className="relative group border rounded-sm flex flex-col justify-between w-[360px]">
+    <div className="relative group border rounded-sm flex flex-col justify-between min-w-[360px]">
       <div className="relative p-1 w-full bg-primary aspect-square">
         <div className="absolute right-3 top-3 lg:hidden z-10 cursor-pointer">
           <HeartIcon color={tailwindConfig.theme.extend.colors.tertiary} />
@@ -33,7 +33,7 @@ export const ProductCard = ({
           <div className="overflow-hidden rounded-sm w-full h-full flex justify-center align-center ">
             {product.thumbnail ? (
               <Image
-                src={product.thumbnail}
+                src={decodeURIComponent(product.thumbnail)}
                 alt={product.title}
                 width={512}
                 height={512}
@@ -51,12 +51,11 @@ export const ProductCard = ({
             )}
           </div>
         </Link>
-        <Button
-          className="absolute rounded-sm bg-action text-action-on-primary h-auto lg:h-[48px] lg:group-hover:block hidden w-[calc(100%-8px)] uppercase bottom-1 z-10"
-          onClick={() => console.log("Add to cart action")}
-        >
-          Add to cart
-        </Button>
+        <Link href={`/products/${product.handle}`}>
+          <Button className="absolute rounded-sm bg-action text-action-on-primary h-auto lg:h-[48px] lg:group-hover:block hidden w-[calc(100%-8px)] uppercase bottom-1 z-10">
+            See More
+          </Button>
+        </Link>
       </div>
       <Link href={`/products/${product.handle}`}>
         <div className="flex justify-between p-4">

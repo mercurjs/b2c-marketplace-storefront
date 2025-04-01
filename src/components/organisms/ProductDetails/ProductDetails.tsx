@@ -16,13 +16,13 @@ export const ProductDetails = ({
   product,
   locale,
 }: {
-  product: HttpTypes.StoreProduct & { seller?: SingleProductSeller }
+  product: HttpTypes.StoreProduct & { seller?: SellerProps }
   locale: string
 }) => {
   return (
     <div>
       <ProductDetailsHeader product={product} locale={locale} />
-      <ProductPageDetails details={product.description || ""} />
+      <ProductPageDetails details={product?.description || ""} />
       <ProductDetailsMeasurements measurements={singleProduct.measurements} />
       <ProductDetailsShipping />
       <ProductDetailsSeller seller={product?.seller} />
@@ -30,8 +30,8 @@ export const ProductDetails = ({
         reviews={seller.reviews}
       /> */}
       <ProductDetailsFooter
-        tags={product.tags || []}
-        posted={product.created_at}
+        tags={product?.tags || []}
+        posted={product?.created_at}
       />
     </div>
   )
