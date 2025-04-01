@@ -16,7 +16,7 @@ export const ProductDetails = ({
   product,
   locale,
 }: {
-  product: HttpTypes.StoreProduct & { seller?: SingleProductSeller }
+  product: HttpTypes.StoreProduct & { seller?: SellerProps }
   locale: string
 }) => {
   return (

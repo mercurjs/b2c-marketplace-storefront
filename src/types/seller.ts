@@ -1,8 +1,8 @@
 type SellerAddress = {
-  address_line: string
-  city: string
-  country_code: string
-  postal_code: string
+  address_line?: string
+  city?: string
+  country_code?: string
+  postal_code?: string
 }
 
 type SellerProps = SellerAddress & {

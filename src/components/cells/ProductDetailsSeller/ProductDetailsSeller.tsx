@@ -1,13 +1,8 @@
 import { Link } from "@/i18n/routing"
-import { CollapseIcon, DoneIcon } from "@/icons"
-import { SingleProductSeller } from "@/types/product"
+import { CollapseIcon } from "@/icons"
 import { SellerInfo } from "@/components/molecules"
 
-export const ProductDetailsSeller = ({
-  seller,
-}: {
-  seller?: SingleProductSeller
-}) => {
+export const ProductDetailsSeller = ({ seller }: { seller?: SellerProps }) => {
   if (!seller) return null
 
   return (
