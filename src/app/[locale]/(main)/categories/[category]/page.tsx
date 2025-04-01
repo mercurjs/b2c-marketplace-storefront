@@ -21,13 +21,9 @@ export async function generateMetadata({
 
 async function Category({
   params,
-  searchParams,
 }: {
   params: Promise<{
     category: string
-  }>
-  searchParams: Promise<{
-    [key: string]: string | string[] | undefined
   }>
 }) {
   const { category: handle } = await params
@@ -51,7 +47,7 @@ async function Category({
 
       <Suspense fallback={<ProductListingSkeleton />}>
         {/* <AlgoliaProductsListing category_id={category.id} /> */}
-        <ProductListing searchParams={searchParams} category_id={category.id} />
+        <ProductListing category_id={category.id} />
       </Suspense>
     </main>
   )

@@ -5,9 +5,9 @@ import { getSellerByHandle } from "@/lib/data/seller"
 export default async function SellerPage({
   params,
 }: {
-  params: { handle: string }
+  params: Promise<{ handle: string }>
 }) {
-  const { handle } = params
+  const { handle } = await params
 
   const seller = await getSellerByHandle(handle)
 
