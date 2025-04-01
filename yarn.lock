@@ -1471,19 +1471,19 @@
   dependencies:
     "@types/mdx" "^2.0.0"
 
-"@medusajs/js-sdk@^2.2.0":
-  version "2.4.0"
-  resolved "https://registry.npmjs.org/@medusajs/js-sdk/-/js-sdk-2.4.0.tgz"
-  integrity sha512-DnXxDGnomVJ1/1HJVNBXk0ld4dvDyrKxCkn8RGZAMZ2EMpZ9jrs+KnCatVuu15ogFkdsRlW63gSvpV3aYhUC5w==
+"@medusajs/js-sdk@^2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@medusajs/js-sdk/-/js-sdk-2.6.1.tgz#2871a1d887cae49be9bb68c29ddcc5ee74b74ced"
+  integrity sha512-X7gTuWSIEocBefs5Sqti+bax2zlXpsYDvFFZjKLAwLgxQdb4QJT3j8HXgRVkWo9Lcmjs1sL/wenmnYUgDxGtdQ==
   dependencies:
-    "@medusajs/types" "~2.4.0"
+    "@medusajs/types" "2.6.1"
     fetch-event-stream "^0.1.5"
     qs "^6.12.1"
 
-"@medusajs/types@~2.4.0":
-  version "2.4.0"
-  resolved "https://registry.npmjs.org/@medusajs/types/-/types-2.4.0.tgz"
-  integrity sha512-G3KriSPhzg1NmD0p+CwBPwlsY68hQD7IModsL52iJHDo1DTuXT4fXA8cZzvk3a6pkbhfznaksD5sklNrwNknvw==
+"@medusajs/types@2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@medusajs/types/-/types-2.6.1.tgz#acb7caf9f6a3d81c7b30dd144214894a876a9e63"
+  integrity sha512-cysEyeh/h1D3mkYSeaoo6fjpfCqHUGTaIoPLUxU3e2oyJ5GhwdpKB4N3mdkUFBSWmuWn5x7eLAwb7DqM4UzX+w==
   dependencies:
     bignumber.js "^9.1.2"
 
