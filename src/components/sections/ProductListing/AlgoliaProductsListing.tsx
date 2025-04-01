@@ -59,6 +59,8 @@ const ProductsListing = () => {
     updateSearchParams("sortBy", value)
   }
 
+  console.log({ items, results })
+
   if (!results?.processingTimeMS) return <ProductListingSkeleton />
 
   return (
