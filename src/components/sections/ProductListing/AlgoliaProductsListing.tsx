@@ -30,7 +30,7 @@ export const AlgoliaProductsListing = ({
 }) => {
   const searchParamas = useSearchParams()
 
-  const facetFilters: FacetFilters = getFacedFilters(searchParamas)
+  const facetFilters: string = getFacedFilters(searchParamas)
   const page: number = +(searchParamas.get("page") || 1)
 
   const filters = category_id
