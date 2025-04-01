@@ -57,10 +57,6 @@ export const listProducts = async ({
     ...(await getAuthHeaders()),
   }
 
-  // const next = {
-  //   ...(await getCacheOptions("products")),
-  // }
-
   return sdk.client
     .fetch<{
       products: HttpTypes.StoreProduct[]
@@ -77,11 +73,11 @@ export const listProducts = async ({
         ...queryParams,
       },
       headers,
-      // next,
       cache: "no-cache",
     })
     .then(({ products, count }) => {
       const nextPage = count > offset + limit ? pageParam + 1 : null
+
       return {
         response: {
           products,

@@ -46,8 +46,8 @@ async function Category({
       <h1 className="heading-xl uppercase">{category.name}</h1>
 
       <Suspense fallback={<ProductListingSkeleton />}>
-        {/* <AlgoliaProductsListing category_id={category.id} /> */}
-        <ProductListing category_id={category.id} />
+        <AlgoliaProductsListing category_id={category.id} />
+        {/* <ProductListing category_id={category.id} /> */}
       </Suspense>
     </main>
   )
