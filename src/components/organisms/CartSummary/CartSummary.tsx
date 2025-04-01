@@ -75,7 +75,7 @@ export const CartSummary = ({
         </div>
       </div>
       <Button
-        className="w-full py-3"
+        className="w-full py-3 flex justify-center items-center"
         onClick={() => handleProceed()}
         loading={pending}
       >

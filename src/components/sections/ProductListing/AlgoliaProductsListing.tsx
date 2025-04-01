@@ -35,7 +35,7 @@ export const AlgoliaProductsListing = ({
 
   const filters = category_id
     ? `categories.id:${category_id} ${facetFilters}`
-    : ""
+    : `${facetFilters.replace("AND", "")}`
 
   return (
     <InstantSearchNext searchClient={client} indexName="products" routing>
