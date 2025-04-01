@@ -6,7 +6,6 @@ import { HttpTypes } from "@medusajs/types"
 import { SingleProductSeller, SortOptions } from "@/types/product"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
-import { getImageUrl } from "../helpers/get-image-url"
 
 export const listProducts = async ({
   pageParam = 1,
@@ -58,9 +57,9 @@ export const listProducts = async ({
     ...(await getAuthHeaders()),
   }
 
-  const next = {
-    ...(await getCacheOptions("products")),
-  }
+  // const next = {
+  //   ...(await getCacheOptions("products")),
+  // }
 
   return sdk.client
     .fetch<{
@@ -78,12 +77,11 @@ export const listProducts = async ({
         ...queryParams,
       },
       headers,
-      next,
+      // next,
       cache: "no-cache",
     })
     .then(({ products, count }) => {
       const nextPage = count > offset + limit ? pageParam + 1 : null
-
       return {
         response: {
           products,
@@ -105,12 +103,14 @@ export const listProductsWithSort = async ({
   sortBy = "created_at",
   countryCode,
   category_id,
+  seller_id,
 }: {
   page?: number
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
   sortBy?: SortOptions
   countryCode: string
   category_id?: string
+  seller_id?: string
 }): Promise<{
   response: {
     products: HttpTypes.StoreProduct[]
@@ -133,7 +133,11 @@ export const listProductsWithSort = async ({
     countryCode,
   })
 
-  const sortedProducts = sortProducts(products, sortBy)
+  const filteredProducts = seller_id
+    ? products.filter((product) => product.seller?.id === seller_id)
+    : products
+
+  const sortedProducts = sortProducts(filteredProducts, sortBy)
 
   const pageParam = (page - 1) * limit
 
