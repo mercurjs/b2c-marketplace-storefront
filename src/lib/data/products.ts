@@ -24,7 +24,7 @@ export const listProducts = async ({
   regionId?: string
 }): Promise<{
   response: {
-    products: (HttpTypes.StoreProduct & { seller?: SingleProductSeller })[]
+    products: (HttpTypes.StoreProduct & { seller?: SellerProps })[]
     count: number
   }
   nextPage: number | null
