@@ -14,6 +14,7 @@ import {
   setCartId,
 } from "./cookies"
 import { getRegion } from "./regions"
+import { getSellerByHandle } from "./seller"
 
 export async function quickOrder({
   region_id,
@@ -68,11 +69,17 @@ export async function retrieveCart(cartId?: string) {
     .catch(() => null)
 }
 
-export async function getOrSetCart(countryCode: string) {
+export async function getOrSetCart(countryCode: string, sellerHandle: string) {
   const region = await getRegion(countryCode)
 
   if (!region) {
     throw new Error(`Region not found for country code: ${countryCode}`)
+  }
+
+  const seller = await getSellerByHandle(sellerHandle)
+
+  if (!seller) {
+    throw new Error(`Seller not found for handle: ${sellerHandle}`)
   }
 
   let cart = await retrieveCart()
@@ -83,7 +90,9 @@ export async function getOrSetCart(countryCode: string) {
 
   if (!cart) {
     const cartResp = await sdk.store.cart.create(
-      { region_id: region.id },
+      // TODO: remove expect error directive when @medusa/js-sdk types are updated
+      // @ts-expect-error incomplete type as endpoint accepts additional_data
+      { region_id: region.id, additional_data: { seller_id: seller.id } },
       {},
       headers
     )
@@ -129,16 +138,22 @@ export async function addToCart({
   variantId,
   quantity,
   countryCode,
+  sellerHandle,
 }: {
   variantId: string
   quantity: number
   countryCode: string
+  sellerHandle: string
 }) {
   if (!variantId) {
     throw new Error("Missing variant ID when adding to cart")
   }
 
-  const cart = await getOrSetCart(countryCode)
+  if (!sellerHandle) {
+    throw new Error("Missing seller handle when adding to cart")
+  }
+
+  const cart = await getOrSetCart(countryCode, sellerHandle)
 
   if (!cart) {
     throw new Error("Error retrieving or creating cart")
