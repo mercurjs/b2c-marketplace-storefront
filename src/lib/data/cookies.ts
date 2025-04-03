@@ -20,10 +20,13 @@ export const getCacheTag = async (
 ): Promise<string> => {
   try {
     const cookies = await nextCookies();
-    const cacheId = cookies.get('_medusa_cache_id')?.value;
+    const cacheIdCookie = cookies.get('_medusa_cache_id');
+    const cacheId = cacheIdCookie?.value || crypto.randomUUID();
 
-    if (!cacheId) {
-      return '';
+    if (!cacheIdCookie) {
+      cookies.set("_medusa_cache_id", cacheId, {
+        maxAge: 60 * 60 * 24,
+      })
     }
 
     return `${tag}-${cacheId}`;
@@ -79,7 +82,6 @@ export const getSellerCartsMap = async () => {
 }
 
 export const getCartIdBySellerHandle = async (sellerHandle: string) => {
-  const cookies = await nextCookies()
   const sellerCartsMap = await getSellerCartsMap()
   return sellerCartsMap[sellerHandle]
 }
@@ -125,11 +127,12 @@ export const removeSellerCartId = async (cartId?: string) => {
     await removeCartId()
   }
 
-  const selerCartMap = await getSellerCartsMap()
-  delete selerCartMap[id]
+  const sellerCartMap = await getSellerCartsMap()
+  const sellerHandle = Object.keys(sellerCartMap).find(sellerHandle => sellerCartMap[sellerHandle] === id)
+  delete sellerCartMap[sellerHandle || '']
 
-  const isEmpty = !Object.keys(selerCartMap).length
-  let value = !isEmpty ? JSON.stringify(selerCartMap) : "";
+  const isEmpty = !Object.keys(sellerCartMap).length
+  let value = !isEmpty ? JSON.stringify(sellerCartMap) : "";
   let maxAge = !isEmpty ? 60 * 60 * 24 * 7 : -1;
 
   const cookies = await nextCookies()
