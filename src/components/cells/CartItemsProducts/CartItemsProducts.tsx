@@ -8,9 +8,11 @@ import { DeleteCartItemButton } from "@/components/molecules"
 export const CartItemsProducts = ({
   products,
   currency_code,
+  cartId,
 }: {
   products: HttpTypes.StoreCartLineItem[]
   currency_code: string
+  cartId: string
 }) => {
   return (
     <div>
@@ -58,7 +60,7 @@ export const CartItemsProducts = ({
                   </h3>
                 </div>
                 <div className="lg:flex">
-                  <DeleteCartItemButton id={product.id} />
+                  <DeleteCartItemButton id={product.id} cartId={cartId} />
                 </div>
               </div>
               <div className="lg:flex justify-between -mt-4 lg:mt-0">

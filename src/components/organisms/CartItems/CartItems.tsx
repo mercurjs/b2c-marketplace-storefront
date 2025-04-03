@@ -16,6 +16,7 @@ export const CartItems = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
       <CartItemsProducts
         products={groupedItems[key].items || []}
         currency_code={cart.currency_code}
+        cartId={cart.id}
       />
       <CartItemsFooter
         currency_code={cart.currency_code}

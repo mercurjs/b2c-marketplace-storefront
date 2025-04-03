@@ -7,14 +7,16 @@ import { useState } from 'react';
 
 export const DeleteCartItemButton = ({
   id,
+  cartId,
 }: {
   id: string;
+  cartId: string;
 }) => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async (id: string) => {
     setIsDeleting(true);
-    await deleteLineItem(id).catch(() => {
+    await deleteLineItem(id, cartId).catch(() => {
       setIsDeleting(false);
     });
   };
