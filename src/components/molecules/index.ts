@@ -25,6 +25,7 @@ import { HeaderCategoryNavbar } from './HeaderCategoryNavbar/HeaderCategoryNavba
 import { DeleteCartItemButton } from './DeleteCartItemButton/DeleteCartItemButton';
 import { Dropdown } from './Dropdown/Dropdown';
 import { CartDropdownItem } from './CartDropdownItem/CartDropdownItem';
+import { EmptyCartMessage } from './EmptyCartMessage/EmptyCartMessage';
 
 export {
   PrimeCategoryNavbar,
@@ -54,4 +55,5 @@ export {
   DeleteCartItemButton,
   Dropdown,
   CartDropdownItem,
+  EmptyCartMessage,
 };
