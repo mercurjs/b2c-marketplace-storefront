@@ -1,5 +1,6 @@
 import 'server-only';
 import { cookies as nextCookies } from 'next/headers';
+import { parseCartCookie } from '../helpers/cart-cookies';
 
 export const getAuthHeaders = async (): Promise<
   { authorization: string } | {}
@@ -64,14 +65,40 @@ export const removeAuthToken = async () => {
   });
 };
 
-export const getCartId = async () => {
+// This cookie should hold the cart id of the current cart in checkout process and be unset when this process
+// finishes, be it via abandoning it or completing order
+export const getActiveCartId = async () => {
   const cookies = await nextCookies();
   return cookies.get('_medusa_cart_id')?.value;
 };
 
-export const setCartId = async (cartId: string) => {
+// This cookie will return a map, of sellerHandle: cartId pairs, for all the current incomplete carts in the bag
+export const getSellerCartsMap = async () => {
+  const cookies = await nextCookies()
+  return parseCartCookie(cookies.get('_medusa_cart_ids')?.value)
+}
+
+export const getCartIdBySellerHandle = async (sellerHandle: string) => {
+  const cookies = await nextCookies()
+  const sellerCartsMap = await getSellerCartsMap()
+  return sellerCartsMap[sellerHandle]
+}
+
+export const getCartIds = async () => {
+  const sellerCartsMap = await getSellerCartsMap()
+  return Object.values(sellerCartsMap)
+}
+
+export const setCartId = async (cartId: string, sellerHandle: string) => {
   const cookies = await nextCookies();
-  cookies.set('_medusa_cart_id', cartId, {
+  const currentSellerCartMap = await getSellerCartsMap()
+
+  const update = JSON.stringify({
+    ...currentSellerCartMap,
+    [sellerHandle]: cartId
+  })
+
+  cookies.set('_medusa_cart_ids', update, {
     maxAge: 60 * 60 * 24 * 7,
     httpOnly: true,
     sameSite: 'strict',
@@ -85,3 +112,26 @@ export const removeCartId = async () => {
     maxAge: -1,
   });
 };
+
+export const removeSellerCartId = async (cartId?: string) => {
+  const id = cartId || await getActiveCartId()
+
+  if (!id) {
+    return
+  }
+
+  const activeCartId = await getActiveCartId()
+  if (activeCartId) {
+    await removeCartId()
+  }
+
+  const selerCartMap = await getSellerCartsMap()
+  delete selerCartMap[id]
+
+  const isEmpty = !Object.keys(selerCartMap).length
+  let value = !isEmpty ? JSON.stringify(selerCartMap) : "";
+  let maxAge = !isEmpty ? 60 * 60 * 24 * 7 : -1;
+
+  const cookies = await nextCookies()
+  cookies.set("_medusa_cart_ids", value, { maxAge });
+}
