@@ -1,8 +1,7 @@
 import { CartItems, CartSummary } from "@/components/organisms"
-import { retrieveCart } from "@/lib/data/cart"
+import { StoreCart } from "@medusajs/types"
 
-export const Cart = async () => {
-  const cart = await retrieveCart()
+export const Cart = async ({ cart }: { cart: StoreCart }) => {
 
   return (
     <>
