@@ -7,4 +7,7 @@ declare module "@medusajs/types" {
     interface StoreProduct {
         seller?: SellerProps
     }
+    interface StoreCart {
+        seller?: SellerProps
+    }
 }

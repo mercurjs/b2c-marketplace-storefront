@@ -11,10 +11,10 @@ import { Link } from "@/i18n/routing"
 import { HeartIcon, ProfileIcon } from "@/icons"
 import { listCategories } from "@/lib/data/categories"
 import { PARENT_CATEGORIES } from "@/const"
-import { retrieveCart } from "@/lib/data/cart"
+import { retrieveCarts } from "@/lib/data/cart"
 
 export const Header = async () => {
-  const cart = await retrieveCart().catch(() => null)
+  const carts = await retrieveCarts()
 
   const { categories, parentCategories } = (await listCategories({
     headingCategories: PARENT_CATEGORIES,
@@ -51,7 +51,7 @@ export const Header = async () => {
           <Link href="/wishlist">
             <HeartIcon size={20} />
           </Link>
-          <CartDropdown cart={cart} />
+          <CartDropdown carts={carts} />
         </div>
       </div>
       <Navbar categories={categories} />
