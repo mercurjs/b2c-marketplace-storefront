@@ -12,7 +12,7 @@ export const Navbar = ({
         <CategoryNavbar categories={categories} />
       </div>
 
-      {/* <NavbarSearch /> TODO: Fix searching in algolia */}
+      <NavbarSearch />
     </div>
   )
 }

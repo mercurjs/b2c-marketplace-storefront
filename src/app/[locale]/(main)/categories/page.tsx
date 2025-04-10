@@ -2,7 +2,7 @@ import { ProductListingSkeleton } from "@/components/organisms/ProductListingSke
 import { Suspense } from "react"
 
 import { Breadcrumbs } from "@/components/atoms"
-import { AlgoliaProductsListing, ProductListing } from "@/components/sections"
+import { AlgoliaProductsListing } from "@/components/sections"
 
 async function AllCategories() {
   const breadcrumbsItems = [

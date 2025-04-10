@@ -32,14 +32,16 @@ export const AlgoliaProductsListing = ({
 
   const facetFilters: string = getFacedFilters(searchParamas)
   const page: number = +(searchParamas.get("page") || 1)
+  const query: string = searchParamas.get("query") || ""
 
   const filters = category_id
     ? `categories.id:${category_id} ${facetFilters}`
     : `${facetFilters.replace("AND", "")}`
 
   return (
-    <InstantSearchNext searchClient={client} indexName="products" routing>
+    <InstantSearchNext searchClient={client} indexName="products">
       <Configure
+        query={query}
         hitsPerPage={PRODUCT_LIMIT}
         filters={filters}
         page={page - 1}
@@ -60,8 +62,6 @@ const ProductsListing = () => {
   const selectOptionHandler = (value: string) => {
     updateSearchParams("sortBy", value)
   }
-
-  console.log({ items, results })
 
   if (!results?.processingTimeMS) return <ProductListingSkeleton />
 

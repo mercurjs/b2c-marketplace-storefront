@@ -1,22 +1,22 @@
 {
-    "Home": {
-      "title": "NextJS i18n Tutorial",
-      "description": "Tutorial of how to manipulate i18n based on route path or domain with  Nextjs v15"
-    },
-    "ProductListing": {
-      "filters": {
-        "product": "Product",
-        "brand": "Brand",
-        "price": "Price",
-        "size": "Size",
-        "condition": "Condition",
-        "color": "Color",
-        "seller_rating": "Seller rating",
-        "sale": "Sale",
-        "min_price": "Min price",
-        "max_price": "Max price",
-        "search": "Search",
-        "rating": "Rating"
-      }
+  "Home": {
+    "title": "NextJS i18n Tutorial",
+    "description": "Tutorial of how to manipulate i18n based on route path or domain with  Nextjs v15"
+  },
+  "ProductListing": {
+    "filters": {
+      "product": "Product",
+      "brand": "Brand",
+      "price": "Price",
+      "size": "Size",
+      "condition": "Condition",
+      "color": "Color",
+      "seller_rating": "Seller rating",
+      "sale": "Sale",
+      "min_price": "Min price",
+      "max_price": "Max price",
+      "query": "Query",
+      "rating": "Rating"
     }
   }
+}
