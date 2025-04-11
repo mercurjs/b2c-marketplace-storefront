@@ -68,6 +68,7 @@ export const ProductDetailsHeader = ({
       variantId: variantId,
       quantity: 1,
       countryCode: locale,
+      sellerHandle: product.seller?.handle ?? ''
     })
 
     setIsAdding(false)

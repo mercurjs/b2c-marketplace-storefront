@@ -5,7 +5,7 @@ type SellerAddress = {
   postal_code?: string
 }
 
-type SellerProps = SellerAddress & {
+export type SellerProps = SellerAddress & {
   id: string
   name: string
   handle: string
