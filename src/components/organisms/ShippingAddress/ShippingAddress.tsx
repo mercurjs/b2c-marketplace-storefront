@@ -1,3 +1,5 @@
+"use client"
+
 import { HttpTypes } from "@medusajs/types"
 import { Container } from "@medusajs/ui"
 import { mapKeys } from "lodash"

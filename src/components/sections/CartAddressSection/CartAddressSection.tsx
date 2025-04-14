@@ -61,7 +61,7 @@ export const CartAddressSection = ({
       </div>
       {isOpen ? (
         <form action={formAction}>
-          <div className="pb-8">
+          {/* <div className="pb-8">
             <ShippingAddress
               customer={customer}
               checked={sameAsBilling}
@@ -85,7 +85,7 @@ export const CartAddressSection = ({
               Continue to delivery
             </Button>
             <ErrorMessage error={message} data-testid="address-error-message" />
-          </div>
+          </div> */}
         </form>
       ) : (
         <div>
