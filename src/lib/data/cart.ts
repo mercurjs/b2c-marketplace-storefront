@@ -148,23 +148,39 @@ export async function addToCart({
     ...(await getAuthHeaders()),
   }
 
-  await sdk.store.cart
-    .createLineItem(
-      cart.id,
-      {
-        variant_id: variantId,
-        quantity,
-      },
-      {},
-      headers
-    )
-    .then(async () => {
-      const cartCacheTag = await getCacheTag("carts")
-      revalidateTag(cartCacheTag)
-    })
-    .catch(() => {
-      return medusaError
-    })
+  const currentItem = cart.items?.find((item) => item.variant_id === variantId)
+
+  if (currentItem) {
+    await sdk.store.cart
+      .updateLineItem(
+        cart.id,
+        currentItem.id,
+        { quantity: currentItem.quantity + quantity },
+        {},
+        headers
+      )
+      .then(async () => {
+        const cartCacheTag = await getCacheTag("carts")
+        revalidateTag(cartCacheTag)
+      })
+      .catch(medusaError)
+  } else {
+    await sdk.store.cart
+      .createLineItem(
+        cart.id,
+        {
+          variant_id: variantId,
+          quantity,
+        },
+        {},
+        headers
+      )
+      .then(async () => {
+        const cartCacheTag = await getCacheTag("carts")
+        revalidateTag(cartCacheTag)
+      })
+      .catch(medusaError)
+  }
 }
 
 export async function updateLineItem({
