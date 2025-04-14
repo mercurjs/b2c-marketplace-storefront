@@ -1,11 +1,11 @@
-'use client';
-import { cn } from '@/lib/utils';
-import { MinusHeavyIcon, TickThinIcon } from '@/icons';
+"use client"
+import { cn } from "@/lib/utils"
+import { MinusHeavyIcon, TickThinIcon } from "@/icons"
 
-interface CheckboxProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
-  indeterminate?: boolean;
-  error?: boolean;
+interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  indeterminate?: boolean
+  error?: boolean
+  label?: string
 }
 
 export function Checkbox({
@@ -18,30 +18,27 @@ export function Checkbox({
   return (
     <span
       className={cn(
-        'checkbox-wrapper',
-        checked && '!bg-action',
-        error && '!border-negative',
-        indeterminate && '!bg-action',
-        props.disabled &&
-          '!bg-disabled !border-disabled !cursor-default',
+        "checkbox-wrapper",
+        checked && "!bg-action",
+        error && "!border-negative",
+        indeterminate && "!bg-action",
+        props.disabled && "!bg-disabled !border-disabled !cursor-default",
         className
       )}
     >
       {indeterminate && !checked && !props.disabled && (
         <MinusHeavyIcon size={20} />
       )}
-      {checked && !props.disabled && (
-        <TickThinIcon size={20} />
-      )}
+      {checked && !props.disabled && <TickThinIcon size={20} />}
 
       <input
-        type='checkbox'
+        type="checkbox"
         className={cn(
-          'w-[20px] h-[20px] opacity-0 cursor-pointer',
-          props.disabled && 'cursor-default'
+          "w-[20px] h-[20px] opacity-0 cursor-pointer",
+          props.disabled && "cursor-default"
         )}
         {...props}
       />
     </span>
-  );
+  )
 }

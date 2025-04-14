@@ -3,6 +3,7 @@
 import { Button } from "@/components/atoms"
 import { quickOrder } from "@/lib/data/cart"
 import { convertToLocale } from "@/lib/helpers/money"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -74,13 +75,15 @@ export const CartSummary = ({
           </span>
         </div>
       </div>
-      <Button
-        className="w-full py-3 flex justify-center items-center"
-        onClick={() => handleProceed()}
-        loading={pending}
-      >
-        Proceed to checkout
-      </Button>
+      <Link href="/cart/checkout">
+        <Button
+          className="w-full py-3 flex justify-center items-center"
+          // onClick={() => handleProceed()}
+          loading={pending}
+        >
+          Go to checkout
+        </Button>
+      </Link>
     </div>
   )
 }

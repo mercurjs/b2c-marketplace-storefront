@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.1",
     "@hookform/resolvers": "^3.10.0",
     "@medusajs/js-sdk": "^2.2.0",
+    "@medusajs/ui": "^4.0.7",
     "algoliasearch": "^5.20.3",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

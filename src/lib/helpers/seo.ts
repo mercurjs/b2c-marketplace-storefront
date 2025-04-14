@@ -16,27 +16,28 @@ export const generateProductMetadata = async (
     metadataBase: new URL(`${protocol}://${host}/products/${product?.handle}`),
 
     openGraph: {
-      title: product.title,
-      description: `${product.title} - ${process.env.NEXT_PUBLIC_SITE_NAME}`,
-      url: `${protocol}://${host}/products/${product.handle}`,
+      title: product?.title,
+      description: `${product?.title} - ${process.env.NEXT_PUBLIC_SITE_NAME}`,
+      url: `${protocol}://${host}/products/${product?.handle}`,
       siteName: process.env.NEXT_PUBLIC_SITE_NAME,
       images: [
         {
           url:
-            product.thumbnail || `${protocol}://${host}/images/placeholder.svg`,
+            product?.thumbnail ||
+            `${protocol}://${host}/images/placeholder.svg`,
           width: 1200,
           height: 630,
-          alt: product.title,
+          alt: product?.title,
         },
       ],
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: product.title,
-      description: `${product.title} - ${process.env.NEXT_PUBLIC_SITE_NAME}`,
+      title: product?.title,
+      description: `${product?.title} - ${process.env.NEXT_PUBLIC_SITE_NAME}`,
       images: [
-        product.thumbnail || `${protocol}://${host}/images/placeholder.svg`,
+        product?.thumbnail || `${protocol}://${host}/images/placeholder.svg`,
       ],
     },
   }
