@@ -1,8 +1,10 @@
 "use client"
 
-import { Heading, Text } from "@medusajs/ui"
+import { Heading } from "@medusajs/ui"
 
 import PaymentButton from "./PaymentButton"
+import { CartItems } from "./CartItems"
+import { CartSummary } from "@/components/organisms"
 
 const Review = ({ cart }: { cart: any }) => {
   const paidByGiftcard =
@@ -14,24 +16,17 @@ const Review = ({ cart }: { cart: any }) => {
     (cart.payment_collection || paidByGiftcard)
 
   return (
-    <div className="border p-4 rounded-sm bg-ui-bg-interactive">
-      <div className="flex flex-row items-center justify-between mb-6">
-        <Heading
-          level="h2"
-          className="flex flex-row text-3xl-regular gap-x-2 items-baseline items-center"
-        >
-          Review
-        </Heading>
+    <div>
+      <div className="w-full mb-6">
+        <CartItems cart={cart} />
       </div>
-      <div className="flex items-start gap-x-1 w-full mb-6">
-        <div className="w-full">
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">
-            By clicking the Place Order button, you confirm that you have read,
-            understand and accept our Terms of Use, Terms of Sale and Returns
-            Policy and acknowledge that you have read Medusa Store&apos;s
-            Privacy Policy.
-          </Text>
-        </div>
+      <div className="w-full mb-6 border rounded-sm p-4">
+        <CartSummary
+          item_total={cart?.item_total || 0}
+          shipping_total={cart?.shipping_total || 0}
+          total={cart?.total || 0}
+          currency_code={cart?.currency_code || ""}
+        />
       </div>
 
       {previousStepsCompleted && (

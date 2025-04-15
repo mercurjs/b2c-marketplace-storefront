@@ -31,8 +31,8 @@ export default async function CheckoutPage({}) {
   return (
     <main className="container">
       <Suspense fallback={<>Loading...</>}>
-        <div className="grid lg:grid-cols-2 gap-4">
-          <div className="flex flex-col gap-4">
+        <div className="grid lg:grid-cols-11 gap-8">
+          <div className="flex flex-col gap-4 lg:col-span-6">
             <CartAddressSection cart={cart} customer={customer} />
             <CartShippingMethodsSection
               cart={cart}
@@ -43,7 +43,8 @@ export default async function CheckoutPage({}) {
               availablePaymentMethods={paymentMethods}
             />
           </div>
-          <div>
+
+          <div className="lg:col-span-5">
             <CartReview cart={cart} />
           </div>
         </div>
