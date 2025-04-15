@@ -12,6 +12,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export function Input({
+  label,
   icon,
   clearable,
   className,
@@ -32,33 +33,36 @@ export function Input({
   }
 
   return (
-    <div className="relative">
-      {icon && (
-        <span className="absolute top-0 left-[16px] h-full flex items-center">
-          {icon}
-        </span>
-      )}
-
-      <input
-        className={cn(
-          "w-full px-[16px] py-[12px] border rounded-sm bg-component-secondary focus:border-primary focus:outline-none focus:ring-0",
-          error && "border-negative focus:border-negative",
-          props.disabled && "bg-disabled cursor-not-allowed",
-          paddingY,
-          className
+    <label className="label-md">
+      {label}
+      <div className="relative mt-2">
+        {icon && (
+          <span className="absolute top-0 left-[16px] h-full flex items-center">
+            {icon}
+          </span>
         )}
-        value={props.value}
-        onChange={(e) => changeHandler(e.target.value)}
-        {...props}
-      />
-      {clearable && props.value && (
-        <span
-          className="absolute h-full flex items-center top-0 right-[16px] cursor-pointer"
-          onClick={clearHandler}
-        >
-          <CloseIcon />
-        </span>
-      )}
-    </div>
+
+        <input
+          className={cn(
+            "w-full px-[16px] py-[12px] border rounded-sm bg-component-secondary focus:border-primary focus:outline-none focus:ring-0",
+            error && "border-negative focus:border-negative",
+            props.disabled && "bg-disabled cursor-not-allowed",
+            paddingY,
+            className
+          )}
+          value={props.value}
+          onChange={(e) => changeHandler(e.target.value)}
+          {...props}
+        />
+        {clearable && props.value && (
+          <span
+            className="absolute h-full flex items-center top-0 right-[16px] cursor-pointer"
+            onClick={clearHandler}
+          >
+            <CloseIcon />
+          </span>
+        )}
+      </div>
+    </label>
   )
 }

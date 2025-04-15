@@ -4,6 +4,7 @@ import {
   CartItemsProducts,
 } from "@/components/cells"
 import { HttpTypes } from "@medusajs/types"
+import { create } from "lodash"
 
 export const CartItems = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
   if (!cart) return null
@@ -12,7 +13,7 @@ export const CartItems = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
 
   return Object.keys(groupedItems).map((key) => (
     <div key={key}>
-      <CartItemsHeader seller={groupedItems[key].seller} />
+      <CartItemsHeader seller={groupedItems[key]?.seller} />
       <CartItemsProducts
         products={groupedItems[key].items || []}
         currency_code={cart.currency_code}
@@ -38,6 +39,19 @@ function groupItemsBySeller(cart: HttpTypes.StoreCart) {
         }
       }
       groupedBySeller[seller.id].items.push(item)
+    } else {
+      if (!groupedBySeller["fleek"]) {
+        groupedBySeller["fleek"] = {
+          seller: {
+            name: "Fleek",
+            id: "fleek",
+            photo: "/Logo.svg",
+            created_at: new Date(),
+          },
+          items: [],
+        }
+      }
+      groupedBySeller["fleek"].items.push(item)
     }
   })
 

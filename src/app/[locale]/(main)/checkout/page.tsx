@@ -1,9 +1,13 @@
 import { CartAddressSection } from "@/components/sections/CartAddressSection/CartAddressSection"
-import { CartPaymentSection } from "@/components/sections/CartPaymentSection/CartPaymentSection"
-import { CartShippingMethodsSection } from "@/components/sections/CartShippingMethodsSection/CartShippingMethodsSection"
+import CartPaymentSection from "@/components/sections/CartPaymentSection/CartPaymentSection"
+import CartReview from "@/components/sections/CartReview/CartReview"
+import PaymentButton from "@/components/sections/CartReview/PaymentButton"
+
+import CartShippingMethodsSection from "@/components/sections/CartShippingMethodsSection/CartShippingMethodsSection"
 import { retrieveCart } from "@/lib/data/cart"
 import { retrieveCustomer } from "@/lib/data/customer"
 import { listCartShippingMethods } from "@/lib/data/fulfillment"
+import { listCartPaymentMethods } from "@/lib/data/payment"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
@@ -13,7 +17,7 @@ export const metadata: Metadata = {
   description: "My cart page - Checkout",
 }
 
-export default async function ShippingPage({}) {
+export default async function CheckoutPage({}) {
   const cart = await retrieveCart()
 
   if (!cart) {
@@ -21,6 +25,7 @@ export default async function ShippingPage({}) {
   }
 
   const shippingMethods = await listCartShippingMethods(cart.id)
+  const paymentMethods = await listCartPaymentMethods(cart.region?.id ?? "")
   const customer = await retrieveCustomer()
 
   return (
@@ -29,12 +34,18 @@ export default async function ShippingPage({}) {
         <div className="grid lg:grid-cols-2 gap-4">
           <div className="flex flex-col gap-4">
             <CartAddressSection cart={cart} customer={customer} />
-            {/* <CartShippingMethodsSection
+            <CartShippingMethodsSection
               cart={cart}
               availableShippingMethods={shippingMethods}
-            /> */}
+            />
+            <CartPaymentSection
+              cart={cart}
+              availablePaymentMethods={paymentMethods}
+            />
           </div>
-          <CartPaymentSection />
+          <div>
+            <CartReview cart={cart} />
+          </div>
         </div>
       </Suspense>
     </main>

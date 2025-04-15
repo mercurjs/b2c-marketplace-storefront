@@ -75,7 +75,7 @@ export const CartSummary = ({
           </span>
         </div>
       </div>
-      <Link href="/cart/checkout">
+      <Link href="/checkout">
         <Button
           className="w-full py-3 flex justify-center items-center"
           // onClick={() => handleProceed()}

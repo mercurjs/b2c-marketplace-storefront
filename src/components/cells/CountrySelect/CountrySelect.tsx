@@ -30,18 +30,21 @@ const CountrySelect = forwardRef<
   }, [region])
 
   return (
-    <NativeSelect
-      ref={innerRef}
-      placeholder={placeholder}
-      defaultValue={defaultValue}
-      {...props}
-    >
-      {countryOptions?.map(({ value, label }, index) => (
-        <option key={index} value={value}>
-          {label}
-        </option>
-      ))}
-    </NativeSelect>
+    <label className="label-md">
+      <p className="mb-2">Country</p>
+      <NativeSelect
+        ref={innerRef}
+        placeholder={placeholder}
+        defaultValue={defaultValue}
+        {...props}
+      >
+        {countryOptions?.map(({ value, label }, index) => (
+          <option key={index} value={value}>
+            {label}
+          </option>
+        ))}
+      </NativeSelect>
+    </label>
   )
 })
 

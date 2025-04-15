@@ -24,8 +24,8 @@ export const ProductCard = ({
   })
 
   return (
-    <div className="relative group border rounded-sm flex flex-col justify-between w-full">
-      <div className="relative p-1 w-full bg-primary aspect-square">
+    <div className="relative group border rounded-sm flex flex-col justify-between w-full p-1">
+      <div className="relative  w-full bg-primary aspect-square">
         <div className="absolute right-3 top-3 lg:hidden z-10 cursor-pointer">
           <HeartIcon color={tailwindConfig.theme.extend.colors.tertiary} />
         </div>
@@ -52,7 +52,7 @@ export const ProductCard = ({
           </div>
         </Link>
         <Link href={`/products/${product.handle}`}>
-          <Button className="absolute rounded-sm bg-action text-action-on-primary h-auto lg:h-[48px] lg:group-hover:block hidden w-[calc(100%-8px)] uppercase bottom-1 z-10">
+          <Button className="absolute rounded-sm bg-action text-action-on-primary h-auto lg:h-[48px] lg:group-hover:block hidden w-full uppercase bottom-1 z-10">
             See More
           </Button>
         </Link>

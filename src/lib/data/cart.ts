@@ -49,10 +49,6 @@ export async function retrieveCart(cartId?: string) {
     ...(await getAuthHeaders()),
   }
 
-  const next = {
-    ...(await getCacheOptions("carts")),
-  }
-
   return await sdk.client
     .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${id}`, {
       method: "GET",
@@ -61,8 +57,7 @@ export async function retrieveCart(cartId?: string) {
           "*items, *region, *items.product, *items.variant, *items.variant.options, items.variant.options.option.title, *items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name, *items.product.seller",
       },
       headers,
-      next,
-      cache: "force-cache",
+      cache: "no-cache",
     })
     .then(({ cart }) => cart)
     .catch(() => null)
@@ -325,22 +320,23 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
       email: formData.get("email"),
     } as any
 
-    const sameAsBilling = formData.get("same_as_billing")
-    if (sameAsBilling === "on") data.billing_address = data.shipping_address
+    // const sameAsBilling = formData.get("same_as_billing")
+    // if (sameAsBilling === "on") data.billing_address = data.shipping_address
+    data.billing_address = data.shipping_address
 
-    if (sameAsBilling !== "on")
-      data.billing_address = {
-        first_name: formData.get("billing_address.first_name"),
-        last_name: formData.get("billing_address.last_name"),
-        address_1: formData.get("billing_address.address_1"),
-        address_2: "",
-        company: formData.get("billing_address.company"),
-        postal_code: formData.get("billing_address.postal_code"),
-        city: formData.get("billing_address.city"),
-        country_code: formData.get("billing_address.country_code"),
-        province: formData.get("billing_address.province"),
-        phone: formData.get("billing_address.phone"),
-      }
+    // if (sameAsBilling !== "on")
+    //   data.billing_address = {
+    //     first_name: formData.get("billing_address.first_name"),
+    //     last_name: formData.get("billing_address.last_name"),
+    //     address_1: formData.get("billing_address.address_1"),
+    //     address_2: "",
+    //     company: formData.get("billing_address.company"),
+    //     postal_code: formData.get("billing_address.postal_code"),
+    //     city: formData.get("billing_address.city"),
+    //     country_code: formData.get("billing_address.country_code"),
+    //     province: formData.get("billing_address.province"),
+    //     phone: formData.get("billing_address.phone"),
+    //   }
     await updateCart(data)
   } catch (e: any) {
     return e.message
