@@ -1,7 +1,5 @@
 "use client"
 
-import { Heading } from "@medusajs/ui"
-
 import PaymentButton from "./PaymentButton"
 import { CartItems } from "./CartItems"
 import { CartSummary } from "@/components/organisms"
