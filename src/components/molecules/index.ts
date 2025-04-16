@@ -28,6 +28,8 @@ import { CartDropdownItem } from "./CartDropdownItem/CartDropdownItem"
 import { LoginForm } from "./LoginForm/LoginForm"
 import { RegisterForm } from "./RegisterForm/RegisterForm"
 import { UserNavigation } from "./UserNavigation/UserNavigation"
+import { ParcelAccordion } from "./ParcelAccordion/ParcelAccordion"
+import { AddressForm } from "./AddressForm/AddressForm"
 
 export {
   PrimeCategoryNavbar,
@@ -60,4 +62,6 @@ export {
   LoginForm,
   RegisterForm,
   UserNavigation,
+  ParcelAccordion,
+  AddressForm,
 }

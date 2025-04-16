@@ -20,6 +20,7 @@ import { HomeProductsCarousel } from "./HomeProductsCarousel/HomeProductsCarouse
 import { ProductGallery } from "./ProductGallery/ProductGallery"
 import { ProductDetails } from "./ProductDetails/ProductDetails"
 import { AlgoliaProductSidebar } from "./ProductSidebar/AlgoliaProductSidebar"
+import { Addresses } from "./Addressess/Addresses"
 
 export {
   ProductCard,
@@ -44,4 +45,5 @@ export {
   ProductGallery,
   ProductDetails,
   AlgoliaProductSidebar,
+  Addresses,
 }

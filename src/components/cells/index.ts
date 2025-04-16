@@ -25,6 +25,9 @@ import { CartItemsProducts } from "./CartItemsProducts/CartItemsProducts"
 import { HeadingCategories } from "./HeadingCategories/HeadingCategories"
 import { CartDropdown } from "./CartDropdown/CartDropdown"
 import { LabeledInput } from "./LabeledInput/LabeledInput"
+import { OrderAddresses } from "./OrderAddresses/OrderAddresses"
+import { OrderProductListItem } from "./OrderProductListItem/OrderProductListItem"
+import { OrderTimeline } from "./OrderTimeline/OrderTimeline"
 
 export {
   Navbar,
@@ -54,4 +57,7 @@ export {
   HeadingCategories,
   CartDropdown,
   LabeledInput,
+  OrderAddresses,
+  OrderProductListItem,
+  OrderTimeline,
 }

@@ -1,29 +1,29 @@
-import { CloseIcon } from '@/icons';
+import { CloseIcon } from "@/icons"
 
 export const Modal = ({
   children,
   heading,
   onClose,
 }: {
-  children: React.ReactNode;
-  heading: string;
-  onClose: () => void;
+  children: React.ReactNode
+  heading: string
+  onClose: () => void
 }) => {
   return (
-    <div className='fixed top-0 left-0 w-full h-full flex justify-center z-30'>
+    <div className="fixed top-0 left-0 w-full h-full flex justify-center z-30">
       <div
-        className='bg-tertiary/60 w-full h-full absolute backdrop-blur-sm'
+        className="bg-tertiary/60 w-full h-full absolute backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className='absolute bg-primary z-20 my-20 py-5 rounded-sm max-w-[600px] w-full'>
-        <div className='uppercase flex justify-between items-center heading-md border-b px-4 pb-5'>
+      <div className="absolute bg-primary z-20 my-20 py-5 rounded-sm max-w-[600px] w-full">
+        <div className="uppercase flex justify-between items-center heading-md border-b px-4 pb-5">
           {heading}
-          <div onClick={onClose} className='cursor-pointer'>
+          <div onClick={onClose} className="cursor-pointer">
             <CloseIcon size={20} />
           </div>
         </div>
-        <div className='pt-5'>{children}</div>
+        <div className="pt-5">{children}</div>
       </div>
     </div>
-  );
-};
+  )
+}

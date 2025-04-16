@@ -158,26 +158,19 @@ export async function transferCart() {
   revalidateTag(cartCacheTag)
 }
 
-export const addCustomerAddress = async (
-  currentState: Record<string, unknown>,
-  formData: FormData
-): Promise<any> => {
-  const isDefaultBilling = (currentState.isDefaultBilling as boolean) || false
-  const isDefaultShipping = (currentState.isDefaultShipping as boolean) || false
-
+export const addCustomerAddress = async (formData: FormData): Promise<any> => {
   const address = {
+    address_name: formData.get("address_name") as string,
     first_name: formData.get("first_name") as string,
     last_name: formData.get("last_name") as string,
     company: formData.get("company") as string,
-    address_1: formData.get("address_1") as string,
-    address_2: formData.get("address_2") as string,
+    address_1: formData.get("address") as string,
     city: formData.get("city") as string,
     postal_code: formData.get("postal_code") as string,
-    province: formData.get("province") as string,
     country_code: formData.get("country_code") as string,
     phone: formData.get("phone") as string,
-    is_default_billing: isDefaultBilling,
-    is_default_shipping: isDefaultShipping,
+    is_default_billing: Boolean(formData.get("isDefaultBilling")),
+    is_default_shipping: Boolean(formData.get("isDefaultShipping")),
   }
 
   const headers = {

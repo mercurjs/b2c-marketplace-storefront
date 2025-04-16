@@ -11,17 +11,13 @@ const navigationItems = [
     label: "Addresses",
     href: "/user/addresses",
   },
-  {
-    label: "Reviews",
-    href: "/user/reviews",
-  },
 ]
 
 export const UserNavigation = () => {
   const path = usePathname()
 
   return (
-    <Card>
+    <Card className="h-min">
       {navigationItems.map((item) => (
         <NavigationItem
           key={item.label}
@@ -32,7 +28,7 @@ export const UserNavigation = () => {
         </NavigationItem>
       ))}
       <Divider className="my-2" />
-      <LogoutButton />
+      <LogoutButton className="w-full text-left" />
     </Card>
   )
 }
