@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 export const addressSchema = z.object({
+  addressId: z.string().optional(),
   addressName: z.string().nonempty("Address name is required"),
   firstName: z.string().nonempty("First name is required"),
   lastName: z.string().nonempty("Last name is required"),

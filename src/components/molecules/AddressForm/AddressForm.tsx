@@ -10,15 +10,23 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { addressSchema, AddressFormData } from "./schema"
 import { LabeledInput } from "@/components/cells"
 import { Button } from "@/components/atoms"
-import { addCustomerAddress } from "@/lib/data/customer"
+import { addCustomerAddress, updateCustomerAddress } from "@/lib/data/customer"
 import { HttpTypes } from "@medusajs/types"
+import CountrySelect from "@/components/cells/CountrySelect/CountrySelect"
+import { useState } from "react"
 
 interface Props {
   defaultValues?: AddressFormData
+
   regions: HttpTypes.StoreRegion[]
+  handleClose?: () => void
 }
 
-export const AddressForm: React.FC<Props> = ({ defaultValues, ...props }) => {
+export const AddressForm: React.FC<Props> = ({
+  defaultValues,
+
+  ...props
+}) => {
   const methods = useForm<AddressFormData>({
     resolver: zodResolver(addressSchema),
     defaultValues: defaultValues || {
@@ -43,32 +51,44 @@ export const AddressForm: React.FC<Props> = ({ defaultValues, ...props }) => {
   )
 }
 
-const Form: React.FC<Props> = ({ regions }) => {
+const Form: React.FC<Props> = ({ regions, handleClose }) => {
+  const [error, setError] = useState<string>()
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useFormContext()
 
-  const countries = regions.flatMap((region) => region.countries)
+  const region = {
+    countries: regions.flatMap((region) => region.countries),
+  }
 
   const submit = async (data: FieldValues) => {
     const formData = new FormData()
+    formData.append("addressId", data.addressId || "")
     formData.append("address_name", data.addressName)
     formData.append("first_name", data.firstName)
     formData.append("last_name", data.lastName)
-    formData.append("address", data.address)
+    formData.append("address_1", data.address)
+    formData.append("address_2", "")
+    formData.append("province", "")
     formData.append("city", data.city)
     formData.append("country_code", data.countryCode)
     formData.append("postal_code", data.postalCode)
     formData.append("company", data.company)
     formData.append("phone", data.phone)
 
-    await addCustomerAddress(formData)
+    const res = data.addressId
+      ? await updateCustomerAddress(formData)
+      : await addCustomerAddress(formData)
 
-    // TODO - revalidate customer's addresses after submit
-    // TODO - close modal after submit
-    // TODO - show success message / handle error
+    if (!res.success) {
+      setError(res.error)
+      return
+    }
+
+    setError("")
+    handleClose && handleClose()
   }
 
   return (
@@ -78,7 +98,7 @@ const Form: React.FC<Props> = ({ regions }) => {
           <LabeledInput
             label="Address name"
             placeholder="Type address name"
-            className="md:col-span-2"
+            className="col-span-2"
             error={errors.firstName as FieldError}
             {...register("addressName")}
           />
@@ -112,13 +132,18 @@ const Form: React.FC<Props> = ({ regions }) => {
             error={errors.city as FieldError}
             {...register("city")}
           />
-          {/* TODO - change to select input */}
-          <LabeledInput
-            label="Country"
-            placeholder="Type country"
-            error={errors.countryCode as FieldError}
-            {...register("countryCode")}
-          />
+          <div>
+            <CountrySelect
+              region={region as HttpTypes.StoreRegion}
+              {...register("countryCode")}
+              className="h-12"
+            />
+            {errors.countryCode && (
+              <p className="label-sm text-negative">
+                {(errors.countryCode as FieldError).message}
+              </p>
+            )}
+          </div>
           <LabeledInput
             label="Postal code"
             placeholder="Type postal code"
@@ -131,8 +156,8 @@ const Form: React.FC<Props> = ({ regions }) => {
             error={errors.phone as FieldError}
             {...register("phone")}
           />
-          {/* TODO - checkboxes */}
         </div>
+        {error && <p className="label-md text-negative">{error}</p>}
         <Button className="w-full ">Save address</Button>
       </div>
     </form>
