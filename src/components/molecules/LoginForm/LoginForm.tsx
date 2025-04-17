@@ -79,7 +79,7 @@ const Form = () => {
             Log in
           </Button>
           <p className="text-center label-md">
-            Don't have an account yet?{" "}
+            Don&apos;t have an account yet?{" "}
             <Link href="/user/register" className="underline">
               Sign up!
             </Link>

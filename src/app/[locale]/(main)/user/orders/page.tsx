@@ -25,8 +25,8 @@ export default async function UserPage() {
             <div className="text-center">
               <h3 className="heading-lg text-primary uppercase">No orders</h3>
               <p className="text-lg text-secondary mt-2">
-                You haven't placed any order yet. Once you place an order, it
-                will appear here.
+                You haven&apos;t placed any order yet. Once you place an order,
+                it will appear here.
               </p>
             </div>
           ) : (
