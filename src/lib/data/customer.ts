@@ -1,6 +1,7 @@
 "use server"
 
-import { sdk } from "@/lib/config"
+import medusaError from "../helpers/medusa-error"
+import { sdk } from "../config"
 import { HttpTypes } from "@medusajs/types"
 import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
@@ -50,7 +51,7 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
   const updateRes = await sdk.store.customer
     .update(body, {}, headers)
     .then(({ customer }) => customer)
-    .catch(() => null)
+    .catch(medusaError)
 
   const cacheTag = await getCacheTag("customers")
   revalidateTag(cacheTag)
@@ -58,7 +59,7 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
   return updateRes
 }
 
-export async function signup(_currentState: unknown, formData: FormData) {
+export async function signup(formData: FormData) {
   const password = formData.get("password") as string
   const customerForm = {
     email: formData.get("email") as string,
@@ -103,7 +104,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
   }
 }
 
-export async function login(_currentState: unknown, formData: FormData) {
+export async function login(formData: FormData) {
   const email = formData.get("email") as string
   const password = formData.get("password") as string
 
@@ -126,7 +127,7 @@ export async function login(_currentState: unknown, formData: FormData) {
   }
 }
 
-export async function signout(countryCode: string) {
+export async function signout() {
   await sdk.auth.logout()
 
   await removeAuthToken()
@@ -138,8 +139,7 @@ export async function signout(countryCode: string) {
 
   const cartCacheTag = await getCacheTag("carts")
   revalidateTag(cartCacheTag)
-
-  redirect(`/${countryCode}/account`)
+  redirect(`/`)
 }
 
 export async function transferCart() {
@@ -157,26 +157,19 @@ export async function transferCart() {
   revalidateTag(cartCacheTag)
 }
 
-export const addCustomerAddress = async (
-  currentState: Record<string, unknown>,
-  formData: FormData
-): Promise<any> => {
-  const isDefaultBilling = (currentState.isDefaultBilling as boolean) || false
-  const isDefaultShipping = (currentState.isDefaultShipping as boolean) || false
-
+export const addCustomerAddress = async (formData: FormData): Promise<any> => {
   const address = {
+    address_name: formData.get("address_name") as string,
     first_name: formData.get("first_name") as string,
     last_name: formData.get("last_name") as string,
     company: formData.get("company") as string,
-    address_1: formData.get("address_1") as string,
-    address_2: formData.get("address_2") as string,
+    address_1: formData.get("address") as string,
     city: formData.get("city") as string,
     postal_code: formData.get("postal_code") as string,
-    province: formData.get("province") as string,
     country_code: formData.get("country_code") as string,
     phone: formData.get("phone") as string,
-    is_default_billing: isDefaultBilling,
-    is_default_shipping: isDefaultShipping,
+    is_default_billing: Boolean(formData.get("isDefaultBilling")),
+    is_default_shipping: Boolean(formData.get("isDefaultShipping")),
   }
 
   const headers = {

@@ -22,9 +22,10 @@ export const CartAddressSection = ({
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
-
+  
   const isOpen =
     searchParams.get("step") === "address" || !cart?.shipping_address
+
 
   const { state: sameAsBilling, toggle: toggleSameAsBilling } = useToggleState(
     cart?.shipping_address && cart?.billing_address

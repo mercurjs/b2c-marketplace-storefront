@@ -8,13 +8,16 @@ import {
   Navbar,
 } from "@/components/cells"
 import { Link } from "@/i18n/routing"
-import { HeartIcon, ProfileIcon } from "@/icons"
+import { HeartIcon } from "@/icons"
 import { listCategories } from "@/lib/data/categories"
 import { PARENT_CATEGORIES } from "@/const"
 import { retrieveCart } from "@/lib/data/cart"
+import { UserDropdown } from "@/components/cells/UserDropdown/UserDropdown"
+import { retrieveCustomer } from "@/lib/data/customer"
 
 export const Header = async () => {
   const cart = await retrieveCart().catch(() => null)
+  const user = await retrieveCustomer()
 
   const { categories, parentCategories } = (await listCategories({
     headingCategories: PARENT_CATEGORIES,
@@ -45,9 +48,7 @@ export const Header = async () => {
           </Link>
         </div>
         <div className="flex items-center justify-end gap-2 lg:gap-4 w-full lg:w-1/3 py-2">
-          <Link href="/user">
-            <ProfileIcon size={20} />
-          </Link>
+          <UserDropdown user={user} />
           <Link href="/wishlist">
             <HeartIcon size={20} />
           </Link>

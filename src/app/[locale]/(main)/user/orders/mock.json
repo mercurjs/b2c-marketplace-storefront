@@ -1,0 +1,422 @@
+{
+  "order": {
+    "id": "order_01JQRFBE8D3SNQX7TRG2WQSQBD",
+    "display_id": 1,
+    "status": "pending",
+    "email": null,
+    "currency_code": "eur",
+    "version": 2,
+    "summary": {
+      "paid_total": 2340,
+      "raw_paid_total": {
+        "value": "2340",
+        "precision": 20
+      },
+      "refunded_total": 0,
+      "accounting_total": 2340,
+      "credit_line_total": 0,
+      "transaction_total": 2340,
+      "pending_difference": 0,
+      "raw_refunded_total": {
+        "value": "0",
+        "precision": 20
+      },
+      "current_order_total": 2340,
+      "original_order_total": 243,
+      "raw_accounting_total": {
+        "value": "2340",
+        "precision": 20
+      },
+      "raw_credit_line_total": {
+        "value": "0",
+        "precision": 20
+      },
+      "raw_transaction_total": {
+        "value": "2340",
+        "precision": 20
+      },
+      "raw_pending_difference": {
+        "value": "0",
+        "precision": 20
+      },
+      "raw_current_order_total": {
+        "value": "2340",
+        "precision": 20
+      },
+      "raw_original_order_total": {
+        "value": "243",
+        "precision": 20
+      }
+    },
+    "metadata": null,
+    "created_at": "2025-04-01T10:46:30.419Z",
+    "updated_at": "2025-04-04T20:46:34.064Z",
+    "region_id": "reg_01JQRDK2J2W6ZXNWVJWCFJ2EKF",
+    "total": 2340,
+    "subtotal": 2340,
+    "tax_total": 0,
+    "discount_total": 0,
+    "discount_tax_total": 0,
+    "original_total": 2340,
+    "original_tax_total": 0,
+    "item_total": 2330,
+    "item_subtotal": 2330,
+    "item_tax_total": 0,
+    "original_item_total": 2330,
+    "original_item_subtotal": 2330,
+    "original_item_tax_total": 0,
+    "shipping_total": 10,
+    "shipping_subtotal": 10,
+    "shipping_tax_total": 0,
+    "original_shipping_tax_total": 0,
+    "original_shipping_subtotal": 10,
+    "original_shipping_total": 10,
+    "items": [
+      {
+        "id": "ordli_01JQRFBE8FTFMACASHWD5FMRMA",
+        "title": "Yellow",
+        "subtitle": "Nike",
+        "thumbnail": "http://localhost:3000/_next/image?url=https%3A%2F%2Fmercur-connect.s3.eu-central-1.amazonaws.com%2FCLASSIC-CUPSOLE-1%20-01JNNG4GPVF1TQ8E89STNCB8H8.png&w=1920&q=75",
+        "variant_id": "variant_01JQRARFF7C5ESM4BSWYR56WRD",
+        "product_id": "prod_01JQRARF00ZV47QJK2VAA18TGK",
+        "product_title": "Nike",
+        "product_description": "",
+        "product_subtitle": "",
+        "product_type": null,
+        "product_type_id": null,
+        "product_collection": null,
+        "product_handle": "nike",
+        "variant_sku": "123",
+        "variant_barcode": null,
+        "variant_title": "Yellow",
+        "variant_option_values": null,
+        "requires_shipping": true,
+        "is_giftcard": false,
+        "is_discountable": true,
+        "is_tax_inclusive": false,
+        "is_custom_price": false,
+        "metadata": {},
+        "raw_compare_at_unit_price": null,
+        "raw_unit_price": {
+          "value": "233",
+          "precision": 20
+        },
+        "created_at": "2025-04-01T10:46:30.419Z",
+        "updated_at": "2025-04-01T10:46:30.419Z",
+        "deleted_at": null,
+        "tax_lines": [],
+        "adjustments": [],
+        "compare_at_unit_price": null,
+        "unit_price": 233,
+        "quantity": 10,
+        "raw_quantity": {
+          "value": "10",
+          "precision": 20
+        },
+        "detail": {
+          "id": "orditem_01JR18WB2YYGWYHNFRJVTHD7NS",
+          "version": 2,
+          "metadata": null,
+          "order_id": "order_01JQRFBE8D3SNQX7TRG2WQSQBD",
+          "raw_unit_price": {
+            "value": "233",
+            "precision": 20
+          },
+          "raw_compare_at_unit_price": null,
+          "raw_quantity": {
+            "value": "10",
+            "precision": 20
+          },
+          "raw_fulfilled_quantity": {
+            "value": "0",
+            "precision": 20
+          },
+          "raw_delivered_quantity": {
+            "value": "0",
+            "precision": 20
+          },
+          "raw_shipped_quantity": {
+            "value": "0",
+            "precision": 20
+          },
+          "raw_return_requested_quantity": {
+            "value": "0",
+            "precision": 20
+          },
+          "raw_return_received_quantity": {
+            "value": "0",
+            "precision": 20
+          },
+          "raw_return_dismissed_quantity": {
+            "value": "0",
+            "precision": 20
+          },
+          "raw_written_off_quantity": {
+            "value": "0",
+            "precision": 20
+          },
+          "created_at": "2025-04-04T20:46:34.082Z",
+          "updated_at": "2025-04-04T20:46:34.082Z",
+          "deleted_at": null,
+          "item_id": "ordli_01JQRFBE8FTFMACASHWD5FMRMA",
+          "unit_price": 233,
+          "compare_at_unit_price": null,
+          "quantity": 10,
+          "fulfilled_quantity": 0,
+          "delivered_quantity": 0,
+          "shipped_quantity": 0,
+          "return_requested_quantity": 0,
+          "return_received_quantity": 0,
+          "return_dismissed_quantity": 0,
+          "written_off_quantity": 0
+        },
+        "subtotal": 2330,
+        "total": 2330,
+        "original_total": 2330,
+        "discount_total": 0,
+        "discount_subtotal": 0,
+        "discount_tax_total": 0,
+        "tax_total": 0,
+        "original_tax_total": 0,
+        "refundable_total_per_unit": 233,
+        "refundable_total": 2330,
+        "fulfilled_total": 0,
+        "shipped_total": 0,
+        "return_requested_total": 0,
+        "return_received_total": 0,
+        "return_dismissed_total": 0,
+        "write_off_total": 0,
+        "raw_subtotal": {
+          "value": "2330",
+          "precision": 20
+        },
+        "raw_total": {
+          "value": "2330",
+          "precision": 20
+        },
+        "raw_original_total": {
+          "value": "2330",
+          "precision": 20
+        },
+        "raw_discount_total": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_discount_subtotal": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_discount_tax_total": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_tax_total": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_original_tax_total": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_refundable_total_per_unit": {
+          "value": "233",
+          "precision": 20
+        },
+        "raw_refundable_total": {
+          "value": "2330",
+          "precision": 20
+        },
+        "raw_fulfilled_total": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_shipped_total": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_return_requested_total": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_return_received_total": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_return_dismissed_total": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_write_off_total": {
+          "value": "0",
+          "precision": 20
+        },
+        "variant": {
+          "id": "variant_01JQRARFF7C5ESM4BSWYR56WRD",
+          "title": "White",
+          "sku": "123",
+          "barcode": null,
+          "ean": null,
+          "upc": null,
+          "allow_backorder": false,
+          "manage_inventory": true,
+          "hs_code": null,
+          "origin_country": null,
+          "mid_code": null,
+          "material": null,
+          "weight": null,
+          "length": null,
+          "height": null,
+          "width": null,
+          "metadata": null,
+          "variant_rank": 0,
+          "product_id": "prod_01JQRARF00ZV47QJK2VAA18TGK",
+          "product": {
+            "id": "prod_01JQRARF00ZV47QJK2VAA18TGK",
+            "title": "AIR FORCE 1 LUXE UNISEX Sneakers",
+            "handle": "air-force-1-luxe-unisex-sneakers",
+            "subtitle": " foam midsole with Air-Sole unit",
+            "description": "The iconic Air Force 1 with premium materials and enhanced comfort. Features a full-grain leather upper",
+            "is_giftcard": false,
+            "status": "published",
+            "thumbnail": "http://localhost:3000/_next/image?url=https%3A%2F%2Fmercur-connect.s3.eu-central-1.amazonaws.com%2FCLASSIC-CUPSOLE-1%20-01JNNG4GPVF1TQ8E89STNCB8H8.png&w=1920&q=75",
+            "weight": null,
+            "length": null,
+            "height": null,
+            "width": null,
+            "origin_country": "",
+            "hs_code": "",
+            "mid_code": "",
+            "material": null,
+            "discountable": true,
+            "external_id": null,
+            "metadata": null,
+            "type_id": null,
+            "type": null,
+            "collection_id": null,
+            "collection": null,
+            "created_at": "2025-04-01T09:26:14.281Z",
+            "updated_at": "2025-04-01T09:26:14.281Z",
+            "deleted_at": null
+          },
+          "created_at": "2025-04-01T09:26:14.760Z",
+          "updated_at": "2025-04-01T09:26:14.760Z",
+          "deleted_at": null
+        }
+      }
+    ],
+    "shipping_address": {
+      "id": "caaddr_01JQRFBAV3KETDVBFAMQPAYF14",
+      "customer_id": null,
+      "company": null,
+      "first_name": "Ernest",
+      "last_name": "Rutkowski",
+      "address_1": "rondo Bąk 24c",
+      "address_2": "m. 550",
+      "city": "Sławków",
+      "country_code": "pl",
+      "province": "mazowieckie",
+      "postal_code": "99-089",
+      "phone": null,
+      "metadata": null,
+      "created_at": "2025-04-01T10:46:26.917Z",
+      "updated_at": "2025-04-01T10:46:26.917Z",
+      "deleted_at": null
+    },
+    "billing_address": {
+      "id": "caaddr_01JQRFBAV4S40V7QGTKMBJWKB9",
+      "customer_id": null,
+      "company": null,
+      "first_name": "Ernest",
+      "last_name": "Rutkowski",
+      "address_1": "rondo Bąk 24c",
+      "address_2": "m. 550",
+      "city": "Sławków",
+      "country_code": "pl",
+      "province": "mazowieckie",
+      "postal_code": "99-089",
+      "phone": null,
+      "metadata": null,
+      "created_at": "2025-04-01T10:46:26.917Z",
+      "updated_at": "2025-04-01T10:46:26.917Z",
+      "deleted_at": null
+    },
+    "shipping_methods": [
+      {
+        "id": "ordsm_01JQRFBE8CY5EZ0KD7PJHSP2GT",
+        "name": "Default",
+        "description": null,
+        "is_tax_inclusive": false,
+        "is_custom_amount": false,
+        "shipping_option_id": "so_01JQRE9GB9S5AVK0EXCTJGE41S",
+        "data": {},
+        "metadata": null,
+        "raw_amount": {
+          "value": "10",
+          "precision": 20
+        },
+        "created_at": "2025-04-01T10:46:30.420Z",
+        "updated_at": "2025-04-01T10:46:30.420Z",
+        "deleted_at": null,
+        "tax_lines": [],
+        "adjustments": [],
+        "amount": 10,
+        "order_id": "order_01JQRFBE8D3SNQX7TRG2WQSQBD",
+        "detail": {
+          "id": "ordspmv_01JR18WB3HRD3H4R5T5YM4HNFZ",
+          "version": 2,
+          "order_id": "order_01JQRFBE8D3SNQX7TRG2WQSQBD",
+          "return_id": null,
+          "exchange_id": null,
+          "claim_id": null,
+          "created_at": "2025-04-01T10:46:30.420Z",
+          "updated_at": "2025-04-01T10:46:30.420Z",
+          "deleted_at": null,
+          "shipping_method_id": "ordsm_01JQRFBE8CY5EZ0KD7PJHSP2GT"
+        },
+        "subtotal": 10,
+        "total": 10,
+        "original_total": 10,
+        "discount_total": 0,
+        "discount_subtotal": 0,
+        "discount_tax_total": 0,
+        "tax_total": 0,
+        "original_tax_total": 0,
+        "raw_subtotal": {
+          "value": "10",
+          "precision": 20
+        },
+        "raw_total": {
+          "value": "10",
+          "precision": 20
+        },
+        "raw_original_total": {
+          "value": "10",
+          "precision": 20
+        },
+        "raw_discount_total": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_discount_subtotal": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_discount_tax_total": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_tax_total": {
+          "value": "0",
+          "precision": 20
+        },
+        "raw_original_tax_total": {
+          "value": "0",
+          "precision": 20
+        }
+      }
+    ],
+    "fulfillments": [],
+    "payment_status": "captured",
+    "fulfillment_status": "not_fulfilled"
+  }
+}

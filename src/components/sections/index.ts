@@ -12,6 +12,7 @@ import { WishlistPage } from "./WishlistPage/WishlistPage"
 import { ProductDetailsPage } from "./ProductDetailsPage/ProductDetailsPage"
 import { AlgoliaProductsListing } from "./ProductListing/AlgoliaProductsListing"
 import { AlgoliaTrendingListings } from "./HomeProductSection/AlgoliaTrendingListings"
+import { OrdersPagination } from "../organisms/OrdersPagination/OrdersPagination"
 
 export {
   Hero,
@@ -28,4 +29,5 @@ export {
   ProductDetailsPage,
   AlgoliaProductsListing,
   AlgoliaTrendingListings,
+  OrdersPagination,
 }
