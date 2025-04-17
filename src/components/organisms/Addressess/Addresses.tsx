@@ -22,8 +22,6 @@ export const Addresses = ({
     null
   )
 
-  console.log(user.addresses)
-
   const countries = regions.flatMap((region) => region.countries)
 
   const handleEdit = (addressId: string) => {
