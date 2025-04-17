@@ -27,6 +27,10 @@ const nextConfig: NextConfig = {
         hostname: "api-sandbox.mercurjs.com",
         pathname: "/static/**",
       },
+      {
+        protocol: "https",
+        hostname: "i.imgur.com",
+      },
     ],
   },
 }

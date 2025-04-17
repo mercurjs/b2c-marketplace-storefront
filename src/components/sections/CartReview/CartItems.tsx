@@ -1,8 +1,4 @@
-import {
-  CartItemsFooter,
-  CartItemsHeader,
-  CartItemsProducts,
-} from "@/components/cells"
+import { CartItemsHeader, CartItemsProducts } from "@/components/cells"
 import { HttpTypes } from "@medusajs/types"
 
 export const CartItems = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {

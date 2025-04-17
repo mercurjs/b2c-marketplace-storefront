@@ -15,7 +15,7 @@ export const ProductListing = async ({
   category_id?: string
   seller_id?: string
 }) => {
-  const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "gb"
+  const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "pl"
 
   const { response } = await listProductsWithSort({
     seller_id,
@@ -26,6 +26,8 @@ export const ProductListing = async ({
       limit: PRODUCT_LIMIT,
     },
   })
+
+  console.log({ response, seller_id, category_id })
 
   const { products } = await response
   const count = products.length

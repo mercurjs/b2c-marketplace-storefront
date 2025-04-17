@@ -83,7 +83,7 @@ NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=
 // Your public url
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 // Default region
-NEXT_PUBLIC_DEFAULT_REGION=gb
+NEXT_PUBLIC_DEFAULT_REGION=pl
 // Stripe payment key. It can be random string, don't leave it empty.
 NEXT_PUBLIC_STRIPE_KEY=supersecret
 // Backend's cookie secret

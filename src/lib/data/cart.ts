@@ -15,24 +15,6 @@ import {
 } from "./cookies"
 import { getRegion } from "./regions"
 
-export async function quickOrder({
-  region_id,
-  items,
-}: {
-  region_id?: string
-  items: any
-}) {
-  await fetch(`${process.env.MEDUSA_BACKEND_URL}/store/quick-order`, {
-    headers: {
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY!,
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify({ region_id, items }),
-  })
-
-  await removeCartId()
-}
 /**
  * Retrieves a cart by its ID. If no ID is provided, it will use the cart ID from the cookies.
  * @param cartId - optional - The ID of the cart to retrieve.
@@ -342,9 +324,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
     return e.message
   }
 
-  redirect(
-    `/${formData.get("shipping_address.country_code")}/checkout?step=delivery`
-  )
+  redirect(`/checkout?step=delivery`)
 }
 
 /**
@@ -372,12 +352,12 @@ export async function placeOrder(cartId?: string) {
     })
     .catch(medusaError)
 
-  if (cartRes?.type === "order") {
+  if (cartRes?.order_set) {
     removeCartId()
-    redirect(`/order/${cartRes?.order.id}/confirmed`)
+    redirect(`/order/${cartRes?.order_set.orders[0].id}/confirmed`)
   }
 
-  return cartRes.cart
+  return cartRes.order_set.cart
 }
 
 /**

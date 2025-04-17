@@ -1,8 +1,6 @@
 "use client"
 
 import { convertToLocale } from "@/lib/helpers/money"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
 
 export const CartSummary = ({
   item_total,
@@ -15,10 +13,6 @@ export const CartSummary = ({
   total: number
   currency_code: string
 }) => {
-  const router = useRouter()
-
-  const [pending, setPending] = useState(false)
-
   return (
     <div>
       <div className="space-y-4 label-md text-secondary mb-4">

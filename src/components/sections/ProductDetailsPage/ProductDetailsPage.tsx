@@ -14,6 +14,7 @@ export const ProductDetailsPage = async ({
     queryParams: { handle },
   }).then(({ response }) => response.products[0])
 
+  console.log(prod, locale, handle)
   if (!prod) return null
 
   return (

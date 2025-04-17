@@ -3,8 +3,8 @@
 import { sdk } from "../config"
 import { sortProducts } from "@/lib/helpers/sort-products"
 import { HttpTypes } from "@medusajs/types"
-import { SingleProductSeller, SortOptions } from "@/types/product"
-import { getAuthHeaders, getCacheOptions } from "./cookies"
+import { SortOptions } from "@/types/product"
+import { getAuthHeaders } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
 
 export const listProducts = async ({

@@ -1,7 +1,6 @@
 import { CartAddressSection } from "@/components/sections/CartAddressSection/CartAddressSection"
 import CartPaymentSection from "@/components/sections/CartPaymentSection/CartPaymentSection"
 import CartReview from "@/components/sections/CartReview/CartReview"
-import PaymentButton from "@/components/sections/CartReview/PaymentButton"
 
 import CartShippingMethodsSection from "@/components/sections/CartShippingMethodsSection/CartShippingMethodsSection"
 import { retrieveCart } from "@/lib/data/cart"
