@@ -2,7 +2,7 @@
 
 import { sdk } from "../config"
 import medusaError from "@/lib/helpers/medusa-error"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes, StoreCompleteCartResponse } from "@medusajs/types"
 import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
 import {
@@ -343,7 +343,7 @@ export async function placeOrder(cartId?: string) {
     ...(await getAuthHeaders()),
   }
 
-  const cartRes = await sdk.store.cart
+  const cartRes: any = await sdk.store.cart
     .complete(id, {}, headers)
     .then(async (cartRes) => {
       const cartCacheTag = await getCacheTag("carts")
