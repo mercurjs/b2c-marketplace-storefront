@@ -10,11 +10,13 @@ import { format } from "date-fns"
 import { OrderAddresses } from "@/components/cells"
 
 export default async function UserPage({
-  params: { id },
+  params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
   const user = await retrieveCustomer()
+
+  const { id } = await params
 
   // TODO - get order from API
   const orders = mock
