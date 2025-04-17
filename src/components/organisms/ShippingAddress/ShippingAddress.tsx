@@ -181,15 +181,6 @@ const ShippingAddress = ({
           data-testid="shipping-province-input"
         />
       </div>
-      {/* <div className="my-8">
-        <Checkbox
-          label="Billing address same as shipping address"
-          name="same_as_billing"
-          checked={checked}
-          onChange={onChange}
-          data-testid="billing-address-checkbox"
-        />
-      </div> */}
       <div className="grid grid-cols-2 gap-4 mb-4">
         <Input
           label="Email"

@@ -1,10 +1,10 @@
 import { defineRouting } from "next-intl/routing"
 import { createNavigation } from "next-intl/navigation"
 
-const locale = process.env.NEXT_PUBLIC_DEFAULT_REGION || "pl"
+const region = process.env.NEXT_PUBLIC_DEFAULT_REGION || "pl"
 export const routing = defineRouting({
-  locales: [locale, "gb"],
-  defaultLocale: locale,
+  locales: [region, "gb"],
+  defaultLocale: region,
   localeDetection: false,
   alternateLinks: false,
   localePrefix: "never", // Comment this line to show locale in pathname

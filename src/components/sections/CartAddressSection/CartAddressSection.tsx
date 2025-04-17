@@ -5,7 +5,7 @@ import { setAddresses } from "@/lib/data/cart"
 import compareAddresses from "@/lib/helpers/compare-addresses"
 import { HttpTypes } from "@medusajs/types"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useActionState } from "react"
+import { useActionState, useEffect } from "react"
 import { Button } from "@/components/atoms"
 import ErrorMessage from "@/components/molecules/ErrorMessage/ErrorMessage"
 import Spinner from "@/icons/spinner"
@@ -22,16 +22,39 @@ export const CartAddressSection = ({
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
-  
-  const isOpen =
-    searchParams.get("step") === "address" || !cart?.shipping_address
 
+  const isAddress = Boolean(
+    cart?.shipping_address &&
+      cart?.shipping_address.first_name &&
+      cart?.shipping_address.last_name &&
+      cart?.shipping_address.address_1 &&
+      cart?.shipping_address.city &&
+      cart?.shipping_address.postal_code &&
+      cart?.shipping_address.country_code
+  )
+  const isOpen = searchParams.get("step") === "address" || !isAddress
 
   const { state: sameAsBilling, toggle: toggleSameAsBilling } = useToggleState(
     cart?.shipping_address && cart?.billing_address
       ? compareAddresses(cart?.shipping_address, cart?.billing_address)
       : true
   )
+
+  console.log(
+    isAddress,
+    cart?.shipping_address,
+    cart?.shipping_address?.first_name,
+    cart?.shipping_address?.last_name,
+    cart?.shipping_address?.address_1,
+    cart?.shipping_address?.city,
+    cart?.shipping_address?.postal_code,
+    cart?.shipping_address?.country_code
+  )
+  useEffect(() => {
+    if (!isAddress) {
+      router.push(pathname + "?step=address")
+    }
+  }, [isAddress])
 
   const handleEdit = () => {
     router.push(pathname + "?step=address")
@@ -48,7 +71,7 @@ export const CartAddressSection = ({
         >
           {!isOpen && <CheckCircleSolid />} Shipping Address
         </Heading>
-        {!isOpen && cart?.shipping_address && (
+        {!isOpen && isAddress && (
           <Text>
             <Button onClick={handleEdit} variant="tonal">
               Edit
