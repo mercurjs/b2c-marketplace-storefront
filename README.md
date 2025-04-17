@@ -1,4 +1,5 @@
 ![B2C Storefront Cover](https://cdn.prod.website-files.com/6790aeffc4b432ccaf1b56e5/67a21bd27b4ac8b812c1d84f_B2C%20Storefront%20Cover.png)
+
 <div align="center">
   <h1> B2C Storefront
     <br> 
@@ -20,22 +21,25 @@ for <a href="https://github.com/mercurjs/mercur">Mercur</a> - Open Source Market
 </div>
 
 ## B2C Storefront for Marketplace [Under development]
-Customizable storefront designed for B2C with all elements including browsing and buying products across multiple vendors at once. 
+
+Customizable storefront designed for B2C with all elements including browsing and buying products across multiple vendors at once.
 
 Ready to go:
--   Home Page - <a href="https://b2c.mercurjs.com/">🛍️ Check demo </a>
+
+- Home Page - <a href="https://b2c.mercurjs.com/">🛍️ Check demo </a>
+- Listing
+- Product Page
+- Shopping Cart
+- Seller Page - Moved to external <a href="https://github.com/mercurjs/vendor-panel">VendorPanel</a>
 
 Work in progress:
--   Listing
--   Product Page
--   Shopping Cart
--   Seller Page
--   Wishlist
--   Selling Hub 
+
+- Wishlist
+- Selling Hub
 
 # Part of Mercur
 
-<a href="https://github.com/mercurjs/mercur">Mercur</a> is an open source marketplace platform that allows you to create high-quality experiences for shoppers and vendors while having the most popular Open Source commerce platform MedusaJS as a foundation. 
+<a href="https://github.com/mercurjs/mercur">Mercur</a> is an open source marketplace platform that allows you to create high-quality experiences for shoppers and vendors while having the most popular Open Source commerce platform MedusaJS as a foundation.
 
 Mercur is a platform to start, customize, manage, and scale your marketplace for every business model with a modern technology stack.
 
@@ -44,26 +48,33 @@ Mercur is a platform to start, customize, manage, and scale your marketplace for
 ## Quickstart
 
 ### Installation
+
 Clone the repository
 
 ```js
 git clone https://github.com/mercurjs/b2c-marketplace-storefront.git
 ```
+
 &nbsp;
 
 Go to directory
+
 ```js
 cd b2c-marketplace-storefront
 ```
+
 &nbsp;
 
 Install dependencies
+
 ```js
 npm install
 ```
+
 &nbsp;
 
 Make a .env.local file and copy the code below
+
 ```js
 // API URL
 MEDUSA_BACKEND_URL=http://localhost:9000
@@ -78,7 +89,7 @@ NEXT_PUBLIC_STRIPE_KEY=supersecret
 // Backend's cookie secret
 REVALIDATE_SECRET=supersecret
 // Your site name in metadata
-NEXT_PUBLIC_SITE_NAME="Fleek Marketplace" 
+NEXT_PUBLIC_SITE_NAME="Fleek Marketplace"
 // Your site description in metadata
 NEXT_PUBLIC_SITE_DESCRIPTION="Fleek Markeplace"
 // Algolia Application ID
@@ -86,9 +97,17 @@ NEXT_PUBLIC_ALGOLIA_ID=supersecret
 // Algolia Search API Key
 NEXT_PUBLIC_ALGOLIA_SEARCH_KEY=supersecret
 ```
+
 &nbsp;
 
 Start storefront
+
 ```js
 npm run dev
 ```
+
+&nbsp;
+
+### Guides
+
+<a href="https://www.algolia.com/doc/guides/security/api-keys/" target="_blank">How to get Aloglia Keys</a>

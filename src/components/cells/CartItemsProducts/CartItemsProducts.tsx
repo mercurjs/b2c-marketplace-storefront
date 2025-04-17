@@ -8,9 +8,11 @@ import { DeleteCartItemButton } from "@/components/molecules"
 export const CartItemsProducts = ({
   products,
   currency_code,
+  delete_item = true,
 }: {
   products: HttpTypes.StoreCartLineItem[]
   currency_code: string
+  delete_item?: boolean
 }) => {
   return (
     <div>
@@ -49,17 +51,16 @@ export const CartItemsProducts = ({
 
             <div className="w-full p-2">
               <div className="flex justify-between lg:mb-4">
-                <div className="w-[150px] md:w-[200px] lg:w-[300px] xl:w-[calc(100%-120px)]">
-                  <h4 className="label-md text-secondary">
-                    {/* {product.brand} */}
-                  </h4>
+                <div className="w-[150px] md:w-[200px] lg:w-[300px] xl:w-[calc(100%-120px)] mb-6">
                   <h3 className="heading-xs uppercase truncate">
                     {product.subtitle} {product.title}
                   </h3>
                 </div>
-                <div className="lg:flex">
-                  <DeleteCartItemButton id={product.id} />
-                </div>
+                {delete_item && (
+                  <div className="lg:flex">
+                    <DeleteCartItemButton id={product.id} />
+                  </div>
+                )}
               </div>
               <div className="lg:flex justify-between -mt-4 lg:mt-0">
                 <div className="label-md text-secondary">

@@ -1,7 +1,5 @@
 "use client"
 
-import { Button } from "@/components/atoms"
-import { quickOrder } from "@/lib/data/cart"
 import { convertToLocale } from "@/lib/helpers/money"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -11,37 +9,15 @@ export const CartSummary = ({
   shipping_total,
   total,
   currency_code,
-  cart_items,
-  region_id,
 }: {
   item_total: number
   shipping_total: number
   total: number
   currency_code: string
-  cart_items: any
-  region_id?: string
 }) => {
   const router = useRouter()
 
   const [pending, setPending] = useState(false)
-  const handleProceed = async () => {
-    setPending(true)
-
-    try {
-      const items = cart_items.map((item: any) => ({
-        variant_id: item.variant_id,
-        quantity: item.quantity,
-      }))
-
-      await quickOrder({ region_id, items })
-
-      router.push("/order-success")
-    } catch (error: any) {
-      console.log({ error })
-    }
-
-    setPending(false)
-  }
 
   return (
     <div>
@@ -74,13 +50,6 @@ export const CartSummary = ({
           </span>
         </div>
       </div>
-      <Button
-        className="w-full py-3 flex justify-center items-center"
-        onClick={() => handleProceed()}
-        loading={pending}
-      >
-        Proceed to checkout
-      </Button>
     </div>
   )
 }

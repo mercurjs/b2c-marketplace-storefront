@@ -7,6 +7,9 @@ import { generateCategoryMetadata } from "@/lib/helpers/seo"
 import { Breadcrumbs } from "@/components/atoms"
 import { AlgoliaProductsListing, ProductListing } from "@/components/sections"
 
+const ALGOLIA_ID = process.env.NEXT_PUBLIC_ALGOLIA_ID
+const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
+
 export async function generateMetadata({
   params,
 }: {
@@ -46,8 +49,11 @@ async function Category({
       <h1 className="heading-xl uppercase">{category.name}</h1>
 
       <Suspense fallback={<ProductListingSkeleton />}>
-        <AlgoliaProductsListing category_id={category.id} />
-        {/* <ProductListing category_id={category.id} /> */}
+        {!ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
+          <ProductListing category_id={category.id} />
+        ) : (
+          <AlgoliaProductsListing category_id={category.id} />
+        )}
       </Suspense>
     </main>
   )
