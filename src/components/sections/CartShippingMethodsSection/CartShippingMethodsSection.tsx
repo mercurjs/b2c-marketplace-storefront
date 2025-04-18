@@ -195,6 +195,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
               onClick={handleSubmit}
               variant="tonal"
               disabled={!cart.shipping_methods?.[0]}
+              // loading={isLoadingPrices}
             >
               Continue to payment
             </Button>
