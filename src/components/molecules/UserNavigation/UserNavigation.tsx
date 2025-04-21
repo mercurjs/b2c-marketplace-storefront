@@ -11,6 +11,10 @@ const navigationItems = [
     label: "Addresses",
     href: "/user/addresses",
   },
+  {
+    label: "Reviews",
+    href: "/user/reviews",
+  },
 ]
 
 export const UserNavigation = () => {
@@ -28,6 +32,12 @@ export const UserNavigation = () => {
         </NavigationItem>
       ))}
       <Divider className="my-2" />
+      <NavigationItem
+        href={"/user/settings"}
+        active={path === "/user/settings"}
+      >
+        Settings
+      </NavigationItem>
       <LogoutButton className="w-full text-left" />
     </Card>
   )
