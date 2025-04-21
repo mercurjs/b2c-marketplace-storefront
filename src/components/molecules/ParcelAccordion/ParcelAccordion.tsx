@@ -17,7 +17,7 @@ export const ParcelAccordion = ({
   defaultOpen = false,
 }: {
   orderId: string
-  createdAt: string
+  createdAt: string | Date
   total: number
   currency_code?: string
   items: any[]
@@ -66,7 +66,7 @@ export const ParcelAccordion = ({
           </h2>
         </div>
         <div className="col-span-1 flex justify-end items-center gap-4">
-          <Link href={`/user/orders/test`}>
+          <Link href={`/user/orders/${orderId}`}>
             <Button variant="tonal" onClick={(e) => e.stopPropagation()}>
               <span className="label-md text-primary">VIEW ORDER</span>
             </Button>

@@ -33,11 +33,7 @@ export const OrderProductListItem = ({
         </div>
         <div className="sm:col-span-2 flex flex-col justify-center">
           <p className="label-md text-secondary">
-            {`Color: `}
-            <span className="text-primary">{item?.variant?.title}</span>
-          </p>
-          <p className="label-md text-secondary">
-            {`Size: `}
+            {`Variant: `}
             <span className="text-primary">{item?.variant?.title}</span>
           </p>
         </div>

@@ -1,19 +1,16 @@
 import { LoginForm, ParcelAccordion } from "@/components/molecules"
 import { UserNavigation } from "@/components/molecules"
 import { retrieveCustomer } from "@/lib/data/customer"
-import mock from "./mock.json"
 import { OrdersPagination } from "@/components/sections"
 import { isEmpty } from "lodash"
+import { listOrders } from "@/lib/data/orders"
 
 export default async function UserPage() {
   const user = await retrieveCustomer()
 
-  // TODO - get orders from API
-  const orders = mock
-
-  const singleOrder = orders.order
-
   if (!user) return <LoginForm />
+
+  const orders = await listOrders()
 
   return (
     <main className="container">
@@ -32,13 +29,16 @@ export default async function UserPage() {
           ) : (
             <>
               <div className="w-full max-w-full">
-                <ParcelAccordion
-                  orderId={singleOrder.id}
-                  createdAt={singleOrder.created_at}
-                  total={singleOrder.total}
-                  items={singleOrder.items}
-                  currency_code={singleOrder.currency_code}
-                />
+                {orders.map((order) => (
+                  <ParcelAccordion
+                    key={order.id}
+                    orderId={order.id}
+                    createdAt={order.created_at}
+                    total={order.total}
+                    items={order.items || []}
+                    currency_code={order.currency_code}
+                  />
+                ))}
               </div>
               {/* TODO - pagination */}
               <OrdersPagination pages={1} />
