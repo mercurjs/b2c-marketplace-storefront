@@ -12,6 +12,7 @@ import { Textarea } from "./Textarea/Textarea"
 import { PaginationButton } from "./PaginationButton/PaginationButton"
 import { Card } from "./Card/Card"
 import { StarRating } from "./StarRating/StarRating"
+import { InteractiveStarRating } from "./InteractiveStarRating/InteractiveStarRating"
 import { Label } from "./Label/Label"
 import { TabsTrigger } from "./TabsTrigger/TabsTrigger"
 import { NavigationItem } from "./NavigationItem/NavigationItem"
@@ -32,6 +33,7 @@ export {
   PaginationButton,
   Card,
   StarRating,
+  InteractiveStarRating,
   Label,
   TabsTrigger,
   NavigationItem,

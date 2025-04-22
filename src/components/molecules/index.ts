@@ -30,6 +30,7 @@ import { RegisterForm } from "./RegisterForm/RegisterForm"
 import { UserNavigation } from "./UserNavigation/UserNavigation"
 import { ParcelAccordion } from "./ParcelAccordion/ParcelAccordion"
 import { AddressForm } from "./AddressForm/AddressForm"
+import { ReviewForm } from "./ReviewForm/ReviewForm"
 
 export {
   PrimeCategoryNavbar,
@@ -64,4 +65,5 @@ export {
   UserNavigation,
   ParcelAccordion,
   AddressForm,
+  ReviewForm,
 }

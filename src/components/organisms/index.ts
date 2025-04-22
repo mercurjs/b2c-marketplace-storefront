@@ -21,6 +21,8 @@ import { ProductGallery } from "./ProductGallery/ProductGallery"
 import { ProductDetails } from "./ProductDetails/ProductDetails"
 import { AlgoliaProductSidebar } from "./ProductSidebar/AlgoliaProductSidebar"
 import { Addresses } from "./Addressess/Addresses"
+import { ReviewsToWrite } from "./Reviews/ReviewsToWrite"
+import { ReviewsWritten } from "./Reviews/ReviewsWritten"
 
 export {
   ProductCard,
@@ -46,4 +48,6 @@ export {
   ProductDetails,
   AlgoliaProductSidebar,
   Addresses,
+  ReviewsToWrite,
+  ReviewsWritten,
 }
