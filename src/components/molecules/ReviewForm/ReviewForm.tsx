@@ -49,7 +49,7 @@ const Form: React.FC<Props> = ({ handleClose, sellerId }) => {
   const submit = async (data: FieldValues) => {
     const body = {
       rating: data.rating,
-      reference: "product",
+      reference: "seller",
       reference_id: sellerId,
       customer_note: data.opinion,
     }
