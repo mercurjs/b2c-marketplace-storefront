@@ -22,26 +22,24 @@ interface Props {
   handleClose?: () => void
 }
 
-export const AddressForm: React.FC<Props> = ({
-  defaultValues,
+export const emptyDefaultAddressValues = {
+  addressName: "",
+  firstName: "",
+  lastName: "",
+  address: "",
+  city: "",
+  countryCode: "",
+  postalCode: "",
+  company: "",
+  province: "",
+  phone: "",
+  metadata: {},
+}
 
-  ...props
-}) => {
+export const AddressForm: React.FC<Props> = ({ defaultValues, ...props }) => {
   const methods = useForm<AddressFormData>({
     resolver: zodResolver(addressSchema),
-    defaultValues: defaultValues || {
-      addressName: "",
-      firstName: "",
-      lastName: "",
-      address: "",
-      city: "",
-      countryCode: "",
-      postalCode: "",
-      company: "",
-      province: "",
-      phone: "",
-      metadata: {},
-    },
+    defaultValues: defaultValues || emptyDefaultAddressValues,
   })
 
   return (
@@ -71,7 +69,7 @@ const Form: React.FC<Props> = ({ regions, handleClose }) => {
     formData.append("last_name", data.lastName)
     formData.append("address_1", data.address)
     formData.append("address_2", "")
-    formData.append("province", "")
+    formData.append("province", data.province)
     formData.append("city", data.city)
     formData.append("country_code", data.countryCode)
     formData.append("postal_code", data.postalCode)
@@ -132,6 +130,18 @@ const Form: React.FC<Props> = ({ regions, handleClose }) => {
             error={errors.city as FieldError}
             {...register("city")}
           />
+          <LabeledInput
+            label="Postal code"
+            placeholder="Type postal code"
+            error={errors.postalCode as FieldError}
+            {...register("postalCode")}
+          />
+          <LabeledInput
+            label="State / Province"
+            placeholder="Type state / province"
+            error={errors.province as FieldError}
+            {...register("province")}
+          />
           <div>
             <CountrySelect
               region={region as HttpTypes.StoreRegion}
@@ -144,12 +154,7 @@ const Form: React.FC<Props> = ({ regions, handleClose }) => {
               </p>
             )}
           </div>
-          <LabeledInput
-            label="Postal code"
-            placeholder="Type postal code"
-            error={errors.postalCode as FieldError}
-            {...register("postalCode")}
-          />
+
           <LabeledInput
             label="Phone"
             placeholder="Type phone number"
