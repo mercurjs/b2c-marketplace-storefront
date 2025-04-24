@@ -1,9 +1,14 @@
-import { wishlistTabs } from "@/app/[locale]/(main)/wishlist/page"
 import { TabsContent, TabsList } from "@/components/molecules"
 import { Suspense } from "react"
 // import { ProductsList } from "../ProductsList/ProductsList"
 import { ProductsPagination } from "../ProductsPagination/ProductsPagination"
 // import { listProducts } from "@/lib/data/products"
+
+export const wishlistTabs = [
+  { label: "All", link: "/wishlist" },
+  { label: "Products", link: "/wishlist/products" },
+  { label: "Collections", link: "/wishlist/collections" },
+]
 
 export const WishlistTabs = async ({ tab }: { tab: string }) => {
   // const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "gb"

@@ -35,6 +35,7 @@ export const UserDropdown = ({
             <NavigationItem href="/user/orders">Orders</NavigationItem>
             <NavigationItem href="/user/addresses">Addresses</NavigationItem>
             <NavigationItem href="/user/reviews">Reviews</NavigationItem>
+            <NavigationItem href="/user/wishlist">Wishlist</NavigationItem>
             <Divider />
             <NavigationItem href="/user/settings">Settings</NavigationItem>
             <LogoutButton />
