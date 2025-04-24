@@ -42,7 +42,7 @@ export const ParcelAccordion = ({
   return (
     <>
       <div
-        className="grid grid-cols-2 sm:grid-cols-5 text-secondary border border-primary bg-component-secondary py-6 px-4 rounded-sm w-full  cursor-pointer"
+        className="grid grid-cols-2 sm:grid-cols-5 text-secondary border border-primary bg-component-secondary py-6 px-4 rounded-sm w-full cursor-pointer"
         onClick={openHandler}
       >
         <div className="sm:col-span-4 flex flex-col lg:flex-row lg:items-center justify-between lg:gap-4 sm:pr-10">

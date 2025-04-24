@@ -19,6 +19,10 @@ export const OrderAddresses = async ({ singleOrder }: { singleOrder: any }) => {
           {`${singleOrder.shipping_address.address_1}, ${
             singleOrder.shipping_address.postal_code
           } ${singleOrder.shipping_address.city}${
+            singleOrder.shipping_address.province
+              ? `, ${singleOrder.shipping_address.province}`
+              : ""
+          }${
             region
               ? `, ${region.name}`
               : `, ${singleOrder.shipping_address.country_code?.toUpperCase()}`
@@ -41,6 +45,10 @@ export const OrderAddresses = async ({ singleOrder }: { singleOrder: any }) => {
               {`${singleOrder.billing_address.address_1}, ${
                 singleOrder.billing_address.postal_code
               } ${singleOrder.billing_address.city}${
+                singleOrder.billing_address.province
+                  ? `, ${singleOrder.billing_address.province}`
+                  : ""
+              }${
                 region
                   ? `, ${region.name}`
                   : `, ${singleOrder.billing_address.country_code?.toUpperCase()}`

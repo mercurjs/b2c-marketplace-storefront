@@ -12,6 +12,8 @@ import Link from "next/link"
 import { LabeledInput } from "@/components/cells"
 import { registerFormSchema, RegisterFormData } from "./schema"
 import { signup } from "@/lib/data/customer"
+import { useState } from "react"
+import { cn } from "@/lib/utils"
 
 export const RegisterForm = () => {
   const methods = useForm<RegisterFormData>({
@@ -34,10 +36,11 @@ export const RegisterForm = () => {
 }
 
 const Form = () => {
+  const [error, setError] = useState()
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useFormContext()
 
   const submit = async (data: FieldValues) => {
@@ -48,7 +51,9 @@ const Form = () => {
     formData.append("last_name", data.lastName)
     formData.append("phone", data.phone)
 
-    await signup(formData)
+    const res = await signup(formData)
+
+    if (res && !res?.id) setError(res)
   }
 
   return (
@@ -96,7 +101,14 @@ const Form = () => {
             error={errors.phone as FieldError}
             {...register("phone")}
           />
-          <Button className="w-full">Register</Button>
+          {error && <p className="label-md text-negative">{error}</p>}
+          <Button
+            className="w-full flex justify-center"
+            disabled={isSubmitting}
+            loading={isSubmitting}
+          >
+            Register
+          </Button>
           <p className="text-center label-md">
             Already have an account?{" "}
             <Link href="/user" className="underline">

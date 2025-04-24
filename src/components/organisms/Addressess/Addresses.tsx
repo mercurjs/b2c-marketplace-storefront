@@ -1,6 +1,7 @@
 "use client"
 import { Button, Card } from "@/components/atoms"
 import { AddressForm, Modal } from "@/components/molecules"
+import { emptyDefaultAddressValues } from "@/components/molecules/AddressForm/AddressForm"
 import { AddressFormData } from "@/components/molecules/AddressForm/schema"
 import { deleteCustomerAddress } from "@/lib/data/customer"
 import { cn } from "@/lib/utils"
@@ -50,6 +51,7 @@ export const Addresses = ({
   }
 
   const handleAdd = () => {
+    setDefaultValues(emptyDefaultAddressValues)
     setDeleteAddress(null)
     setShowForm(true)
   }
@@ -96,7 +98,7 @@ export const Addresses = ({
                   <p className="label-md text-secondary">
                     {`${address.address_1}, ${address.postal_code} ${
                       address.city
-                    }${`, ${
+                    }${address.province ? `, ${address.province}` : ""}${`, ${
                       countries.find(
                         (country) =>
                           country && country.iso_2 === address.country_code
@@ -142,7 +144,7 @@ export const Addresses = ({
           <AddressForm
             regions={regions}
             handleClose={() => setShowForm(false)}
-            defaultValues={defaultValues || undefined}
+            defaultValues={defaultValues || emptyDefaultAddressValues}
           />
         </Modal>
       )}

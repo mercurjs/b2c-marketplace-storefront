@@ -34,7 +34,9 @@ export const UserDropdown = ({
             </div>
             <NavigationItem href="/user/orders">Orders</NavigationItem>
             <NavigationItem href="/user/addresses">Addresses</NavigationItem>
+            <NavigationItem href="/user/reviews">Reviews</NavigationItem>
             <Divider />
+            <NavigationItem href="/user/settings">Settings</NavigationItem>
             <LogoutButton />
           </div>
         ) : (
