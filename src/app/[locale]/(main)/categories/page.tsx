@@ -25,7 +25,7 @@ async function AllCategories() {
 
       <Suspense fallback={<ProductListingSkeleton />}>
         {!ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
-          <ProductListing />
+          <ProductListing showSidebar />
         ) : (
           <AlgoliaProductsListing />
         )}

@@ -11,9 +11,11 @@ import { listProductsWithSort } from "@/lib/data/products"
 export const ProductListing = async ({
   category_id,
   seller_id,
+  showSidebar = false,
 }: {
   category_id?: string
   seller_id?: string
+  showSidebar?: boolean
 }) => {
   const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "pl"
 
@@ -27,8 +29,6 @@ export const ProductListing = async ({
     },
   })
 
-  console.log({ response, seller_id, category_id })
-
   const { products } = await response
   const count = products.length
 
@@ -41,8 +41,8 @@ export const ProductListing = async ({
         <ProductListingActiveFilters />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 mt-6 gap-4">
-        <ProductSidebar />
-        <section className="col-span-3">
+        {showSidebar && <ProductSidebar />}
+        <section className={showSidebar ? "col-span-3" : "col-span-4"}>
           <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
             <ProductsList products={products} />
           </div>

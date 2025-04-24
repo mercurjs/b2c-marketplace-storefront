@@ -50,7 +50,7 @@ async function Category({
 
       <Suspense fallback={<ProductListingSkeleton />}>
         {!ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
-          <ProductListing category_id={category.id} />
+          <ProductListing category_id={category.id} showSidebar />
         ) : (
           <AlgoliaProductsListing category_id={category.id} />
         )}
