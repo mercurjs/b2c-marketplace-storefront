@@ -11,6 +11,7 @@ import ErrorMessage from "@/components/molecules/ErrorMessage/ErrorMessage"
 import Spinner from "@/icons/spinner"
 import ShippingAddress from "@/components/organisms/ShippingAddress/ShippingAddress"
 import { CheckCircleSolid } from "@medusajs/icons"
+import { Link } from "@/i18n/routing"
 
 export const CartAddressSection = ({
   cart,
@@ -40,24 +41,14 @@ export const CartAddressSection = ({
       : true
   )
 
-  console.log(
-    isAddress,
-    cart?.shipping_address,
-    cart?.shipping_address?.first_name,
-    cart?.shipping_address?.last_name,
-    cart?.shipping_address?.address_1,
-    cart?.shipping_address?.city,
-    cart?.shipping_address?.postal_code,
-    cart?.shipping_address?.country_code
-  )
   useEffect(() => {
     if (!isAddress) {
-      router.push(pathname + "?step=address")
+      router.replace(pathname + "?step=address")
     }
   }, [isAddress])
 
   const handleEdit = () => {
-    router.push(pathname + "?step=address")
+    router.replace(pathname + "?step=address")
   }
 
   const [message, formAction] = useActionState(setAddresses, sameAsBilling)
@@ -79,8 +70,8 @@ export const CartAddressSection = ({
           </Text>
         )}
       </div>
-      {isOpen ? (
-        <form action={formAction}>
+      <form action={formAction}>
+        {isOpen ? (
           <div className="pb-8">
             <ShippingAddress
               customer={customer}
@@ -89,43 +80,48 @@ export const CartAddressSection = ({
               cart={cart}
             />
             <Button className="mt-6" data-testid="submit-address-button">
-              Continue to delivery
+              Save
             </Button>
             <ErrorMessage error={message} data-testid="address-error-message" />
           </div>
-        </form>
-      ) : (
-        <div>
-          <div className="text-small-regular">
-            {cart && cart.shipping_address ? (
-              <div className="flex items-start gap-x-8">
-                <div className="flex items-start gap-x-1 w-full">
-                  <div>
-                    <Text className="txt-medium-plus font-bold">
-                      {cart.shipping_address.first_name}{" "}
-                      {cart.shipping_address.last_name}
-                    </Text>
-                    <Text>
-                      {cart.shipping_address.address_1}{" "}
-                      {cart.shipping_address.address_2},{" "}
-                      {cart.shipping_address.postal_code}{" "}
-                      {cart.shipping_address.city},{" "}
-                      {cart.shipping_address.country_code?.toUpperCase()}
-                    </Text>
-                    <Text>
-                      {cart.email}, {cart.shipping_address.phone}
-                    </Text>
+        ) : (
+          <div>
+            <div className="text-small-regular">
+              {cart && cart.shipping_address ? (
+                <div className="flex items-start gap-x-8">
+                  <div className="flex items-start gap-x-1 w-full">
+                    <div>
+                      <Text className="txt-medium-plus font-bold">
+                        {cart.shipping_address.first_name}{" "}
+                        {cart.shipping_address.last_name}
+                      </Text>
+                      <Text>
+                        {cart.shipping_address.address_1}{" "}
+                        {cart.shipping_address.address_2},{" "}
+                        {cart.shipping_address.postal_code}{" "}
+                        {cart.shipping_address.city},{" "}
+                        {cart.shipping_address.country_code?.toUpperCase()}
+                      </Text>
+                      <Text>
+                        {cart.email}, {cart.shipping_address.phone}
+                      </Text>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <div>
-                <Spinner />
-              </div>
-            )}
+              ) : (
+                <div>
+                  <Spinner />
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+        {isAddress && !searchParams.get("step") && (
+          <Link href="/checkout?step=delivery">
+            <Button className="mt-6">Continue to Delivery</Button>
+          </Link>
+        )}
+      </form>
     </div>
   )
 }
