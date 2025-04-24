@@ -13,6 +13,7 @@ import { RadioGroup, Radio } from "@headlessui/react"
 import { Button } from "@/components/atoms"
 
 type StoreCardShippingMethod = HttpTypes.StoreCartShippingOption & {
+  seller_id?: string
   service_zone?: {
     fulfillment_set: {
       type: string
@@ -71,10 +72,6 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
     }
   }, [availableShippingMethods])
 
-  const handleEdit = () => {
-    router.push(pathname + "?step=delivery", { scroll: false })
-  }
-
   const handleSubmit = () => {
     router.push(pathname + "?step=payment", { scroll: false })
   }
@@ -101,6 +98,17 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
     setError(null)
   }, [isOpen])
 
+  const groupedBySellerId = _shippingMethods?.reduce((acc: any, method) => {
+    const sellerId = method.seller_id!
+
+    if (!acc[sellerId]) {
+      acc[sellerId] = []
+    }
+
+    acc[sellerId].push(method)
+    return acc
+  }, {})
+
   return (
     <div className="border p-4 rounded-sm bg-ui-bg-interactive">
       <div className="flex flex-row items-center justify-between mb-6">
@@ -113,16 +121,6 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
           )}
           Delivery
         </Heading>
-        {!isOpen &&
-          cart?.shipping_address &&
-          cart?.billing_address &&
-          cart?.email && (
-            <Text>
-              <Button onClick={handleEdit} variant="tonal">
-                Edit
-              </Button>
-            </Text>
-          )}
       </div>
       {isOpen ? (
         <>
@@ -133,52 +131,60 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
                   value={shippingMethodId}
                   onChange={(v) => handleSetShippingMethod(v)}
                 >
-                  {_shippingMethods?.map((option) => {
-                    const isDisabled =
-                      option.price_type === "calculated" &&
-                      !isLoadingPrices &&
-                      typeof calculatedPricesMap[option.id] !== "number"
-
+                  {Object.keys(groupedBySellerId).map((key) => {
                     return (
-                      <Radio
-                        key={option.id}
-                        value={option.id}
-                        data-testid="delivery-option-radio"
-                        disabled={isDisabled}
-                        className={clx(
-                          "flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-rounded px-8 mb-2 hover:shadow-borders-interactive-with-active",
-                          {
-                            "border-ui-border-interactive":
-                              option.id === shippingMethodId,
-                            "hover:shadow-brders-none cursor-not-allowed":
-                              isDisabled,
-                          }
-                        )}
-                      >
-                        <div className="flex items-center gap-x-4">
-                          <Radio value={option.id === shippingMethodId} />
-                          <span className="text-base-regular">
-                            {option.name}
-                          </span>
-                        </div>
-                        <span className="justify-self-end text-ui-fg-base">
-                          {option.price_type === "flat" ? (
-                            convertToLocale({
-                              amount: option.amount!,
-                              currency_code: cart?.currency_code,
-                            })
-                          ) : calculatedPricesMap[option.id] ? (
-                            convertToLocale({
-                              amount: calculatedPricesMap[option.id],
-                              currency_code: cart?.currency_code,
-                            })
-                          ) : isLoadingPrices ? (
-                            <Loader />
-                          ) : (
-                            "-"
-                          )}
-                        </span>
-                      </Radio>
+                      <div key={key}>
+                        <Heading level="h3" className="mb-2">
+                          {groupedBySellerId[key][0].seller_name}
+                        </Heading>
+                        {groupedBySellerId[key].map((option: any) => {
+                          const isDisabled =
+                            option.price_type === "calculated" &&
+                            !isLoadingPrices &&
+                            typeof calculatedPricesMap[option.id] !== "number"
+
+                          return (
+                            <Radio
+                              key={option.id}
+                              value={option.id}
+                              data-testid="delivery-option-radio"
+                              disabled={isDisabled}
+                              className={clx(
+                                "flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-md px-4 mb-2 hover:border-secondary",
+                                {
+                                  "border-ui-border-interactive":
+                                    option.id === shippingMethodId,
+                                  "hover:shadow-brders-none cursor-not-allowed":
+                                    isDisabled,
+                                }
+                              )}
+                            >
+                              <div className="flex items-center gap-x-4">
+                                <span className="text-base-regular">
+                                  {option.name}
+                                </span>
+                              </div>
+                              <span className="justify-self-end text-ui-fg-base">
+                                {option.price_type === "flat" ? (
+                                  convertToLocale({
+                                    amount: option.amount!,
+                                    currency_code: cart?.currency_code,
+                                  })
+                                ) : calculatedPricesMap[option.id] ? (
+                                  convertToLocale({
+                                    amount: calculatedPricesMap[option.id],
+                                    currency_code: cart?.currency_code,
+                                  })
+                                ) : isLoadingPrices ? (
+                                  <Loader />
+                                ) : (
+                                  "-"
+                                )}
+                              </span>
+                            </Radio>
+                          )
+                        })}
+                      </div>
                     )
                   })}
                 </RadioGroup>
@@ -205,17 +211,21 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
         <div>
           <div className="text-small-regular">
             {cart && (cart.shipping_methods?.length ?? 0) > 0 && (
-              <div className="flex flex-col w-1/3">
-                <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                  Method
-                </Text>
-                <Text className="txt-medium text-ui-fg-subtle">
-                  {cart.shipping_methods?.at(-1)?.name}{" "}
-                  {convertToLocale({
-                    amount: cart.shipping_methods?.at(-1)?.amount!,
-                    currency_code: cart?.currency_code,
-                  })}
-                </Text>
+              <div className="flex flex-col">
+                {cart.shipping_methods?.map((method) => (
+                  <div className="mb-4 border rounded-md p-4">
+                    <Text className="txt-medium-plus text-ui-fg-base mb-1">
+                      Method
+                    </Text>
+                    <Text className="txt-medium text-ui-fg-subtle">
+                      {method.name}{" "}
+                      {convertToLocale({
+                        amount: method.amount!,
+                        currency_code: cart?.currency_code,
+                      })}
+                    </Text>
+                  </div>
+                ))}
               </div>
             )}
           </div>

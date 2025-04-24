@@ -134,7 +134,11 @@ const StripePaymentButton = ({
 
   return (
     <>
-      <Button disabled={disabled || notReady} onClick={handlePayment}>
+      <Button
+        disabled={disabled || notReady}
+        onClick={handlePayment}
+        loading={submitting}
+      >
         Place order
       </Button>
       <ErrorMessage

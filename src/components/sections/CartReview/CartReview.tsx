@@ -13,7 +13,6 @@ const Review = ({ cart }: { cart: any }) => {
     cart.shipping_methods.length > 0 &&
     (cart.payment_collection || paidByGiftcard)
 
-  console.log({ cart })
   return (
     <div>
       <div className="w-full mb-6">

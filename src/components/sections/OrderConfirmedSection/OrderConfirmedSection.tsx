@@ -11,7 +11,7 @@ export const OrderConfirmedSection = ({
   order: HttpTypes.StoreOrder
 }) => {
   return (
-    <div className="py-6 min-h-[calc(100vh-64px)] ">
+    <div className="py-6">
       <div className="content-container flex flex-col justify-center items-center gap-y-10 max-w-4xl h-full w-full mx-auto">
         <div
           className="flex flex-col gap-4 max-w-4xl h-full bg-white w-full py-10"
@@ -37,10 +37,10 @@ export const OrderConfirmedSection = ({
               .
             </Text>
           </div>
-          <OrderDetails order={order} />
+          {/* <OrderDetails order={order} />
           <OrderItems order={order} />
           <OrderTotals totals={order} />
-          <OrderShipping order={order} />
+          <OrderShipping order={order} /> */}
           {/*<PaymentDetails order={order} />
           <Help /> */}
         </div>
