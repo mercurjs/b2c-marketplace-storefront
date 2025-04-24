@@ -37,7 +37,7 @@ export const retrieveCustomer =
         },
         headers,
         next,
-        cache: "force-cache",
+        cache: "no-cache",
       })
       .then(({ customer }) => customer)
       .catch(() => null)
@@ -51,7 +51,9 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
   const updateRes = await sdk.store.customer
     .update(body, {}, headers)
     .then(({ customer }) => customer)
-    .catch(medusaError)
+    .catch((err) => {
+      throw new Error(err.message)
+    })
 
   const cacheTag = await getCacheTag("customers")
   revalidateTag(cacheTag)

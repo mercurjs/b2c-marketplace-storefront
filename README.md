@@ -76,25 +76,25 @@ npm install
 Make a .env.local file and copy the code below
 
 ```js
-// API URL
+# API URL
 MEDUSA_BACKEND_URL=http://localhost:9000
-// Your publishable key generated in mercur admin panel
+# Your publishable key generated in mercur admin panel
 NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=
-// Your public url
+# Your public url
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
-// Default region
+# Default region
 NEXT_PUBLIC_DEFAULT_REGION=pl
-// Stripe payment key. It can be random string, don't leave it empty.
+# Stripe payment key. It can be random string, don't leave it empty.
 NEXT_PUBLIC_STRIPE_KEY=supersecret
-// Backend's cookie secret
+# Backend cookie secret
 REVALIDATE_SECRET=supersecret
-// Your site name in metadata
+# Your site name in metadata
 NEXT_PUBLIC_SITE_NAME="Fleek Marketplace"
-// Your site description in metadata
+# Your site description in metadata
 NEXT_PUBLIC_SITE_DESCRIPTION="Fleek Markeplace"
-// Algolia Application ID
+# Algolia Application ID
 NEXT_PUBLIC_ALGOLIA_ID=supersecret
-// Algolia Search API Key
+# Algolia Search API Key
 NEXT_PUBLIC_ALGOLIA_SEARCH_KEY=supersecret
 ```
 
