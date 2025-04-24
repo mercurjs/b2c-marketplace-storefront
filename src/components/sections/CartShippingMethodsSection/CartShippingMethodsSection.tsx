@@ -213,7 +213,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
             {cart && (cart.shipping_methods?.length ?? 0) > 0 && (
               <div className="flex flex-col">
                 {cart.shipping_methods?.map((method) => (
-                  <div className="mb-4 border rounded-md p-4">
+                  <div key={method.id} className="mb-4 border rounded-md p-4">
                     <Text className="txt-medium-plus text-ui-fg-base mb-1">
                       Method
                     </Text>
