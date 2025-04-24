@@ -2,17 +2,6 @@ import { LoginForm } from "@/components/molecules"
 import { UserNavigation } from "@/components/molecules"
 import { retrieveCustomer } from "@/lib/data/customer"
 
-export const navigation = [
-  {
-    label: "TO WRITE",
-    href: "/user/reviews",
-  },
-  {
-    label: "WRITTEN",
-    href: "/user/reviews/written",
-  },
-]
-
 export default async function UserPage() {
   const user = await retrieveCustomer()
 

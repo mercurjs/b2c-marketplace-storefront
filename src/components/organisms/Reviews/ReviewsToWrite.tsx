@@ -5,7 +5,7 @@ import { isEmpty } from "lodash"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { Review } from "@/lib/data/reviews"
-import { navigation } from "@/app/[locale]/(main)/user/page"
+import { navigation } from "./navigation"
 
 export const ReviewsToWrite = ({ reviews }: { reviews: Review[] }) => {
   const [showForm, setShowForm] = useState<string>("")

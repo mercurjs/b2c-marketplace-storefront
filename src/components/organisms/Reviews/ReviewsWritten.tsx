@@ -1,5 +1,5 @@
 "use client"
-import { navigation } from "@/app/[locale]/(main)/user/page"
+import { navigation } from "./navigation"
 import { Card, NavigationItem } from "@/components/atoms"
 import { StarIcon } from "@/icons"
 import { Review } from "@/lib/data/reviews"
