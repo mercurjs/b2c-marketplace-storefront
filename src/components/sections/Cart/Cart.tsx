@@ -18,6 +18,7 @@ export const Cart = async () => {
           shipping_total={cart?.shipping_total || 0}
           total={cart?.total || 0}
           currency_code={cart?.currency_code || ""}
+          tax={cart?.tax_total || 0}
         />
         <Link href="/checkout">
           <Button className="w-full py-3 flex justify-center items-center">
