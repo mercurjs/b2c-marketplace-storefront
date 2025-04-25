@@ -7,32 +7,27 @@ export const styles: Style[] = [
   {
     id: 1,
     name: "LUXURY",
-    href: "#",
+    href: "/collections/luxury",
   },
   {
     id: 2,
     name: "VINTAGE",
-    href: "#",
+    href: "/collections/vintage",
   },
   {
     id: 3,
     name: "CASUAL",
-    href: "#",
+    href: "/collections/casual",
   },
   {
     id: 4,
     name: "STREETWEAR",
-    href: "#",
+    href: "/collections/streetwear",
   },
   {
     id: 5,
-    name: "GORPCORE",
-    href: "#",
-  },
-  {
-    id: 6,
     name: "Y2K",
-    href: "#",
+    href: "/collections/y2k",
   },
 ]
 

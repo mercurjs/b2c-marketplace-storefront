@@ -1,44 +1,41 @@
-import { Button } from '@/components/atoms';
-import { Link } from '@/i18n/routing';
-import Image from 'next/image';
+import { Button } from "@/components/atoms"
+import { Link } from "@/i18n/routing"
+import Image from "next/image"
 
 export const BannerSection = () => {
   return (
-    <section className='bg-tertiary container text-tertiary'>
-      <div className='grid grid-cols-1 lg:grid-cols-2 items-center'>
-        <div className='py-6 px-6 flex flex-col h-full justify-between border border-secondary rounded-sm'>
-          <div className='mb-8 lg:mb-48'>
-            <span className='text-sm inline-block px-4 py-1 border border-secondary rounded-sm'>
+    <section className="bg-tertiary container text-tertiary">
+      <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
+        <div className="py-6 px-6 flex flex-col h-full justify-between border border-secondary rounded-sm">
+          <div className="mb-8 lg:mb-48">
+            <span className="text-sm inline-block px-4 py-1 border border-secondary rounded-sm">
               #COLLECTION
             </span>
-            <h1 className='display-sm'>
+            <h1 className="display-sm">
               BOHO VIBES: WHERE COMFORT MEETS CREATIVITY
             </h1>
-            <p className='text-lg text-tertiary max-w-lg'>
-              Discover boho styles that inspire adventure
-              and embrace the beauty of the unconventional.
+            <p className="text-lg text-tertiary max-w-lg">
+              Discover boho styles that inspire adventure and embrace the beauty
+              of the unconventional.
             </p>
           </div>
-          <Link href='#'>
-            <Button
-              size='large'
-              className='w-fit bg-secondary/10'
-            >
+          <Link href="/collections/boho">
+            <Button size="large" className="w-fit bg-secondary/10">
               EXPLORE
             </Button>
           </Link>
         </div>
-        <div className='relative aspect-[4/3] lg:aspect-auto lg:h-full flex justify-end rounded-sm'>
+        <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full flex justify-end rounded-sm">
           <Image
-            src='/images/banner-section/Image.jpg'
-            alt='Boho fashion collection - Model wearing a floral dress with yellow boots'
+            src="/images/banner-section/Image.jpg"
+            alt="Boho fashion collection - Model wearing a floral dress with yellow boots"
             width={700}
             height={600}
-            className='object-cover object-top rounded-sm'
+            className="object-cover object-top rounded-sm"
             priority
           />
         </div>
       </div>
     </section>
-  );
-};
+  )
+}

@@ -16,7 +16,7 @@ export const ProductCard = ({
   sellerPage = false,
 }: {
   product: Hit<HttpTypes.StoreProduct> | Partial<Hit<BaseHit>>
-  sellerPage: boolean
+  sellerPage?: boolean
 }) => {
   const { cheapestPrice } = getProductPrice({
     product,

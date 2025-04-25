@@ -1,32 +1,28 @@
-import { Link } from '@/i18n/routing';
-import Image from 'next/image';
-import { HttpTypes } from '@medusajs/types';
+import { Link } from "@/i18n/routing"
+import Image from "next/image"
 
 export function CategoryCard({
   category,
 }: {
-  category: HttpTypes.StoreProductCategory;
+  category: { id: number; name: string; handle: string }
 }) {
   return (
     <Link
       href={`/categories/${category.handle}`}
-      className='relative flex flex-col items-center border rounded-sm bg-component transition-all hover:rounded-full w-[233px] aspect-square'
+      className="relative flex flex-col items-center border rounded-sm bg-component transition-all hover:rounded-full w-[233px] aspect-square"
     >
-      <div className='relative aspect-square overflow-hidden w-[200px]'>
+      <div className="flex relative aspect-square overflow-hidden w-[200px]">
         <Image
-          src={
-            `/images/categories/${category.handle}.png` ||
-            '/images/categories/placeholder.png'
-          }
+          src={`/images/categories/${category.handle}.png`}
           alt={category.name}
           width={233}
           height={193}
-          className='object-contain scale-90 rounded-full'
+          className="object-contain scale-90 rounded-full"
         />
       </div>
-      <h3 className='w-full text-center label-lg text-primary'>
+      <h3 className="w-full text-center label-lg text-primary">
         {category.name}
       </h3>
     </Link>
-  );
+  )
 }

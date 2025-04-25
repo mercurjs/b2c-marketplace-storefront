@@ -59,12 +59,11 @@ export default async function Home({
       />
       <div className="px-4 lg:px-8 w-full">
         <HomeProductSection heading="trending listings" locale={locale} home />
-        {/* <AlgoliaTrendingListings /> */}
       </div>
-      {/* <HomePopularBrandsSection />
+      {/* <HomePopularBrandsSection />*/}
       <div className="px-4 lg:px-8 w-full">
         <HomeCategories heading="SHOP BY CATEGORY" />
-      </div> */}
+      </div>
       <BannerSection />
       <ShopByStyleSection />
       <BlogSection />

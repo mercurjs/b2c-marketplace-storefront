@@ -25,8 +25,10 @@ const selectOptions = [
 
 export const AlgoliaProductsListing = ({
   category_id,
+  collection_id,
 }: {
   category_id?: string
+  collection_id?: string
 }) => {
   const searchParamas = useSearchParams()
 
@@ -35,7 +37,7 @@ export const AlgoliaProductsListing = ({
   const query: string = searchParamas.get("query") || ""
 
   const filters = category_id
-    ? `categories.id:${category_id} ${facetFilters}`
+    ? `categories.id:${category_id} collections.id:${collection_id} ${facetFilters}`
     : `${facetFilters.replace("AND", "")}`
 
   return (

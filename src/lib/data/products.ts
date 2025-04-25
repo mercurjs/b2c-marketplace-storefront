@@ -14,6 +14,7 @@ export const listProducts = async ({
   countryCode,
   regionId,
   category_id,
+  collection_id,
 }: {
   pageParam?: number
   queryParams?: HttpTypes.FindParams &
@@ -21,6 +22,7 @@ export const listProducts = async ({
       handle?: string
     }
   category_id?: string
+  collection_id?: string
   countryCode?: string
   regionId?: string
 }): Promise<{
@@ -66,6 +68,7 @@ export const listProducts = async ({
       method: "GET",
       query: {
         category_id,
+        collection_id,
         limit,
         offset,
         region_id: region?.id,
@@ -100,6 +103,7 @@ export const listProductsWithSort = async ({
   countryCode,
   category_id,
   seller_id,
+  collection_id,
 }: {
   page?: number
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
@@ -107,6 +111,7 @@ export const listProductsWithSort = async ({
   countryCode: string
   category_id?: string
   seller_id?: string
+  collection_id?: string
 }): Promise<{
   response: {
     products: HttpTypes.StoreProduct[]
@@ -126,6 +131,7 @@ export const listProductsWithSort = async ({
       limit: 100,
     },
     category_id,
+    collection_id,
     countryCode,
   })
 

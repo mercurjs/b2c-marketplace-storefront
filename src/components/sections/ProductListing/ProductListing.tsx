@@ -10,10 +10,12 @@ import { listProductsWithSort } from "@/lib/data/products"
 
 export const ProductListing = async ({
   category_id,
+  collection_id,
   seller_id,
   showSidebar = false,
 }: {
   category_id?: string
+  collection_id?: string
   seller_id?: string
   showSidebar?: boolean
 }) => {
@@ -22,6 +24,7 @@ export const ProductListing = async ({
   const { response } = await listProductsWithSort({
     seller_id,
     category_id,
+    collection_id,
     countryCode: DEFAULT_REGION,
     sortBy: "created_at",
     queryParams: {

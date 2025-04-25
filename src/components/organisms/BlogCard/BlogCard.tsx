@@ -25,7 +25,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
           alt={post.title}
           width={467}
           height={472}
-          className="object-cover h-auto w-full"
+          className="object-cover max-h-[472px] h-full w-full"
           priority
         />
       </div>
