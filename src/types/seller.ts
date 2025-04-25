@@ -1,3 +1,5 @@
+import { Product } from "./product"
+
 type SellerAddress = {
   address_line?: string
   city?: string
@@ -5,7 +7,7 @@ type SellerAddress = {
   postal_code?: string
 }
 
-type SellerProps = SellerAddress & {
+export type SellerProps = SellerAddress & {
   id: string
   name: string
   handle: string
@@ -15,4 +17,5 @@ type SellerProps = SellerAddress & {
   created_at: string
   rating?: number
   reviewCount?: number
+  products?: Product[]
 }

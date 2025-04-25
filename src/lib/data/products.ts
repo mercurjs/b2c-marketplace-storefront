@@ -6,6 +6,7 @@ import { HttpTypes } from "@medusajs/types"
 import { SortOptions } from "@/types/product"
 import { getAuthHeaders } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
+import { SellerProps } from "@/types/seller"
 
 export const listProducts = async ({
   pageParam = 1,
@@ -69,7 +70,7 @@ export const listProducts = async ({
         offset,
         region_id: region?.id,
         fields:
-          "*variants.calculated_price,+variants.inventory_quantity,*seller,*variants",
+          "*variants.calculated_price,+variants.inventory_quantity,*seller,*variants,*seller.products",
         ...queryParams,
       },
       headers,

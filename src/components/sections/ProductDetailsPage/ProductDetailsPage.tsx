@@ -16,6 +16,8 @@ export const ProductDetailsPage = async ({
 
   if (!prod) return null
 
+  console.log({ prod })
+
   return (
     <>
       <div className="flex flex-col md:flex-row lg:gap-12">
@@ -27,8 +29,11 @@ export const ProductDetailsPage = async ({
         </div>
       </div>
       <div className="my-8">
-        <HomeProductSection heading="More from this seller" />
-        <HomeProductSection heading="You might also like" />
+        <HomeProductSection
+          heading="More from this seller"
+          products={prod.seller?.products}
+        />
+        {/* <HomeProductSection heading="You might also like" /> */}
       </div>
     </>
   )

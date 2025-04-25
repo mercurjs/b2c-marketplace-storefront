@@ -1,8 +1,17 @@
 import { Carousel } from "@/components/cells"
 import { ProductCard } from "../ProductCard/ProductCard"
 import { listProducts } from "@/lib/data/products"
+import { Product } from "@/types/product"
 
-export const HomeProductsCarousel = async ({ locale }: { locale: string }) => {
+export const HomeProductsCarousel = async ({
+  locale,
+  sellerProducts,
+  home,
+}: {
+  locale: string
+  sellerProducts: Product[]
+  home: boolean
+}) => {
   const {
     response: { products },
   } = await listProducts({
@@ -13,14 +22,21 @@ export const HomeProductsCarousel = async ({ locale }: { locale: string }) => {
     },
   })
 
-  if (!products.length) return null
+  if (!products.length && !sellerProducts.length) return null
 
   return (
     <div className="flex justify-center w-full">
       <Carousel
-        items={products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        align="start"
+        items={(sellerProducts.length ? sellerProducts : products).map(
+          (product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              sellerPage={Boolean(sellerProducts.length) || home}
+            />
+          )
+        )}
       />
     </div>
   )

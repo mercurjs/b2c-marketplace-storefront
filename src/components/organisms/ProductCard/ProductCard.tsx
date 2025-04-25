@@ -9,11 +9,14 @@ import { Link } from "@/i18n/routing"
 import { getSellerProductPrice } from "@/lib/helpers/get-seller-product-price"
 import { getProductPrice } from "@/lib/helpers/get-product-price"
 import { BaseHit, Hit } from "instantsearch.js"
+import clsx from "clsx"
 
 export const ProductCard = ({
   product,
+  sellerPage = false,
 }: {
   product: Hit<HttpTypes.StoreProduct> | Partial<Hit<BaseHit>>
+  sellerPage: boolean
 }) => {
   const { cheapestPrice } = getProductPrice({
     product,
@@ -24,8 +27,16 @@ export const ProductCard = ({
   })
 
   return (
-    <div className="relative group border rounded-sm flex flex-col justify-between w-full p-1">
-      <div className="relative  w-full bg-primary aspect-square">
+    <div
+      className={clsx(
+        "relative group border rounded-sm flex flex-col justify-between p-1 ",
+        {
+          "w-[250px] lg:w-[370px]": sellerPage,
+          "w-full h-full": !sellerPage,
+        }
+      )}
+    >
+      <div className="relative w-full h-full bg-primary aspect-square">
         <div className="absolute right-3 top-3 lg:hidden z-10 cursor-pointer">
           <HeartIcon color={tailwindConfig.theme.extend.colors.tertiary} />
         </div>
@@ -35,8 +46,8 @@ export const ProductCard = ({
               <Image
                 src={decodeURIComponent(product.thumbnail)}
                 alt={product.title}
-                width={512}
-                height={512}
+                width={360}
+                height={360}
                 className="object-cover aspect-square w-full object-center h-full lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
                 priority
               />
