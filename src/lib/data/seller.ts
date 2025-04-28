@@ -1,3 +1,4 @@
+import { SellerProps } from "@/types/seller"
 import { sdk } from "../config"
 
 export const getSellerByHandle = async (handle: string) => {

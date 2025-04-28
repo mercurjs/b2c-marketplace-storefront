@@ -1,6 +1,7 @@
 import { Button } from "@/components/atoms"
 import { SellerInfo } from "@/components/molecules"
 import { MessageIcon } from "@/icons"
+import { SellerProps } from "@/types/seller"
 
 export const SellerHeading = ({ seller }: { seller: SellerProps }) => {
   return (

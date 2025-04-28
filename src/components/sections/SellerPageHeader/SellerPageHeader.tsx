@@ -1,4 +1,5 @@
 import { SellerFooter, SellerHeading } from "@/components/organisms"
+import { SellerProps } from "@/types/seller"
 
 export const SellerPageHeader = ({ seller }: { seller: SellerProps }) => {
   return (
