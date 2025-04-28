@@ -1,5 +1,6 @@
 import { StarRating } from "@/components/atoms"
 import { SellerAvatar } from "@/components/cells/SellerAvatar/SellerAvatar"
+import { SellerProps } from "@/types/seller"
 
 export const SellerInfo = ({ seller }: { seller: SellerProps }) => {
   const { photo, name, rating, reviewCount } = seller
