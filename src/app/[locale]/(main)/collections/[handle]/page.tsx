@@ -11,7 +11,7 @@ const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
 const SingleCollectionsPage = async ({
   params,
 }: {
-  params: { handle: string }
+  params: Promise<{ handle: string }>
 }) => {
   const { handle } = await params
 
