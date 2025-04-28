@@ -167,10 +167,10 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
       <Button disabled={notReady} onClick={handlePayment} className="w-full">
         Place order
       </Button>
-      <ErrorMessage
+      {/* <ErrorMessage
         error={errorMessage}
         data-testid="manual-payment-error-message"
-      />
+      /> */}
     </>
   )
 }

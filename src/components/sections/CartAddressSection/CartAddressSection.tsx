@@ -118,7 +118,9 @@ export const CartAddressSection = ({
         )}
         {isAddress && !searchParams.get("step") && (
           <Link href="/checkout?step=delivery">
-            <Button className="mt-6">Continue to Delivery</Button>
+            <Button className="mt-6" variant="tonal">
+              Continue to Delivery
+            </Button>
           </Link>
         )}
       </form>

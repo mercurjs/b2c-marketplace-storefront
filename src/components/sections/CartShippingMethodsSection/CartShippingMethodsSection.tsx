@@ -30,7 +30,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
   cart,
   availableShippingMethods,
 }) => {
-  const [isLoadingPrices, setIsLoadingPrices] = useState(true)
+  const [isLoadingPrices, setIsLoadingPrices] = useState(false)
 
   const [calculatedPricesMap, setCalculatedPricesMap] = useState<
     Record<string, number>
@@ -51,7 +51,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
   )
 
   useEffect(() => {
-    setIsLoadingPrices(true)
+    // setIsLoadingPrices(true)
 
     if (_shippingMethods?.length) {
       const promises = _shippingMethods
@@ -77,6 +77,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
   }
 
   const handleSetShippingMethod = async (id: string | null) => {
+    setIsLoadingPrices(true)
     setError(null)
 
     let currentId: string | null = null
@@ -92,6 +93,8 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
         setError(err.message)
       }
     )
+
+    setIsLoadingPrices(false)
   }
 
   useEffect(() => {
@@ -109,6 +112,10 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
     return acc
   }, {})
 
+  const handleEdit = () => {
+    router.replace(pathname + "?step=delivery")
+  }
+  console.log(cart)
   return (
     <div className="border p-4 rounded-sm bg-ui-bg-interactive">
       <div className="flex flex-row items-center justify-between mb-6">
@@ -121,77 +128,86 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
           )}
           Delivery
         </Heading>
+        {!isOpen && (
+          <Text>
+            <Button onClick={handleEdit} variant="tonal">
+              Edit
+            </Button>
+          </Text>
+        )}
       </div>
       {isOpen ? (
         <>
           <div className="grid">
             <div data-testid="delivery-options-container">
               <div className="pb-8 md:pt-0 pt-2">
-                <RadioGroup
-                  value={shippingMethodId}
-                  onChange={(v) => handleSetShippingMethod(v)}
-                >
-                  {Object.keys(groupedBySellerId).map((key) => {
-                    return (
-                      <div key={key}>
-                        <Heading level="h3" className="mb-2">
-                          {groupedBySellerId[key][0].seller_name}
-                        </Heading>
+                {Object.keys(groupedBySellerId).map((key) => {
+                  return (
+                    <div key={key}>
+                      <Heading level="h3" className="mb-2">
+                        {groupedBySellerId[key][0].seller_name}
+                      </Heading>
+                      <select
+                        onChange={(e) =>
+                          handleSetShippingMethod(e.target.value)
+                        }
+                        className="w-full border rounded-lg p-4"
+                        defaultValue={""}
+                      >
+                        <option hidden value="">
+                          Choose delivery option
+                        </option>
                         {groupedBySellerId[key].map((option: any) => {
-                          const isDisabled =
-                            option.price_type === "calculated" &&
-                            !isLoadingPrices &&
-                            typeof calculatedPricesMap[option.id] !== "number"
-
                           return (
-                            <Radio
-                              key={option.id}
-                              value={option.id}
-                              data-testid="delivery-option-radio"
-                              disabled={isDisabled}
-                              className={clx(
-                                "flex items-center justify-between text-small-regular cursor-pointer py-4 border rounded-md px-4 mb-2 hover:border-secondary",
-                                {
-                                  "border-ui-border-interactive":
-                                    option.id === shippingMethodId,
-                                  "hover:shadow-brders-none cursor-not-allowed":
-                                    isDisabled,
-                                }
+                            <option key={option.id} value={option.id}>
+                              {option.name}
+                              {" - "}
+                              {option.price_type === "flat" ? (
+                                convertToLocale({
+                                  amount: option.amount!,
+                                  currency_code: cart?.currency_code,
+                                })
+                              ) : calculatedPricesMap[option.id] ? (
+                                convertToLocale({
+                                  amount: calculatedPricesMap[option.id],
+                                  currency_code: cart?.currency_code,
+                                })
+                              ) : isLoadingPrices ? (
+                                <Loader />
+                              ) : (
+                                "-"
                               )}
-                            >
-                              <div className="flex items-center gap-x-4">
-                                <span className="text-base-regular">
-                                  {option.name}
-                                </span>
-                              </div>
-                              <span className="justify-self-end text-ui-fg-base">
-                                {option.price_type === "flat" ? (
-                                  convertToLocale({
-                                    amount: option.amount!,
-                                    currency_code: cart?.currency_code,
-                                  })
-                                ) : calculatedPricesMap[option.id] ? (
-                                  convertToLocale({
-                                    amount: calculatedPricesMap[option.id],
-                                    currency_code: cart?.currency_code,
-                                  })
-                                ) : isLoadingPrices ? (
-                                  <Loader />
-                                ) : (
-                                  "-"
-                                )}
-                              </span>
-                            </Radio>
+                            </option>
                           )
                         })}
+                      </select>
+                    </div>
+                  )
+                })}
+                {cart && (cart.shipping_methods?.length ?? 0) > 0 && (
+                  <div className="flex flex-col">
+                    {cart.shipping_methods?.map((method) => (
+                      <div
+                        key={method.id}
+                        className="mb-4 border rounded-md p-4"
+                      >
+                        <Text className="txt-medium-plus text-ui-fg-base mb-1">
+                          Method
+                        </Text>
+                        <Text className="txt-medium text-ui-fg-subtle">
+                          {method.name}{" "}
+                          {convertToLocale({
+                            amount: method.amount!,
+                            currency_code: cart?.currency_code,
+                          })}
+                        </Text>
                       </div>
-                    )
-                  })}
-                </RadioGroup>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
-
           <div>
             <ErrorMessage
               error={error}
@@ -201,7 +217,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
               onClick={handleSubmit}
               variant="tonal"
               disabled={!cart.shipping_methods?.[0]}
-              // loading={isLoadingPrices}
+              loading={isLoadingPrices}
             >
               Continue to payment
             </Button>

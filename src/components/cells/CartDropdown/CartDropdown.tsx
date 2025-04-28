@@ -22,7 +22,7 @@ export const CartDropdown = ({
   })
 
   useEffect(() => {
-    if (cart!.items?.length! > 0) {
+    if (cart?.items?.length! > 0) {
       setOpen(true)
     }
 
