@@ -115,7 +115,6 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
   const handleEdit = () => {
     router.replace(pathname + "?step=delivery")
   }
-  console.log(cart)
   return (
     <div className="border p-4 rounded-sm bg-ui-bg-interactive">
       <div className="flex flex-row items-center justify-between mb-6">
