@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/routing"
 import { CollapseIcon } from "@/icons"
 import { SellerInfo } from "@/components/molecules"
+import { SellerProps } from "@/types/seller"
 
 export const ProductDetailsSeller = ({ seller }: { seller?: SellerProps }) => {
   if (!seller) return null
