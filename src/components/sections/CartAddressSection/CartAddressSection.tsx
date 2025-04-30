@@ -41,6 +41,8 @@ export const CartAddressSection = ({
       : true
   )
 
+  const [message, formAction] = useActionState(setAddresses, sameAsBilling)
+
   useEffect(() => {
     if (!isAddress) {
       router.replace(pathname + "?step=address")
@@ -50,8 +52,6 @@ export const CartAddressSection = ({
   const handleEdit = () => {
     router.replace(pathname + "?step=address")
   }
-
-  const [message, formAction] = useActionState(setAddresses, sameAsBilling)
 
   return (
     <div className="border p-4 rounded-sm bg-ui-bg-interactive">
@@ -70,7 +70,12 @@ export const CartAddressSection = ({
           </Text>
         )}
       </div>
-      <form action={formAction}>
+      <form
+        action={async (data) => {
+          await formAction(data)
+          router.replace(`/checkout`)
+        }}
+      >
         {isOpen ? (
           <div className="pb-8">
             <ShippingAddress
@@ -82,7 +87,10 @@ export const CartAddressSection = ({
             <Button className="mt-6" data-testid="submit-address-button">
               Save
             </Button>
-            <ErrorMessage error={message} data-testid="address-error-message" />
+            <ErrorMessage
+              error={message !== "success" && message}
+              data-testid="address-error-message"
+            />
           </div>
         ) : (
           <div>

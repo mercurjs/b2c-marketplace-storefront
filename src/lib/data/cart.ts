@@ -2,7 +2,7 @@
 
 import { sdk } from "../config"
 import medusaError from "@/lib/helpers/medusa-error"
-import { HttpTypes, StoreCompleteCartResponse } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
 import {
@@ -39,7 +39,7 @@ export async function retrieveCart(cartId?: string) {
           "*items, *region, *items.product, *items.variant, *items.variant.options, items.variant.options.option.title, *items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name, *items.product.seller",
       },
       headers,
-      cache: "no-cache",
+      cache: "force-cache",
     })
     .then(({ cart }) => cart)
     .catch(() => null)
@@ -324,7 +324,7 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
     return e.message
   }
 
-  redirect(`/checkout`)
+  // redirect(`/checkout`)
 }
 
 /**
