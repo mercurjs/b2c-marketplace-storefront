@@ -1,4 +1,4 @@
-import { wishlistTabs } from "@/app/[locale]/(main)/wishlist/page"
+import { wishlistTabs } from "@/app/[locale]/(main)/user/wishlist/page"
 import { TabsContent, TabsList } from "@/components/molecules"
 import { Suspense } from "react"
 // import { ProductsList } from "../ProductsList/ProductsList"
