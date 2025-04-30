@@ -70,40 +70,35 @@ const AddressSelect = ({
                 <Listbox.Option
                   key={address.id}
                   value={address.id}
-                  className="cursor-pointer select-none relative hover:bg-gray-50 py-4"
+                  className="cursor-default select-none relative pl-6 pr-10 hover:bg-gray-50 py-4 border-b"
                   data-testid="shipping-address-option"
                 >
-                  <div className="flex gap-x-0 items-start">
-                    <Radio
-                      checked={selectedAddress?.id === address.id}
-                      data-testid="shipping-address-radio"
-                    />
-                    <div className="flex gap-2 w-full">
-                      <div className="flex flex-col w-full md:w-1/2">
-                        <span className="text-left text-base-semi">
-                          {address.first_name} {address.last_name}
+                  <span className="font-semibold">{address.address_name}</span>
+                  <div className="grid grid-cols-2 gap-3 ">
+                    <div>
+                      <span className="text-left text-base-semi block">
+                        {address.first_name} {address.last_name}
+                      </span>
+                      {address.company && (
+                        <span className="text-small-regular text-ui-fg-base">
+                          {address.company}
                         </span>
-                        {address.company && (
-                          <span className="text-small-regular text-ui-fg-base">
-                            {address.company}
-                          </span>
+                      )}
+                    </div>
+                    <div className="flex flex-col text-left text-base-regular">
+                      <span>
+                        {address.address_1}
+                        {address.address_2 && (
+                          <span>, {address.address_2}</span>
                         )}
-                      </div>
-                      <div className="flex flex-col text-left text-base-regular w-full md:w-1/2">
-                        <span>
-                          {address.address_1}
-                          {address.address_2 && (
-                            <span>, {address.address_2}</span>
-                          )}
-                        </span>
-                        <span>
-                          {address.postal_code}, {address.city}
-                        </span>
-                        <span>
-                          {address.province && `${address.province}, `}
-                          {address.country_code?.toUpperCase()}
-                        </span>
-                      </div>
+                      </span>
+                      <span>
+                        {address.postal_code}, {address.city}
+                      </span>
+                      <span>
+                        {address.province && `${address.province}, `}
+                        {address.country_code?.toUpperCase()}
+                      </span>
                     </div>
                   </div>
                 </Listbox.Option>

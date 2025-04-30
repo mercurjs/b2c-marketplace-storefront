@@ -6,10 +6,9 @@ import { calculatePriceForShippingOption } from "@/lib/data/fulfillment"
 import { convertToLocale } from "@/lib/helpers/money"
 import { CheckCircleSolid, Loader } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Heading, Text, clx } from "@medusajs/ui"
+import { Heading, Text } from "@medusajs/ui"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
-import { RadioGroup, Radio } from "@headlessui/react"
 import { Button } from "@/components/atoms"
 
 type StoreCardShippingMethod = HttpTypes.StoreCartShippingOption & {
@@ -36,9 +35,6 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
     Record<string, number>
   >({})
   const [error, setError] = useState<string | null>(null)
-  const [shippingMethodId, setShippingMethodId] = useState<string | null>(
-    cart.shipping_methods?.at(-1)?.shipping_option_id || null
-  )
 
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -51,8 +47,6 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
   )
 
   useEffect(() => {
-    // setIsLoadingPrices(true)
-
     if (_shippingMethods?.length) {
       const promises = _shippingMethods
         .filter((sm) => sm.price_type === "calculated")
@@ -80,16 +74,8 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
     setIsLoadingPrices(true)
     setError(null)
 
-    let currentId: string | null = null
-    setShippingMethodId((prev) => {
-      currentId = prev
-      return id
-    })
-
     await setShippingMethod({ cartId: cart.id, shippingMethodId: id! }).catch(
       (err) => {
-        setShippingMethodId(currentId)
-
         setError(err.message)
       }
     )
@@ -115,6 +101,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
   const handleEdit = () => {
     router.replace(pathname + "?step=delivery")
   }
+
   return (
     <div className="border p-4 rounded-sm bg-ui-bg-interactive">
       <div className="flex flex-row items-center justify-between mb-6">

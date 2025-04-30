@@ -49,7 +49,7 @@ export const Header = async () => {
         </div>
         <div className="flex items-center justify-end gap-2 lg:gap-4 w-full lg:w-1/3 py-2">
           <UserDropdown user={user} />
-          <Link href="/wishlist">
+          <Link href="/user/wishlist">
             <HeartIcon size={20} />
           </Link>
           <CartDropdown cart={cart} />

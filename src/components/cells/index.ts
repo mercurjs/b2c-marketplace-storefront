@@ -28,6 +28,7 @@ import { LabeledInput } from "./LabeledInput/LabeledInput"
 import { OrderAddresses } from "./OrderAddresses/OrderAddresses"
 import { OrderProductListItem } from "./OrderProductListItem/OrderProductListItem"
 import { OrderTimeline } from "./OrderTimeline/OrderTimeline"
+import { WishlistItem } from "./WishlistItem/WishlistItem"
 
 export {
   Navbar,
@@ -60,4 +61,5 @@ export {
   OrderAddresses,
   OrderProductListItem,
   OrderTimeline,
+  WishlistItem,
 }
