@@ -157,7 +157,7 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
 
   const onPaymentCompleted = async () => {
     await placeOrder().catch((err) => {
-      setErrorMessage(err.message !== "NEXT REDIRECT" ? err.message : null)
+      setErrorMessage(err.message !== "NEXT_REDIRECT" ? err.message : null)
     })
   }
 

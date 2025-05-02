@@ -33,8 +33,7 @@ export const CartAddressSection = ({
       cart?.shipping_address.postal_code &&
       cart?.shipping_address.country_code
   )
-  const isOpen = searchParams.get("step") === "address"
-  // const isOpen = searchParams.get("step") === "address" || !isAddress
+  const isOpen = searchParams.get("step") === "address" || !isAddress
 
   const { state: sameAsBilling, toggle: toggleSameAsBilling } = useToggleState(
     cart?.shipping_address && cart?.billing_address

@@ -17,6 +17,20 @@ export const metadata: Metadata = {
 }
 
 export default async function CheckoutPage({}) {
+  return (
+    <Suspense
+      fallback={
+        <div className="container flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
+      <CheckoutPageContent />
+    </Suspense>
+  )
+}
+
+async function CheckoutPageContent({}) {
   const cart = await retrieveCart()
 
   if (!cart) {
@@ -29,25 +43,23 @@ export default async function CheckoutPage({}) {
 
   return (
     <main className="container">
-      <Suspense fallback={<>Loading...</>}>
-        <div className="grid lg:grid-cols-11 gap-8">
-          <div className="flex flex-col gap-4 lg:col-span-6">
-            <CartAddressSection cart={cart} customer={customer} />
-            <CartShippingMethodsSection
-              cart={cart}
-              availableShippingMethods={shippingMethods}
-            />
-            <CartPaymentSection
-              cart={cart}
-              availablePaymentMethods={paymentMethods}
-            />
-          </div>
-
-          <div className="lg:col-span-5">
-            <CartReview cart={cart} />
-          </div>
+      <div className="grid lg:grid-cols-11 gap-8">
+        <div className="flex flex-col gap-4 lg:col-span-6">
+          <CartAddressSection cart={cart} customer={customer} />
+          <CartShippingMethodsSection
+            cart={cart}
+            availableShippingMethods={shippingMethods}
+          />
+          <CartPaymentSection
+            cart={cart}
+            availablePaymentMethods={paymentMethods}
+          />
         </div>
-      </Suspense>
+
+        <div className="lg:col-span-5">
+          <CartReview cart={cart} />
+        </div>
+      </div>
     </main>
   )
 }
