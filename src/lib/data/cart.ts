@@ -320,6 +320,8 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
     //     phone: formData.get("billing_address.phone"),
     //   }
     await updateCart(data)
+    const cartCacheTag = await getCacheTag("carts")
+    await revalidateTag(cartCacheTag)
   } catch (e: any) {
     return e.message
   }
@@ -355,6 +357,7 @@ export async function placeOrder(cartId?: string) {
   if (cartRes?.order_set) {
     removeCartId()
     redirect(`/order/${cartRes?.order_set.orders[0].id}/confirmed`)
+    // return { orderId: cartRes?.order_set.orders[0].id }
   }
 
   return cartRes.order_set.cart

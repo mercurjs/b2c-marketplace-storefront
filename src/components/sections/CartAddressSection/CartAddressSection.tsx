@@ -33,7 +33,8 @@ export const CartAddressSection = ({
       cart?.shipping_address.postal_code &&
       cart?.shipping_address.country_code
   )
-  const isOpen = searchParams.get("step") === "address" || !isAddress
+  const isOpen = searchParams.get("step") === "address"
+  // const isOpen = searchParams.get("step") === "address" || !isAddress
 
   const { state: sameAsBilling, toggle: toggleSameAsBilling } = useToggleState(
     cart?.shipping_address && cart?.billing_address
@@ -84,7 +85,11 @@ export const CartAddressSection = ({
               onChange={toggleSameAsBilling}
               cart={cart}
             />
-            <Button className="mt-6" data-testid="submit-address-button">
+            <Button
+              className="mt-6"
+              data-testid="submit-address-button"
+              variant="tonal"
+            >
               Save
             </Button>
             <ErrorMessage

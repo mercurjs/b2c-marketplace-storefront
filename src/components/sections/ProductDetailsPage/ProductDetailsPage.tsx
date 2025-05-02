@@ -16,8 +16,6 @@ export const ProductDetailsPage = async ({
 
   if (!prod) return null
 
-  console.log({ prod })
-
   return (
     <>
       <div className="flex flex-col md:flex-row lg:gap-12">
