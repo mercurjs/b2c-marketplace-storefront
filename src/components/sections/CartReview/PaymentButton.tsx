@@ -156,12 +156,9 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
   const router = useRouter()
 
   const onPaymentCompleted = async () => {
-    await placeOrder()
-      .then((res) => res.json())
-      .then((data) => console.log(`/order/${data.orderId}/confirmed`))
-      .catch((err) => {
-        setErrorMessage(err.message !== "NEXT REDIRECT" ? err.message : null)
-      })
+    await placeOrder().catch((err) => {
+      setErrorMessage(err.message !== "NEXT REDIRECT" ? err.message : null)
+    })
   }
 
   const handlePayment = () => {

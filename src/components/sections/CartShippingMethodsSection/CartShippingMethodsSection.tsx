@@ -10,8 +10,23 @@ import { Heading, Text } from "@medusajs/ui"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/atoms"
+import { Modal } from "@/components/molecules"
 
-type StoreCardShippingMethod = HttpTypes.StoreCartShippingOption & {
+// Extended cart item product type to include seller
+type ExtendedStoreProduct = HttpTypes.StoreProduct & {
+  seller?: {
+    id: string
+    name: string
+  }
+}
+
+// Cart item type definition
+type CartItem = {
+  product?: ExtendedStoreProduct
+  // Include other cart item properties as needed
+}
+
+export type StoreCardShippingMethod = HttpTypes.StoreCartShippingOption & {
   seller_id?: string
   service_zone?: {
     fulfillment_set: {
@@ -21,7 +36,9 @@ type StoreCardShippingMethod = HttpTypes.StoreCartShippingOption & {
 }
 
 type ShippingProps = {
-  cart: HttpTypes.StoreCart
+  cart: Omit<HttpTypes.StoreCart, "items"> & {
+    items?: CartItem[]
+  }
   availableShippingMethods: StoreCardShippingMethod[] | null
 }
 
@@ -30,11 +47,14 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
   availableShippingMethods,
 }) => {
   const [isLoadingPrices, setIsLoadingPrices] = useState(false)
-
   const [calculatedPricesMap, setCalculatedPricesMap] = useState<
     Record<string, number>
   >({})
   const [error, setError] = useState<string | null>(null)
+  const [missingModal, setMissingModal] = useState(false)
+  const [missingShippingSellers, setMissingShippingSellers] = useState<
+    string[]
+  >([])
 
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -45,6 +65,27 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
   const _shippingMethods = availableShippingMethods?.filter(
     (sm) => sm.service_zone?.fulfillment_set?.type !== "pickup"
   )
+
+  useEffect(() => {
+    const set = new Set<string>()
+    cart.items?.forEach((item) => {
+      if (item?.product?.seller?.id) {
+        set.add(item.product.seller.id)
+      }
+    })
+
+    const sellerMethods = _shippingMethods?.map(({ seller_id }) => seller_id)
+
+    const missingSellerIds = [...set].filter(
+      (sellerId) => !sellerMethods?.includes(sellerId)
+    )
+
+    setMissingShippingSellers(Array.from(missingSellerIds))
+
+    if (missingSellerIds.length > 0 && !cart.shipping_methods?.length) {
+      setMissingModal(true)
+    }
+  }, [cart])
 
   useEffect(() => {
     if (_shippingMethods?.length) {
@@ -74,7 +115,12 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
     setIsLoadingPrices(true)
     setError(null)
 
-    await setShippingMethod({ cartId: cart.id, shippingMethodId: id! }).catch(
+    if (!id) {
+      setIsLoadingPrices(false)
+      return
+    }
+
+    await setShippingMethod({ cartId: cart.id, shippingMethodId: id }).catch(
       (err) => {
         setError(err.message)
       }
@@ -102,8 +148,41 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
     router.replace(pathname + "?step=delivery")
   }
 
+  const missingSellers = cart.items
+    ?.filter((item) =>
+      missingShippingSellers.includes(item.product?.seller?.id!)
+    )
+    .map((item) => item.product?.seller?.name)
+
   return (
     <div className="border p-4 rounded-sm bg-ui-bg-interactive">
+      {missingModal && (
+        <Modal
+          heading="Missing seller shipping option"
+          onClose={() => router.push("/cart")}
+        >
+          <div className="p-4">
+            <h2 className="heading-sm">
+              Some of the sellers in your cart do not have shipping options.
+            </h2>
+
+            <p className="text-md mt-3">
+              Please remove the{" "}
+              <span className="font-bold">
+                {missingSellers?.map(
+                  (seller, index) =>
+                    `${seller}${
+                      index === missingSellers.length - 1 ? " " : ", "
+                    }`
+                )}
+              </span>{" "}
+              items or contact{" "}
+              {missingSellers && missingSellers?.length > 1 ? "them" : "him"} to
+              get the shipping options.
+            </p>
+          </div>
+        </Modal>
+      )}
       <div className="flex flex-row items-center justify-between mb-6">
         <Heading
           level="h2"
