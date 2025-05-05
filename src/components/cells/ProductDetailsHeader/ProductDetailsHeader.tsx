@@ -10,6 +10,7 @@ import { useState } from "react"
 import { addToCart } from "@/lib/data/cart"
 import { Chat } from "@/components/organisms/Chat/Chat"
 import clsx from "clsx"
+import { SellerProps } from "@/types/seller"
 
 const optionsAsKeymap = (
   variantOptions: HttpTypes.StoreProductVariant["options"]
@@ -32,7 +33,7 @@ export const ProductDetailsHeader = ({
   locale,
   user,
 }: {
-  product: HttpTypes.StoreProduct
+  product: HttpTypes.StoreProduct & { seller: SellerProps }
   locale: string
   user: HttpTypes.StoreCustomer | null
 }) => {
