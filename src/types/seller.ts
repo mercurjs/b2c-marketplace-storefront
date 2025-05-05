@@ -18,4 +18,5 @@ export type SellerProps = SellerAddress & {
   rating?: number
   reviewCount?: number
   products?: Product[]
+  email?: string
 }

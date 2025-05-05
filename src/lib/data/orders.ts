@@ -1,5 +1,6 @@
 "use server"
 
+import { SellerProps } from "@/types/seller"
 import { sdk } from "../config"
 import medusaError from "../helpers/medusa-error"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
@@ -15,16 +16,19 @@ export const retrieveOrder = async (id: string) => {
   }
 
   return sdk.client
-    .fetch<HttpTypes.StoreOrderResponse>(`/store/orders/${id}`, {
-      method: "GET",
-      query: {
-        fields:
-          "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product,*seller",
-      },
-      headers,
-      next,
-      cache: "force-cache",
-    })
+    .fetch<HttpTypes.StoreOrderResponse & { seller: SellerProps }>(
+      `/store/orders/${id}`,
+      {
+        method: "GET",
+        query: {
+          fields:
+            "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product,*seller",
+        },
+        headers,
+        next,
+        cache: "force-cache",
+      }
+    )
     .then(({ order }) => order)
     .catch((err) => medusaError(err))
 }

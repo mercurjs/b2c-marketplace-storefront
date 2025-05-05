@@ -1,6 +1,6 @@
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
-import { ProfileIcon } from '@/icons';
+import { cn } from "@/lib/utils"
+import Image from "next/image"
+import { ProfileIcon } from "@/icons"
 
 interface AvatarProps {
   src?: string
@@ -27,6 +27,8 @@ export function Avatar({
   if (src) {
     return (
       <Image
+        width={150}
+        height={150}
         src={src}
         alt={alt || "Avatar"}
         className={cn(

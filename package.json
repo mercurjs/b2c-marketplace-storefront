@@ -28,6 +28,7 @@
     "react-instantsearch": "^7.15.3",
     "react-instantsearch-nextjs": "^0.4.4",
     "tailwind-merge": "^2.6.0",
+    "talkjs": "^0.37.0",
     "uuid": "^11.0.5",
     "zod": "^3.24.1"
   },

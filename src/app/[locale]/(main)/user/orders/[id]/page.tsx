@@ -1,6 +1,6 @@
 import { UserNavigation } from "@/components/molecules"
 import { retrieveCustomer } from "@/lib/data/customer"
-import { Button, Card } from "@/components/atoms"
+import { Avatar, Button, Card } from "@/components/atoms"
 import Link from "next/link"
 import { ArrowLeftIcon } from "@/icons"
 import { OrderProductListItem } from "@/components/cells"
@@ -8,6 +8,7 @@ import { redirect } from "next/navigation"
 import { format } from "date-fns"
 import { OrderAddresses } from "@/components/cells"
 import { retrieveOrder } from "@/lib/data/orders"
+import { Chat } from "@/components/organisms/Chat/Chat"
 
 export default async function UserPage({
   params,
@@ -20,6 +21,8 @@ export default async function UserPage({
   const order = await retrieveOrder(id)
 
   if (!user || !order) return redirect("/user")
+
+  const { seller } = order
 
   return (
     <main className="container">
@@ -37,6 +40,17 @@ export default async function UserPage({
           </Link>
           <h1 className="heading-md uppercase">Order {id}</h1>
           <div className="w-full max-w-full">
+            <div className="flex items-center justify-between text-secondary border border-primary py-4 px-4 rounded-sm w-full">
+              <div className="flex items-center gap-2">
+                <Avatar src={seller.photo} size="large" />
+                <h2 className="heading-sm uppercase  text-primary">
+                  {seller.name}
+                </h2>
+              </div>
+              <div className="flex justify-end">
+                <Chat user={user} seller={seller} />
+              </div>
+            </div>
             <div className="flex items-center justify-between text-secondary border border-primary bg-component-secondary py-6 px-4 rounded-sm w-full ">
               <div className="flex items-center">
                 <h2 className="heading-sm uppercase text-secondary">

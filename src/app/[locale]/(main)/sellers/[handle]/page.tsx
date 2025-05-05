@@ -1,5 +1,6 @@
 import { SellerTabs } from "@/components/organisms"
 import { SellerPageHeader } from "@/components/sections"
+import { retrieveCustomer } from "@/lib/data/customer"
 import { getSellerByHandle } from "@/lib/data/seller"
 
 export default async function SellerPage({
@@ -11,6 +12,8 @@ export default async function SellerPage({
 
   const seller = await getSellerByHandle(handle)
 
+  const user = await retrieveCustomer()
+
   const tab = "products"
 
   if (!seller) {
@@ -19,7 +22,7 @@ export default async function SellerPage({
 
   return (
     <main className="container">
-      <SellerPageHeader seller={seller} />
+      <SellerPageHeader seller={seller} user={user} />
       <SellerTabs
         tab={tab}
         seller_id={seller.id}

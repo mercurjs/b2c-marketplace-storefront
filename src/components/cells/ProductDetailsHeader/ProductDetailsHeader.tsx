@@ -7,8 +7,9 @@ import { ProductVariants } from "@/components/molecules"
 import useGetAllSearchParams from "@/hooks/useGetAllSearchParams"
 import { getProductPrice } from "@/lib/helpers/get-product-price"
 import { useState } from "react"
-import { BaseHit, Hit } from "instantsearch.js"
 import { addToCart } from "@/lib/data/cart"
+import { Chat } from "@/components/organisms/Chat/Chat"
+import clsx from "clsx"
 
 const optionsAsKeymap = (
   variantOptions: HttpTypes.StoreProductVariant["options"]
@@ -29,9 +30,11 @@ const optionsAsKeymap = (
 export const ProductDetailsHeader = ({
   product,
   locale,
+  user,
 }: {
   product: HttpTypes.StoreProduct
   locale: string
+  user: HttpTypes.StoreCustomer | null
 }) => {
   const [isAdding, setIsAdding] = useState(false)
   const { allSearchParams } = useGetAllSearchParams()
@@ -125,9 +128,14 @@ export const ProductDetailsHeader = ({
         {variantStock ? "ADD TO CART" : "OUT OF STOCK"}
       </Button>
       {/* Seller message */}
-      <Button className="w-full uppercase py-3 " size="large" variant="tonal">
-        Write to seller
-      </Button>
+
+      {user && (
+        <Chat
+          user={user}
+          seller={product.seller}
+          buttonClassNames="w-full uppercase"
+        />
+      )}
     </div>
   )
 }
