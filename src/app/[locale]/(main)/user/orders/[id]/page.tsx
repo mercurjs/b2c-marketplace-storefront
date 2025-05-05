@@ -9,6 +9,8 @@ import { format } from "date-fns"
 import { OrderAddresses } from "@/components/cells"
 import { retrieveOrder } from "@/lib/data/orders"
 import { Chat } from "@/components/organisms/Chat/Chat"
+import { SellerProps } from "@/types/seller"
+import { HttpTypes } from "@medusajs/types"
 
 export default async function UserPage({
   params,
@@ -18,7 +20,9 @@ export default async function UserPage({
   const { id } = await params
 
   const user = await retrieveCustomer()
-  const order = await retrieveOrder(id)
+  const order = (await retrieveOrder(id)) as HttpTypes.StoreOrder & {
+    seller: SellerProps
+  }
 
   if (!user || !order) return redirect("/user")
 
