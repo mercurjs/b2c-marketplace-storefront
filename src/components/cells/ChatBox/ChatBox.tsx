@@ -15,6 +15,7 @@ type ChatProps = {
     name: string
     email: string
     photoUrl?: string
+    role: string
   }
 }
 

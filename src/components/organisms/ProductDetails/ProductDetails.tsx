@@ -10,7 +10,6 @@ import {
 import { seller } from "@/data/sellerMock"
 import { singleProduct } from "@/data/singleProductMock"
 import { retrieveCustomer } from "@/lib/data/customer"
-import { SingleProductSeller } from "@/types/product"
 import { SellerProps } from "@/types/seller"
 import { HttpTypes } from "@medusajs/types"
 
