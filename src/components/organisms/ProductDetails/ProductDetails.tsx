@@ -17,7 +17,7 @@ export const ProductDetails = async ({
   product,
   locale,
 }: {
-  product: HttpTypes.StoreProduct & { seller: SellerProps }
+  product: HttpTypes.StoreProduct & { seller?: SellerProps }
   locale: string
 }) => {
   const user = await retrieveCustomer()

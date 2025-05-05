@@ -33,7 +33,7 @@ export const ProductDetailsHeader = ({
   locale,
   user,
 }: {
-  product: HttpTypes.StoreProduct & { seller: SellerProps }
+  product: HttpTypes.StoreProduct & { seller?: SellerProps }
   locale: string
   user: HttpTypes.StoreCustomer | null
 }) => {
@@ -130,7 +130,7 @@ export const ProductDetailsHeader = ({
       </Button>
       {/* Seller message */}
 
-      {user && (
+      {user && product.seller && (
         <Chat
           user={user}
           seller={product.seller}
