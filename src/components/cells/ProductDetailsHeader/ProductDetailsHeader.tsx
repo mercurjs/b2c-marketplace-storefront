@@ -9,7 +9,6 @@ import { getProductPrice } from "@/lib/helpers/get-product-price"
 import { useState } from "react"
 import { addToCart } from "@/lib/data/cart"
 import { Chat } from "@/components/organisms/Chat/Chat"
-import clsx from "clsx"
 import { SellerProps } from "@/types/seller"
 
 const optionsAsKeymap = (

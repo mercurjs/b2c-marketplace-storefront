@@ -2,11 +2,16 @@
 
 import { Badge, Button } from "@/components/atoms"
 import { CartDropdownItem, Dropdown } from "@/components/molecules"
+import { usePrevious } from "@/hooks/usePrevious"
 import { Link } from "@/i18n/routing"
 import { CartIcon } from "@/icons"
 import { convertToLocale } from "@/lib/helpers/money"
 import { HttpTypes } from "@medusajs/types"
 import { useEffect, useState } from "react"
+
+const getItemCount = (cart: HttpTypes.StoreCart | null) => {
+  return cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0
+}
 
 export const CartDropdown = ({
   cart,
@@ -14,7 +19,9 @@ export const CartDropdown = ({
   cart: HttpTypes.StoreCart | null
 }) => {
   const [open, setOpen] = useState(false)
-  const cartItemsCount = (cart && cart.items?.length) || 0
+
+  const previousItemCount = usePrevious(getItemCount(cart))
+  const cartItemsCount = (cart && getItemCount(cart)) || 0
 
   const total = convertToLocale({
     amount: cart?.item_total || 0,
@@ -22,18 +29,20 @@ export const CartDropdown = ({
   })
 
   useEffect(() => {
-    if (cart?.items?.length! > 0) {
+    if (open) {
+      const timeout = setTimeout(() => {
+        setOpen(false)
+      }, 2000)
+
+      return () => clearTimeout(timeout)
+    }
+  }, [open])
+
+  useEffect(() => {
+    if (previousItemCount !== undefined && cartItemsCount > previousItemCount) {
       setOpen(true)
     }
-
-    const timeout = setTimeout(() => {
-      setOpen(false)
-    }, 2000)
-
-    return () => {
-      clearTimeout(timeout)
-    }
-  }, [cart])
+  }, [cartItemsCount, previousItemCount])
 
   return (
     <div
