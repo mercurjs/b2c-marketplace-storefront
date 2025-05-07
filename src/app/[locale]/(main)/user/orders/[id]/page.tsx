@@ -42,7 +42,7 @@ export default async function UserPage({
               All orders
             </Button>
           </Link>
-          <h1 className="heading-md uppercase">Order {id}</h1>
+          <h1 className="heading-md uppercase">Order #{order.display_id}</h1>
           <div className="w-full max-w-full">
             <div className="flex items-center justify-between text-secondary border border-primary py-4 px-4 rounded-sm w-full">
               <div className="flex items-center gap-2">
@@ -52,7 +52,18 @@ export default async function UserPage({
                 </h2>
               </div>
               <div className="flex justify-end">
-                <Chat user={user} seller={seller} />
+                <Chat
+                  user={user}
+                  seller={seller}
+                  order_id={order.id}
+                  subject={`Order #${order.display_id}: ${
+                    order.items?.[0]?.product_title
+                  } ${
+                    order.items?.length && order.items.length > 1
+                      ? `+${order.items.length - 1}`
+                      : ""
+                  }`}
+                />
               </div>
             </div>
             <div className="flex items-center justify-between text-secondary border border-primary bg-component-secondary py-6 px-4 rounded-sm w-full ">

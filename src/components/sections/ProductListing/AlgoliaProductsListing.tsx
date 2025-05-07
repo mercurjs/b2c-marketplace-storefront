@@ -37,7 +37,9 @@ export const AlgoliaProductsListing = ({
   const query: string = searchParamas.get("query") || ""
 
   const filters = category_id
-    ? `categories.id:${category_id} collections.id:${collection_id} ${facetFilters}`
+    ? `categories.id:${category_id} ${
+        collection_id !== undefined ? `collections.id:${collection_id}` : ""
+      } ${facetFilters}`
     : `${facetFilters.replace("AND", "")}`
 
   return (

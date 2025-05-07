@@ -13,11 +13,17 @@ export const Chat = ({
   seller,
   buttonClassNames,
   icon,
+  product,
+  subject,
+  order_id,
 }: {
   user: HttpTypes.StoreCustomer | null
   seller: SellerProps
   buttonClassNames?: string
   icon?: boolean
+  product?: HttpTypes.StoreProduct
+  subject?: string
+  order_id?: string
 }) => {
   const [modal, setModal] = useState(false)
 
@@ -34,6 +40,9 @@ export const Chat = ({
         <Modal heading="Chat" onClose={() => setModal(false)}>
           <div className="px-4">
             <ChatBox
+              order_id={order_id}
+              product_id={product?.id}
+              subject={subject || product?.title || null}
               currentUser={{
                 id: user?.id || "",
                 name: `${user?.first_name} ${user?.last_name}` || "",

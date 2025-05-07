@@ -134,6 +134,7 @@ export const ProductDetailsHeader = ({
           user={user}
           seller={product.seller}
           buttonClassNames="w-full uppercase"
+          product={product}
         />
       )}
     </div>

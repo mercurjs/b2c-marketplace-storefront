@@ -10,6 +10,7 @@ import { convertToLocale } from "@/lib/helpers/money"
 
 export const ParcelAccordion = ({
   orderId,
+  orderDisplayId,
   createdAt,
   total,
   currency_code = "eur",
@@ -17,6 +18,7 @@ export const ParcelAccordion = ({
   defaultOpen = false,
 }: {
   orderId: string
+  orderDisplayId: string
   createdAt: string | Date
   total: number
   currency_code?: string
@@ -46,12 +48,7 @@ export const ParcelAccordion = ({
         onClick={openHandler}
       >
         <div className="sm:col-span-4 flex flex-col lg:flex-row lg:items-center justify-between lg:gap-4 sm:pr-10">
-          <h2 className="heading-sm truncate">
-            ORDER{" "}
-            <span className="lg:block xl:inline-block">
-              {orderId.replace("order_", "")}
-            </span>
-          </h2>
+          <h2 className="heading-sm truncate">ORDER {orderDisplayId}</h2>
           <h2 className="label-md">
             Order date:{" "}
             <span className="text-primary lg:block xl:inline-block">

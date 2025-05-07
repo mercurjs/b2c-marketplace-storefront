@@ -4,6 +4,9 @@ import { useEffect, useRef } from "react"
 import Talk from "talkjs"
 
 type ChatProps = {
+  order_id?: string
+  product_id?: string
+  subject?: string | null
   currentUser: {
     id: string
     name: string
@@ -19,7 +22,13 @@ type ChatProps = {
   }
 }
 
-export function ChatBox({ currentUser, supportUser }: ChatProps) {
+export function ChatBox({
+  currentUser,
+  supportUser,
+  subject,
+  order_id,
+  product_id,
+}: ChatProps) {
   const chatboxRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -32,9 +41,15 @@ export function ChatBox({ currentUser, supportUser }: ChatProps) {
         me,
       })
 
-      const conversation = session.getOrCreateConversation(
-        Talk.oneOnOneId(me, other)
-      )
+      const conversationId = `product-${product_id || order_id}-${me.id}-${
+        other.id
+      }`
+
+      const conversation = session.getOrCreateConversation(conversationId)
+
+      if (subject) {
+        conversation.subject = subject
+      }
 
       conversation.setParticipant(me)
       conversation.setParticipant(other)

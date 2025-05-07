@@ -10,7 +10,6 @@ export const SellerHeading = ({
   seller: SellerProps
   user: HttpTypes.StoreCustomer | null
 }) => {
-  console.log({ user, seller })
   return (
     <div className="flex justify-between flex-col lg:flex-row">
       <SellerInfo seller={seller} />
