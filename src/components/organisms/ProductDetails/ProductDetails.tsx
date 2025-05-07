@@ -7,10 +7,11 @@ import {
   ProductDetailsShipping,
   ProductPageDetails,
 } from "@/components/cells"
-import { seller } from "@/data/sellerMock"
 import { singleProduct } from "@/data/singleProductMock"
 import { retrieveCustomer } from "@/lib/data/customer"
+import { getUserWishlists } from "@/lib/data/wishlist"
 import { SellerProps } from "@/types/seller"
+import { Wishlist } from "@/types/wishlist"
 import { HttpTypes } from "@medusajs/types"
 
 export const ProductDetails = async ({
@@ -21,9 +22,21 @@ export const ProductDetails = async ({
   locale: string
 }) => {
   const user = await retrieveCustomer()
+
+  let wishlist: Wishlist[] = []
+  if (user) {
+    const response = await getUserWishlists()
+    wishlist = response.wishlists
+  }
+
   return (
     <div>
-      <ProductDetailsHeader product={product} locale={locale} user={user} />
+      <ProductDetailsHeader
+        product={product}
+        locale={locale}
+        user={user}
+        wishlist={wishlist}
+      />
       <ProductPageDetails details={product?.description || ""} />
       <ProductDetailsMeasurements measurements={singleProduct.measurements} />
       <ProductDetailsShipping />

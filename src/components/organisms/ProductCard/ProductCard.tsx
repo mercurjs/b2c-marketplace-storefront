@@ -2,14 +2,13 @@
 import Image from "next/image"
 
 import { Button } from "@/components/atoms"
-import { HeartIcon } from "@/icons"
-import tailwindConfig from "../../../../tailwind.config"
 import { HttpTypes } from "@medusajs/types"
 import { Link } from "@/i18n/routing"
 import { getSellerProductPrice } from "@/lib/helpers/get-seller-product-price"
 import { getProductPrice } from "@/lib/helpers/get-product-price"
 import { BaseHit, Hit } from "instantsearch.js"
 import clsx from "clsx"
+import { WishlistButton } from "@/components/cells/WishlistButton/WishlistButton"
 
 export const ProductCard = ({
   product,
@@ -37,9 +36,9 @@ export const ProductCard = ({
       )}
     >
       <div className="relative w-full h-full bg-primary aspect-square">
-        <div className="absolute right-3 top-3 lg:hidden z-10 cursor-pointer">
-          <HeartIcon color={tailwindConfig.theme.extend.colors.tertiary} />
-        </div>
+        {/* <div className="absolute right-3 top-3 z-10 cursor-pointer">
+          <WishlistButton productId={product.id} />
+        </div> */}
         <Link href={`/products/${product.handle}`}>
           <div className="overflow-hidden rounded-sm w-full h-full flex justify-center align-center ">
             {product.thumbnail ? (

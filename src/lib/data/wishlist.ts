@@ -1,43 +1,44 @@
+"use server"
+import { Wishlist } from "@/types/wishlist"
 import { sdk } from "../config"
 import { getAuthHeaders } from "./cookies"
-
-const MEDUSA_BACKEND_URL =
-  process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
+import { revalidatePath } from "next/cache"
 
 export const getUserWishlists = async () => {
   const headers = {
     ...(await getAuthHeaders()),
+    "Content-Type": "application/json",
+    "x-publishable-api-key": process.env
+      .NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY as string,
   }
-  return fetch(`${MEDUSA_BACKEND_URL}/store/wishlists`, {
-    cache: "no-cache",
-    headers,
-    method: "GET",
-  }).then((res) => {
-    console.log(res)
-    return []
-  })
-  //   return sdk.client
-  //     .fetch(`/store/wishlists`, {
-  //       cache: "no-cache",
-  //       headers,
-  //       method: "GET",
-  //     })
-  //     .then((res) => {
-  //       console.log(res)
-  //       return res
-  //     })
+
+  return sdk.client
+    .fetch<{ wishlists: Wishlist[]; count: number }>(`/store/wishlist`, {
+      cache: "no-cache",
+      headers,
+      method: "GET",
+    })
+    .then((res) => {
+      return res
+    })
 }
 
-export const addWishlistItem = async (
-  reference_id: string,
-  reference: string
-) => {
+export const addWishlistItem = async ({
+  reference_id,
+  reference,
+}: {
+  reference_id: string
+  reference: "product"
+}) => {
   const headers = {
     ...(await getAuthHeaders()),
+    "Content-Type": "application/json",
+    "x-publishable-api-key": process.env
+      .NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY as string,
   }
 
   const response = await fetch(
-    `${process.env.MEDUSA_BACKEND_URL}/store/reviews`,
+    `${process.env.MEDUSA_BACKEND_URL}/store/wishlist`,
     {
       headers,
       method: "POST",
@@ -46,7 +47,32 @@ export const addWishlistItem = async (
         reference_id,
       }),
     }
-  )
+  ).then(() => {
+    revalidatePath("/wishlist")
+  })
+}
 
-  return response.json()
+export const removeWishlistItem = async ({
+  wishlist_id,
+  product_id,
+}: {
+  wishlist_id: string
+  product_id: string
+}) => {
+  const headers = {
+    ...(await getAuthHeaders()),
+    "Content-Type": "application/json",
+    "x-publishable-api-key": process.env
+      .NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY as string,
+  }
+
+  const response = await fetch(
+    `${process.env.MEDUSA_BACKEND_URL}/store/wishlist/${wishlist_id}/product/${product_id}`,
+    {
+      headers,
+      method: "DELETE",
+    }
+  ).then(() => {
+    revalidatePath("/wishlist")
+  })
 }

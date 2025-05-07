@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "@/components/atoms"
-import { HeartIcon } from "@/icons"
 import { HttpTypes } from "@medusajs/types"
 import { ProductVariants } from "@/components/molecules"
 import useGetAllSearchParams from "@/hooks/useGetAllSearchParams"
@@ -10,6 +9,8 @@ import { useState } from "react"
 import { addToCart } from "@/lib/data/cart"
 import { Chat } from "@/components/organisms/Chat/Chat"
 import { SellerProps } from "@/types/seller"
+import { WishlistButton } from "../WishlistButton/WishlistButton"
+import { Wishlist } from "@/types/wishlist"
 
 const optionsAsKeymap = (
   variantOptions: HttpTypes.StoreProductVariant["options"]
@@ -31,10 +32,12 @@ export const ProductDetailsHeader = ({
   product,
   locale,
   user,
+  wishlist,
 }: {
   product: HttpTypes.StoreProduct & { seller?: SellerProps }
   locale: string
   user: HttpTypes.StoreCustomer | null
+  wishlist?: Wishlist[]
 }) => {
   const [isAdding, setIsAdding] = useState(false)
   const { allSearchParams } = useGetAllSearchParams()
@@ -107,12 +110,7 @@ export const ProductDetailsHeader = ({
         </div>
         <div>
           {/* Add to Wishlist */}
-          <Button
-            variant="tonal"
-            className="w-10 h-10 p-0 flex items-center justify-center"
-          >
-            <HeartIcon size={20} />
-          </Button>
+          <WishlistButton productId={product.id} wishlist={wishlist} />
         </div>
       </div>
       {/* Product Variants */}

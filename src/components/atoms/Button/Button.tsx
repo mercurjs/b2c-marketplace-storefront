@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils"
 
-import { LoaderIcon } from "@/icons"
+import Spinner from "@/icons/spinner"
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "filled" | "tonal" | "text" | "destructive"
@@ -13,6 +13,7 @@ export function Button({
   variant = "filled",
   size = "small",
   loading = false,
+  disabled = false,
   className,
   ...props
 }: ButtonProps) {
@@ -38,6 +39,7 @@ export function Button({
 
   return (
     <button
+      disabled={disabled}
       className={cn(
         variantClasses[variant],
         sizeClasses[size],
@@ -46,7 +48,7 @@ export function Button({
       )}
       {...props}
     >
-      {loading ? <LoaderIcon /> : children}
+      {loading ? <Spinner /> : children}
     </button>
   )
 }
