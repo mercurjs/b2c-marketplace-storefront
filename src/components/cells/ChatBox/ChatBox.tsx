@@ -12,6 +12,7 @@ type ChatProps = {
     name: string
     email: string | null
     photoUrl?: string
+    role: string
   }
   supportUser: {
     id: string
@@ -32,11 +33,13 @@ export function ChatBox({
   const chatboxRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    let session: Talk.Session | undefined
+
     Talk.ready.then(() => {
       const me = new Talk.User(currentUser)
       const other = new Talk.User(supportUser)
 
-      const session = new Talk.Session({
+      session = new Talk.Session({
         appId: process.env.NEXT_PUBLIC_TALKJS_APP_ID || "",
         me,
       })
@@ -56,8 +59,12 @@ export function ChatBox({
 
       const chatbox = session.createChatbox()
       chatbox.select(conversation)
-      chatbox.mount(chatboxRef.current!)
+      if (chatboxRef.current) {
+        chatbox.mount(chatboxRef.current)
+      }
     })
+
+    return () => session?.destroy()
   }, [currentUser, supportUser])
 
   return <div className="w-full h-[500px]" ref={chatboxRef} />

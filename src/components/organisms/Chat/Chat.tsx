@@ -53,13 +53,14 @@ export const Chat = ({
                 id: user?.id || "",
                 name: `${user?.first_name} ${user?.last_name}` || "",
                 email: user?.email || null,
-                photoUrl: seller.photo || "/images/avatar.png",
+                photoUrl: "/talkjs-placeholder.jpg",
+                role: "customer",
               }}
               supportUser={{
                 id: seller?.id || "",
                 name: seller?.name || "",
                 email: seller?.email || null,
-                photoUrl: seller.photo || "/images/avatar.png",
+                photoUrl: seller.photo || "/talkjs-placeholder.jpg",
                 role: "seller",
               }}
             />

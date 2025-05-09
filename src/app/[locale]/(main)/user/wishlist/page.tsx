@@ -6,6 +6,7 @@ import Link from "next/link"
 import { Button } from "@/components/atoms"
 import { WishlistItem } from "@/components/cells"
 import { getUserWishlists } from "@/lib/data/wishlist"
+import { HttpTypes } from "@medusajs/types"
 
 export default async function Wishlist() {
   const user = await retrieveCustomer()
@@ -40,11 +41,16 @@ export default async function Wishlist() {
           <div className="flex justify-between items-center">
             <p>{count} listings</p>
           </div>
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap justify-center gap-4">
             {wishlist?.[0].products?.map((product) => (
               <WishlistItem
                 key={product.id}
-                product={product}
+                product={
+                  product as HttpTypes.StoreProduct & {
+                    calculated_amount: number
+                    currency_code: string
+                  }
+                }
                 wishlist={wishlist}
                 user={user}
               />
