@@ -31,7 +31,6 @@ export const ProductDetailsPage = async ({
           heading="More from this seller"
           products={prod.seller?.products}
         />
-        {/* <HomeProductSection heading="You might also like" /> */}
       </div>
     </>
   )

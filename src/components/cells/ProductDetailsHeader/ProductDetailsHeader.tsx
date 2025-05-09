@@ -127,7 +127,7 @@ export const ProductDetailsHeader = ({
         className="w-full uppercase mb-4 py-3 flex justify-center"
         size="large"
       >
-        {variantStock ? "ADD TO CART" : "OUT OF STOCK"}
+        {variantStock && variantHasPrice ? "ADD TO CART" : "OUT OF STOCK"}
       </Button>
       {/* Seller message */}
 
