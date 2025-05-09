@@ -19,7 +19,6 @@ export const getUserWishlists = async () => {
       method: "GET",
     })
     .then((res) => {
-      console.log({ res })
       return res
     })
 }
