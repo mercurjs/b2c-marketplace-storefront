@@ -8,6 +8,8 @@ import { HttpTypes } from "@medusajs/types"
 import { SellerProps } from "@/types/seller"
 import { MessageIcon } from "@/icons"
 
+const TALKJS_APP_ID = process.env.NEXT_PUBLIC_TALKJS_APP_ID || ""
+
 export const Chat = ({
   user,
   seller,
@@ -26,6 +28,10 @@ export const Chat = ({
   order_id?: string
 }) => {
   const [modal, setModal] = useState(false)
+
+  if (!TALKJS_APP_ID) {
+    return null
+  }
 
   return (
     <>
