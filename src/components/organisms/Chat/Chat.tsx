@@ -46,13 +46,13 @@ export const Chat = ({
               currentUser={{
                 id: user?.id || "",
                 name: `${user?.first_name} ${user?.last_name}` || "",
-                email: user?.email || "",
+                email: user?.email || null,
                 photoUrl: seller.photo || "/images/avatar.png",
               }}
               supportUser={{
                 id: seller?.id || "",
                 name: seller?.name || "",
-                email: seller?.email || "",
+                email: seller?.email || null,
                 photoUrl: seller.photo || "/images/avatar.png",
                 role: "seller",
               }}

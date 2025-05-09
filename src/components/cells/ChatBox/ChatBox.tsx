@@ -10,13 +10,13 @@ type ChatProps = {
   currentUser: {
     id: string
     name: string
-    email: string
+    email: string | null
     photoUrl?: string
   }
   supportUser: {
     id: string
     name: string
-    email: string
+    email: string | null
     photoUrl?: string
     role: string
   }
