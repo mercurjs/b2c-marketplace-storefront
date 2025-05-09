@@ -4,7 +4,6 @@ import { isEmpty } from "lodash"
 import { Wishlist as WishlistType } from "@/types/wishlist"
 import Link from "next/link"
 import { Button } from "@/components/atoms"
-import { SelectField } from "@/components/molecules"
 import { WishlistItem } from "@/components/cells"
 import { getUserWishlists } from "@/lib/data/wishlist"
 
@@ -23,14 +22,6 @@ export default async function Wishlist() {
     redirect("/user")
   }
 
-  const sortOptions = [
-    { label: "Date added", value: "Date added" },
-    {
-      label: "Last updated",
-      value: "Last updated",
-    },
-  ]
-
   return (
     <main className="container">
       {isEmpty(wishlist?.[0]?.products) ? (
@@ -48,10 +39,6 @@ export default async function Wishlist() {
           <h2 className="heading-lg text-primary uppercase">Wishlist</h2>
           <div className="flex justify-between items-center">
             <p>{count} listings</p>
-            <label className="flex items-center gap-2">
-              <span className="label-sm">Sort by:</span>
-              <SelectField options={sortOptions} className="w-36" />
-            </label>
           </div>
           <div className="flex flex-wrap">
             {wishlist?.[0].products?.map((product) => (
