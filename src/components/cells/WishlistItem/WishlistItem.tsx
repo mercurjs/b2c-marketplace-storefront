@@ -7,13 +7,15 @@ import { Wishlist } from "@/types/wishlist"
 export const WishlistItem = ({
   product,
   wishlist,
+  user,
 }: {
   product: HttpTypes.StoreProduct
   wishlist: Wishlist[]
+  user?: HttpTypes.StoreCustomer | null
 }) => (
   <div className="relative">
     <div className="absolute right-3 top-3 z-10 cursor-pointer">
-      <WishlistButton productId={product.id} wishlist={wishlist} />
+      <WishlistButton productId={product.id} wishlist={wishlist} user={user} />
     </div>
     <Link
       href={`/products/${product.handle}`}

@@ -110,7 +110,11 @@ export const ProductDetailsHeader = ({
         </div>
         <div>
           {/* Add to Wishlist */}
-          <WishlistButton productId={product.id} wishlist={wishlist} />
+          <WishlistButton
+            productId={product.id}
+            wishlist={wishlist}
+            user={user}
+          />
         </div>
       </div>
       {/* Product Variants */}

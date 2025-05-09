@@ -33,7 +33,7 @@ export default async function Wishlist() {
 
   return (
     <main className="container">
-      {isEmpty(wishlist?.[0].products) ? (
+      {isEmpty(wishlist?.[0]?.products) ? (
         <div className="w-96 mx-auto flex flex-col items-center justify-center">
           <h2 className="heading-lg text-primary uppercase mb-2">Wishlist</h2>
           <p className="text-lg text-secondary mb-6">
@@ -59,6 +59,7 @@ export default async function Wishlist() {
                 key={product.id}
                 product={product}
                 wishlist={wishlist}
+                user={user}
               />
             ))}
           </div>

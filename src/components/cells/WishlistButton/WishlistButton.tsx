@@ -5,13 +5,16 @@ import { HeartFilledIcon, HeartIcon } from "@/icons"
 import { addWishlistItem, removeWishlistItem } from "@/lib/data/wishlist"
 import { Wishlist } from "@/types/wishlist"
 import { useEffect, useState } from "react"
+import { HttpTypes } from "@medusajs/types"
 
 export const WishlistButton = ({
   productId,
   wishlist,
+  user,
 }: {
   productId: string
   wishlist?: Wishlist[]
+  user?: HttpTypes.StoreCustomer | null
 }) => {
   const [isWishlistAdding, setIsWishlistAdding] = useState(false)
   const [isWishlisted, setIsWishlisted] = useState(
@@ -24,7 +27,7 @@ export const WishlistButton = ({
     )
   }, [wishlist, productId])
 
-  if (!wishlist?.length) {
+  if (!user) {
     return null
   }
 
