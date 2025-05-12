@@ -4,6 +4,7 @@ import { HttpTypes } from "@medusajs/types"
 import NativeSelect, {
   NativeSelectProps,
 } from "@/components/molecules/NativeSelect/NativeSelect"
+import clsx from "clsx"
 
 const CountrySelect = forwardRef<
   HTMLSelectElement,
@@ -36,6 +37,7 @@ const CountrySelect = forwardRef<
         ref={innerRef}
         placeholder={placeholder}
         defaultValue={defaultValue}
+        className={clsx("w-full h-12 flex items-center bg-component-secondary")}
         {...props}
       >
         {countryOptions?.map(({ value, label }, index) => (

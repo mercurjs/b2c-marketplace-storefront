@@ -98,18 +98,20 @@ const ShippingAddress = ({
           <p className="text-small-regular">
             {`Hi ${customer.first_name}, do you want to use one of your saved addresses?`}
           </p>
-          <AddressSelect
-            addresses={customer.addresses}
-            addressInput={
-              mapKeys(formData, (_, key) =>
-                key.replace("shipping_address.", "")
-              ) as HttpTypes.StoreCartAddress
-            }
-            onSelect={setFormAddress}
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4">
+            <AddressSelect
+              addresses={customer.addresses}
+              addressInput={
+                mapKeys(formData, (_, key) =>
+                  key.replace("shipping_address.", "")
+                ) as HttpTypes.StoreCartAddress
+              }
+              onSelect={setFormAddress}
+            />
+          </div>
         </Container>
       )}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Input
           label="First name"
           name="shipping_address.first_name"
@@ -181,7 +183,7 @@ const ShippingAddress = ({
           data-testid="shipping-province-input"
         />
       </div>
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-2 gap-4 my-4">
         <Input
           label="Email"
           name="email"
