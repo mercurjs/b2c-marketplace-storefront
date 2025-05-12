@@ -27,9 +27,10 @@ async function Category({
 }: {
   params: Promise<{
     category: string
+    locale: string
   }>
 }) {
-  const { category: handle } = await params
+  const { category: handle, locale } = await params
 
   const category = await getCategoryByHandle([handle])
 
@@ -52,7 +53,7 @@ async function Category({
         {!ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
           <ProductListing category_id={category.id} showSidebar />
         ) : (
-          <AlgoliaProductsListing category_id={category.id} />
+          <AlgoliaProductsListing category_id={category.id} locale={locale} />
         )}
       </Suspense>
     </main>

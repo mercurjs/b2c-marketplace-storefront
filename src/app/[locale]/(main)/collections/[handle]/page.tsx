@@ -11,9 +11,9 @@ const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
 const SingleCollectionsPage = async ({
   params,
 }: {
-  params: Promise<{ handle: string }>
+  params: Promise<{ handle: string; locale: string }>
 }) => {
-  const { handle } = await params
+  const { handle, locale } = await params
 
   const collection = await getCollectionByHandle(handle)
 
@@ -38,7 +38,10 @@ const SingleCollectionsPage = async ({
         {!ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
           <ProductListing collection_id={collection.id} showSidebar />
         ) : (
-          <AlgoliaProductsListing collection_id={collection.id} />
+          <AlgoliaProductsListing
+            collection_id={collection.id}
+            locale={locale}
+          />
         )}
       </Suspense>
     </main>

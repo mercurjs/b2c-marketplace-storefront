@@ -26,9 +26,11 @@ const selectOptions = [
 export const AlgoliaProductsListing = ({
   category_id,
   collection_id,
+  locale = process.env.NEXT_PUBLIC_DEFAULT_REGION,
 }: {
   category_id?: string
   collection_id?: string
+  locale?: string
 }) => {
   const searchParamas = useSearchParams()
 
@@ -37,7 +39,7 @@ export const AlgoliaProductsListing = ({
   const query: string = searchParamas.get("query") || ""
 
   const filters = category_id
-    ? `categories.id:${category_id} ${
+    ? `supported_countries:${locale} categories.id:${category_id} ${
         collection_id !== undefined ? `collections.id:${collection_id}` : ""
       } ${facetFilters}`
     : `${facetFilters.replace("AND", "")}`
