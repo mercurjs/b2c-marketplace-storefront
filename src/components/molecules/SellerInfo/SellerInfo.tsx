@@ -3,7 +3,14 @@ import { SellerAvatar } from "@/components/cells/SellerAvatar/SellerAvatar"
 import { SellerProps } from "@/types/seller"
 
 export const SellerInfo = ({ seller }: { seller: SellerProps }) => {
-  const { photo, name, rating, reviewCount } = seller
+  const { photo, name, reviews } = seller
+
+  const reviewCount = reviews ? reviews?.length : 0
+
+  const rating =
+    reviews && reviews.length > 0
+      ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+      : 0
 
   return (
     <div className="flex gap-4">

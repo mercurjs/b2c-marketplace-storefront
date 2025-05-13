@@ -49,7 +49,9 @@ export const listOrders = async (
   return sdk.client
     .fetch<{
       orders: Array<
-        HttpTypes.StoreOrder & { seller: { id: string; name: string } }
+        HttpTypes.StoreOrder & {
+          seller: { id: string; name: string; reviews?: any[] }
+        }
       >
     }>(`/store/orders`, {
       method: "GET",

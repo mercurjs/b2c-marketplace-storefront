@@ -22,8 +22,9 @@ export interface SingleProductReview {
   id: string
   rating: number
   username: string
-  date: string
-  text: string
+  created_at: string
+  customer: { first_name: string; last_name: string }
+  customer_note: string
   image: string
 }
 

@@ -19,10 +19,10 @@ export const SellerTabs = ({
     //   label: "sold",
     //   link: `/sellers/${seller}/sold`,
     // },
-    // {
-    //   label: "reviews",
-    //   link: `/sellers/${seller_handle}/reviews`,
-    // },
+    {
+      label: "reviews",
+      link: `/sellers/${seller_handle}/reviews`,
+    },
   ]
 
   return (
@@ -38,11 +38,11 @@ export const SellerTabs = ({
           <ProductListing />
         </Suspense>
       </TabsContent> */}
-      {/* <TabsContent value="reviews" activeTab={tab}>
+      <TabsContent value="reviews" activeTab={tab}>
         <Suspense>
-          <SellerReviewTab />
+          <SellerReviewTab seller_handle={seller_handle} />
         </Suspense>
-      </TabsContent> */}
+      </TabsContent>
     </div>
   )
 }

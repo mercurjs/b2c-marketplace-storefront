@@ -67,6 +67,8 @@ const CartPaymentSection = ({
   const paymentReady =
     (activeSession && cart?.shipping_methods.length !== 0) || paidByGiftcard
 
+  console.log({ activeSession })
+
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams)
@@ -127,7 +129,7 @@ const CartPaymentSection = ({
           {!isOpen && paymentReady && <CheckCircleSolid />}
           Payment
         </Heading>
-        {!isOpen && paymentReady && (
+        {!isOpen && (
           <Text>
             <Button onClick={handleEdit} variant="tonal">
               Edit
@@ -189,6 +191,7 @@ const CartPaymentSection = ({
           <Button
             onClick={handleSubmit}
             variant="tonal"
+            loading={isLoading}
             disabled={
               (isStripe && !cardComplete) ||
               (!selectedPaymentMethod && !paidByGiftcard)

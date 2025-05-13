@@ -9,13 +9,12 @@ export const ProductDetailsSeller = ({ seller }: { seller?: SellerProps }) => {
   return (
     <div className="border rounded-sm">
       <div className="p-4">
-        <div className="flex justify-between">
-          <SellerInfo seller={seller} />
-
-          <Link href={`/sellers/${seller.handle}`}>
+        <Link href={`/sellers/${seller.handle}`}>
+          <div className="flex justify-between">
+            <SellerInfo seller={seller} />
             <CollapseIcon className="-rotate-90" />
-          </Link>
-        </div>
+          </div>
+        </Link>
       </div>
     </div>
   )

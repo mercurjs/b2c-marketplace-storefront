@@ -15,8 +15,7 @@ export type SellerProps = SellerAddress & {
   photo: string
   tax_id: string
   created_at: string
-  rating?: number
-  reviewCount?: number
+  reviews?: any[]
   products?: Product[]
   email?: string
 }

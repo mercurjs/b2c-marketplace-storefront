@@ -41,7 +41,11 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
         <ManualTestPaymentButton notReady={notReady} data-testid={dataTestId} />
       )
     default:
-      return <Button disabled>Select a payment method</Button>
+      return (
+        <Button disabled className="w-full">
+          Select a payment method
+        </Button>
+      )
   }
 }
 
@@ -139,6 +143,7 @@ const StripePaymentButton = ({
         disabled={disabled || notReady}
         onClick={handlePayment}
         loading={submitting}
+        className="w-full"
       >
         Place order
       </Button>
@@ -152,8 +157,6 @@ const StripePaymentButton = ({
 
 const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-
-  const router = useRouter()
 
   const onPaymentCompleted = async () => {
     await placeOrder().catch((err) => {

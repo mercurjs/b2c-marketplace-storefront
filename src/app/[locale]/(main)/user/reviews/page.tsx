@@ -12,17 +12,39 @@ export default async function Page() {
   const orders = await listOrders()
   const { reviews } = await getReviews()
 
+  const sellerReviews = reviews.filter(
+    (review) => review.reference === "seller"
+  )
+
+  const sellerOrderCounts = orders.reduce((acc, order) => {
+    const sellerId = order.seller.id
+    acc[sellerId] = (acc[sellerId] || 0) + 1
+    return acc
+  }, {} as Record<string, number>)
+
   if (!orders || !reviews) return null
 
   const reviewsToWrite = orders.reduce((acc: any[], order) => {
     if (!order.seller) return acc
 
-    const hasReview = reviews.some(
-      (review: any) => review.seller?.id === order.seller.id
-    )
+    const needReview = Object.entries(sellerOrderCounts).map(
+      ([sellerId, count]) => {
+        const reviewsCount = sellerReviews.filter(
+          (review) => review.seller.id === sellerId
+        ).length
+
+        let needReview = false
+
+        if (count > reviewsCount) {
+          needReview = true
+        }
+
+        return needReview
+      }
+    )[0]
 
     if (
-      !hasReview &&
+      needReview &&
       !acc.some((item) => item.seller?.id === order.seller.id)
     ) {
       acc.push({

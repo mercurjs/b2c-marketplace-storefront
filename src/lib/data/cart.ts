@@ -36,7 +36,8 @@ export async function retrieveCart(cartId?: string) {
       method: "GET",
       query: {
         fields:
-          "*items, *region, *items.product, *items.variant, *items.variant.options, items.variant.options.option.title, *items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name, *items.product.seller",
+          "*items,*region, *items.product, *items.variant, *items.variant.options, items.variant.options.option.title," +
+          "*items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name, *items.product.seller",
       },
       headers,
       cache: "no-cache",
@@ -268,6 +269,34 @@ export async function applyPromotions(codes: string[]) {
 
   return sdk.store.cart
     .update(cartId, { promo_codes: codes }, {}, headers)
+    .then(async () => {
+      const cartCacheTag = await getCacheTag("carts")
+      revalidateTag(cartCacheTag)
+    })
+    .catch(medusaError)
+}
+
+export async function deletePromotionCode(promoId: string) {
+  const cartId = await getCartId()
+
+  if (!cartId) {
+    throw new Error("No existing cart found")
+  }
+  const headers = {
+    ...(await getAuthHeaders()),
+    "Content-Type": "application/json",
+    "x-publishable-api-key": process.env
+      .NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY as string,
+  }
+
+  return fetch(
+    `${process.env.MEDUSA_BACKEND_URL}/store/carts/${cartId}/promotions`,
+    {
+      method: "DELETE",
+      body: JSON.stringify({ promo_codes: [promoId] }),
+      headers,
+    }
+  )
     .then(async () => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
