@@ -58,7 +58,7 @@ export default function CartPromotionCode({
           loading={isLoading}
           variant="tonal"
         >
-          Save
+          Use promotion code
         </Button>
       </div>
     </div>
