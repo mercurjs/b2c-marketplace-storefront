@@ -84,6 +84,7 @@ export const listProducts = async ({
 
       return {
         response: {
+          // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
           products: products.filter((prod) => prod?.seller),
           count,
         },
