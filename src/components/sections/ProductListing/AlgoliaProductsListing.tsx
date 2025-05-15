@@ -50,7 +50,7 @@ export const AlgoliaProductsListing = ({
 
   const sandboxfilters = `${
     category_id
-      ? ` AND categories.id:${category_id}${
+      ? `categories.id:${category_id}${
           collection_id !== undefined
             ? ` AND collections.id:${collection_id}`
             : ""
