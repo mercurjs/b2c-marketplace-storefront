@@ -6,9 +6,9 @@ import { getSellerByHandle } from "@/lib/data/seller"
 export default async function SellerReviewsPage({
   params,
 }: {
-  params: Promise<{ handle: string }>
+  params: Promise<{ handle: string; locale: string }>
 }) {
-  const { handle } = await params
+  const { handle, locale } = await params
 
   const seller = await getSellerByHandle(handle)
 
@@ -23,6 +23,7 @@ export default async function SellerReviewsPage({
         tab={tab}
         seller_id={seller.id}
         seller_handle={seller.handle}
+        locale={locale}
       />
     </main>
   )
