@@ -38,11 +38,17 @@ export const AlgoliaProductsListing = ({
   const page: number = +(searchParamas.get("page") || 1)
   const query: string = searchParamas.get("query") || ""
 
-  const filters = category_id
-    ? `supported_countries:${locale} categories.id:${category_id} ${
-        collection_id !== undefined ? `collections.id:${collection_id}` : ""
-      } ${facetFilters}`
-    : `${facetFilters.replace("AND", "")}`
+  const filters = `supported_countries:${locale}${
+    category_id
+      ? ` AND categories.id:${category_id}${
+          collection_id !== undefined
+            ? ` AND collections.id:${collection_id}`
+            : ""
+        } ${facetFilters}`
+      : ` ${facetFilters}`
+  }`
+
+  console.log(filters)
 
   return (
     <InstantSearchNext searchClient={client} indexName="products">

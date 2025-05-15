@@ -1,17 +1,22 @@
 import { Suspense } from "react"
 import { ProductListingSkeleton } from "../ProductListingSkeleton/ProductListingSkeleton"
-import { ProductListing } from "@/components/sections"
+import { AlgoliaProductsListing, ProductListing } from "@/components/sections"
 import { TabsContent, TabsList } from "@/components/molecules"
 import { SellerReviewTab } from "@/components/cells"
+
+const ALGOLIA_ID = process.env.NEXT_PUBLIC_ALGOLIA_ID
+const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
 
 export const SellerTabs = ({
   tab,
   seller_handle,
   seller_id,
+  locale,
 }: {
   tab: string
   seller_handle: string
   seller_id: string
+  locale: string
 }) => {
   const tabsList = [
     { label: "products", link: `/sellers/${seller_handle}/` },
@@ -31,6 +36,11 @@ export const SellerTabs = ({
       <TabsContent value="products" activeTab={tab}>
         <Suspense fallback={<ProductListingSkeleton />}>
           <ProductListing seller_id={seller_id} />
+          {/* {!ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
+            <ProductListing showSidebar seller_id={seller_id} />
+          ) : (
+            <AlgoliaProductsListing locale={locale} />
+          )} */}
         </Suspense>
       </TabsContent>
       {/* <TabsContent value="sold" activeTab={tab}>
