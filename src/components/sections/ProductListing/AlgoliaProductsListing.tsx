@@ -48,14 +48,22 @@ export const AlgoliaProductsListing = ({
       : ` ${facetFilters}`
   }`
 
-  console.log(filters)
+  const sandboxfilters = `${
+    category_id
+      ? ` AND categories.id:${category_id}${
+          collection_id !== undefined
+            ? ` AND collections.id:${collection_id}`
+            : ""
+        } ${facetFilters}`
+      : `${facetFilters.replace("AND", "")}`
+  }`
 
   return (
     <InstantSearchNext searchClient={client} indexName="products">
       <Configure
         query={query}
         hitsPerPage={PRODUCT_LIMIT}
-        filters={filters}
+        filters={sandboxfilters}
         page={page - 1}
       />
       <ProductsListing />

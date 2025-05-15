@@ -12,8 +12,9 @@ export const SellerReviewTab = async ({
 
   const rating =
     seller.reviews && seller.reviews.length > 0
-      ? seller.reviews.reduce((sum, r) => sum + r.rating, 0) /
-        seller.reviews.length
+      ? seller.reviews
+          .filter((rev) => rev !== null)
+          .reduce((sum, r) => sum + r.rating, 0) / seller.reviews.length
       : 0
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 mt-8">

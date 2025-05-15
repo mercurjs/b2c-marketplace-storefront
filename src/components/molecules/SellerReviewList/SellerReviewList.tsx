@@ -5,9 +5,11 @@ export const SellerReviewList = ({ reviews }: { reviews?: any[] }) => {
 
   return (
     <div className="mt-4 max-h-[654px] overflow-y-scroll no-scrollbar">
-      {reviews?.map((review) => (
-        <SellerReview key={review.id} review={review} />
-      ))}
+      {reviews
+        ?.filter((rev) => rev !== null)
+        .map((review) => (
+          <SellerReview key={review.id} review={review} />
+        ))}
     </div>
   )
 }
