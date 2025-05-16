@@ -82,10 +82,25 @@ export const listProducts = async ({
     .then(({ products, count }) => {
       const nextPage = count > offset + limit ? pageParam + 1 : null
 
+      const response = products.filter((prod) => {
+        // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
+        const reviews = prod.seller?.reviews.filter((item) => !!item) ?? []
+        return (
+          // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
+          prod?.seller && {
+            ...prod,
+            seller: {
+              // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
+              ...prod.seller,
+              reviews,
+            },
+          }
+        )
+      })
+
       return {
         response: {
-          // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
-          products: products.filter((prod) => prod?.seller),
+          products: response,
           count,
         },
         nextPage: nextPage,
