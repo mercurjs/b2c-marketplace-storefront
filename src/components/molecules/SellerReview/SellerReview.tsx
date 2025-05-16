@@ -6,7 +6,7 @@ export const SellerReview = ({ review }: { review: SingleProductReview }) => {
   return (
     <div className="mb-4 border-b pb-4">
       <div className="mb-4 flex gap-4 items-center">
-        <StarRating starSize={16} rate={Number(review.rating.toFixed(1))} />
+        <StarRating starSize={16} rate={review.rating} />
         <p className="label-md text-secondary">
           {review.customer.first_name} {review.customer.last_name} |{" "}
           {formatDistanceToNow(new Date(review.created_at), {

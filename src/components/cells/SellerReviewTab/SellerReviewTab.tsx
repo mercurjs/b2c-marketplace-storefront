@@ -18,6 +18,7 @@ export const SellerReviewTab = async ({
       ? filteredReviews.reduce((sum, r) => sum + r?.rating, 0) /
         filteredReviews.length
       : 0
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 mt-8">
       <div className="border rounded-sm p-4">
