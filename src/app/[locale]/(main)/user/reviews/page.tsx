@@ -12,6 +12,8 @@ export default async function Page() {
   const orders = await listOrders()
   const { reviews } = await getReviews()
 
+  if (!orders || !reviews) return null
+
   const sellerReviews = reviews.filter(
     (review) => review.reference === "seller"
   )
@@ -22,44 +24,25 @@ export default async function Page() {
     return acc
   }, {} as Record<string, number>)
 
-  if (!orders || !reviews) return null
-
-  const reviewsToWrite = orders.reduce((acc: any[], order) => {
-    if (!order.seller) return acc
-
-    const needReview = Object.entries(sellerOrderCounts).map(
-      ([sellerId, count]) => {
-        const reviewsCount = sellerReviews.filter(
-          (review) => review.seller.id === sellerId
-        ).length
-
-        let needReview = false
-
-        if (count > reviewsCount) {
-          needReview = true
-        }
-
-        return needReview
+  const needReview = Object.keys(sellerOrderCounts).reduce(
+    (acc: any[], key: string) => {
+      if (
+        sellerReviews.filter((item) => item.seller.id === key).length <
+        sellerOrderCounts[key]
+      ) {
+        acc.push(orders.find((item) => item.seller.id === key))
       }
-    )[0]
 
-    if (
-      needReview &&
-      !acc.some((item) => item.seller?.id === order.seller.id)
-    ) {
-      acc.push({
-        ...order,
-      })
-    }
-
-    return acc
-  }, [])
+      return acc
+    },
+    []
+  )
 
   return (
     <main className="container">
       <div className="grid grid-cols-1 md:grid-cols-4 mt-6 gap-5 md:gap-8">
         <UserNavigation />
-        <ReviewsToWrite reviews={reviewsToWrite} />
+        <ReviewsToWrite reviews={needReview} />
       </div>
     </main>
   )

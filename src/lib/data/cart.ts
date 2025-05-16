@@ -3,7 +3,7 @@
 import { sdk } from "../config"
 import medusaError from "@/lib/helpers/medusa-error"
 import { HttpTypes } from "@medusajs/types"
-import { revalidateTag } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
 import {
   getAuthHeaders,
@@ -349,13 +349,10 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
     //     phone: formData.get("billing_address.phone"),
     //   }
     await updateCart(data)
-    const cartCacheTag = await getCacheTag("carts")
-    await revalidateTag(cartCacheTag)
+    await revalidatePath("/cart")
   } catch (e: any) {
     return e.message
   }
-
-  // redirect(`/checkout`)
 }
 
 /**

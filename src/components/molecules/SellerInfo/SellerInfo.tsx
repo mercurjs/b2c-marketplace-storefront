@@ -9,7 +9,9 @@ export const SellerInfo = ({ seller }: { seller: SellerProps }) => {
 
   const rating =
     reviews && reviews.length > 0
-      ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+      ? reviews
+          .filter((rev) => rev !== null)
+          .reduce((sum, r) => sum + r?.rating || 0, 0) / reviews.length
       : 0
 
   return (

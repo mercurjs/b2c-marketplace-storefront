@@ -1,3 +1,4 @@
+import PaymentWrapper from "@/components/organisms/PaymentContainer/PaymentWrapper"
 import { CartAddressSection } from "@/components/sections/CartAddressSection/CartAddressSection"
 import CartPaymentSection from "@/components/sections/CartPaymentSection/CartPaymentSection"
 import CartReview from "@/components/sections/CartReview/CartReview"
@@ -42,24 +43,26 @@ async function CheckoutPageContent({}) {
   const customer = await retrieveCustomer()
 
   return (
-    <main className="container">
-      <div className="grid lg:grid-cols-11 gap-8">
-        <div className="flex flex-col gap-4 lg:col-span-6">
-          <CartAddressSection cart={cart} customer={customer} />
-          <CartShippingMethodsSection
-            cart={cart}
-            availableShippingMethods={shippingMethods}
-          />
-          <CartPaymentSection
-            cart={cart}
-            availablePaymentMethods={paymentMethods}
-          />
-        </div>
+    <PaymentWrapper cart={cart}>
+      <main className="container">
+        <div className="grid lg:grid-cols-11 gap-8">
+          <div className="flex flex-col gap-4 lg:col-span-6">
+            <CartAddressSection cart={cart} customer={customer} />
+            <CartShippingMethodsSection
+              cart={cart}
+              availableShippingMethods={shippingMethods}
+            />
+            <CartPaymentSection
+              cart={cart}
+              availablePaymentMethods={paymentMethods}
+            />
+          </div>
 
-        <div className="lg:col-span-5">
-          <CartReview cart={cart} />
+          <div className="lg:col-span-5">
+            <CartReview cart={cart} />
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </PaymentWrapper>
   )
 }

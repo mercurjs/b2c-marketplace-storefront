@@ -13,7 +13,7 @@
     "@hookform/resolvers": "^3.10.0",
     "@medusajs/js-sdk": "^2.2.0",
     "@medusajs/ui": "^4.0.7",
-    "@stripe/react-stripe-js": "^3.6.0",
+    "@stripe/react-stripe-js": "^3.7.0",
     "@stripe/stripe-js": "^7.1.0",
     "algoliasearch": "^5.20.3",
     "clsx": "^2.1.1",

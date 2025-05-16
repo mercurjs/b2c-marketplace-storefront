@@ -48,8 +48,6 @@ export const AlgoliaProductsListing = ({
       : ` ${facetFilters}`
   }`
 
-  console.log(filters)
-
   return (
     <InstantSearchNext searchClient={client} indexName="products">
       <Configure

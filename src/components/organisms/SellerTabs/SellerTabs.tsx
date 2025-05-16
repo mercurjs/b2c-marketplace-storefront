@@ -20,10 +20,6 @@ export const SellerTabs = ({
 }) => {
   const tabsList = [
     { label: "products", link: `/sellers/${seller_handle}/` },
-    // {
-    //   label: "sold",
-    //   link: `/sellers/${seller}/sold`,
-    // },
     {
       label: "reviews",
       link: `/sellers/${seller_handle}/reviews`,
@@ -43,11 +39,6 @@ export const SellerTabs = ({
           )} */}
         </Suspense>
       </TabsContent>
-      {/* <TabsContent value="sold" activeTab={tab}>
-        <Suspense fallback={<ProductListingSkeleton />}>
-          <ProductListing />
-        </Suspense>
-      </TabsContent> */}
       <TabsContent value="reviews" activeTab={tab}>
         <Suspense>
           <SellerReviewTab seller_handle={seller_handle} />

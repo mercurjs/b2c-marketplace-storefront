@@ -83,6 +83,8 @@ const StripePaymentButton = ({
 
   const handlePayment = async () => {
     setSubmitting(true)
+    console.log("handlePayment")
+    console.log({ stripe, elements, card, cart })
 
     if (!stripe || !elements || !card || !cart) {
       setSubmitting(false)
