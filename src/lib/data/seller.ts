@@ -9,5 +9,13 @@ export const getSellerByHandle = async (handle: string) => {
       },
       cache: "force-cache",
     })
-    .then(({ seller }) => seller)
+    .then(({ seller }) => {
+      const response = {
+        ...seller,
+        reviews: seller.reviews?.filter((item) => item !== null) ?? [],
+      }
+
+      return response as SellerProps
+    })
+    .catch(() => [])
 }

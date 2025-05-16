@@ -1,12 +1,11 @@
 import { SellerFooter, SellerHeading } from "@/components/organisms"
-import { SellerProps } from "@/types/seller"
 import { HttpTypes } from "@medusajs/types"
 
 export const SellerPageHeader = ({
   seller,
   user,
 }: {
-  seller: SellerProps
+  seller: any
   user: HttpTypes.StoreCustomer | null
 }) => {
   return (

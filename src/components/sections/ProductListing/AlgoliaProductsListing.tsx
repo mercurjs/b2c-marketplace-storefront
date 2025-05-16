@@ -9,19 +9,11 @@ import {
 import { client } from "@/lib/client"
 import { Configure, useHits } from "react-instantsearch"
 import { InstantSearchNext } from "react-instantsearch-nextjs"
-import { FacetFilters } from "algoliasearch/lite"
 import { useSearchParams } from "next/navigation"
 import { getFacedFilters } from "@/lib/helpers/get-faced-filters"
-import { SelectField } from "@/components/molecules"
 import useUpdateSearchParams from "@/hooks/useUpdateSearchParams"
 import { PRODUCT_LIMIT } from "@/const"
 import { ProductListingSkeleton } from "@/components/organisms/ProductListingSkeleton/ProductListingSkeleton"
-
-const selectOptions = [
-  { label: "Newest", value: "created_at" },
-  { label: "Price: Low to High", value: "price_asc" },
-  { label: "Price: High to Low", value: "price_desc" },
-]
 
 export const AlgoliaProductsListing = ({
   category_id,
@@ -48,12 +40,22 @@ export const AlgoliaProductsListing = ({
       : ` ${facetFilters}`
   }`
 
+  const sandboxfilters = `${
+    category_id
+      ? `categories.id:${category_id}${
+          collection_id !== undefined
+            ? ` AND collections.id:${collection_id}`
+            : ""
+        } ${facetFilters}`
+      : `${facetFilters.replace("AND", "")}`
+  }`
+
   return (
     <InstantSearchNext searchClient={client} indexName="products">
       <Configure
         query={query}
         hitsPerPage={PRODUCT_LIMIT}
-        filters={filters}
+        filters={sandboxfilters}
         page={page - 1}
       />
       <ProductsListing />
