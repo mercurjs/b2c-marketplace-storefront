@@ -5,10 +5,10 @@ import { SellerReview } from "../SellerReview/SellerReview"
 
 export const SellerInfo = ({
   seller,
-  header,
+  header = false,
 }: {
   seller: SellerProps
-  header: boolean
+  header?: boolean
 }) => {
   const { photo, name, reviews } = seller
 
