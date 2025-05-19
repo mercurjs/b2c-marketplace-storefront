@@ -19,7 +19,7 @@ export default async function SellerReviewsPage({
 
   return (
     <main className="container">
-      <SellerPageHeader seller={seller} user={user} />
+      <SellerPageHeader header seller={seller} user={user} />
       <SellerTabs
         tab={tab}
         seller_id={seller.id}

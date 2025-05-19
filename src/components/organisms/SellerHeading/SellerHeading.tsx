@@ -6,13 +6,15 @@ import { HttpTypes } from "@medusajs/types"
 export const SellerHeading = ({
   seller,
   user,
+  header,
 }: {
+  header: boolean
   seller: SellerProps
   user: HttpTypes.StoreCustomer | null
 }) => {
   return (
     <div className="flex justify-between flex-col lg:flex-row">
-      <SellerInfo seller={seller} />
+      <SellerInfo header seller={seller} />
       {user && (
         <div className="flex items-center gap-2 mt-4 lg:mt-0">
           <Chat

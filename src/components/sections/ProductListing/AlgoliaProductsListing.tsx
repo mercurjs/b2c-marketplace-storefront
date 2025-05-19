@@ -18,11 +18,13 @@ import { ProductListingSkeleton } from "@/components/organisms/ProductListingSke
 export const AlgoliaProductsListing = ({
   category_id,
   collection_id,
+  seller_handle,
   locale = process.env.NEXT_PUBLIC_DEFAULT_REGION,
 }: {
   category_id?: string
   collection_id?: string
   locale?: string
+  seller_handle?: string
 }) => {
   const searchParamas = useSearchParams()
 
@@ -30,7 +32,9 @@ export const AlgoliaProductsListing = ({
   const page: number = +(searchParamas.get("page") || 1)
   const query: string = searchParamas.get("query") || ""
 
-  const filters = `supported_countries:${locale}${
+  const filters = `${
+    seller_handle ? `seller.handle:${seller_handle} AND` : ""
+  }supported_countries:${locale}${
     category_id
       ? ` AND categories.id:${category_id}${
           collection_id !== undefined

@@ -35,7 +35,10 @@ export const SellerTabs = ({
           {/* {!ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
             <ProductListing showSidebar seller_id={seller_id} />
           ) : (
-            <AlgoliaProductsListing locale={locale} />
+            <AlgoliaProductsListing
+              locale={locale}
+              seller_handle={seller_handle}
+            />
           )} */}
         </Suspense>
       </TabsContent>
