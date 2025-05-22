@@ -44,19 +44,21 @@ export const ReviewsWritten = ({ reviews }: { reviews: Review[] }) => {
               className="flex flex-col gap-6 lg:grid lg:grid-cols-6 px-4"
               key={review.id}
             >
-              {review.seller && (
+              {review?.seller && (
                 <div className="flex gap-2 max-lg:items-center lg:flex-col">
                   <img
-                    src={review.seller.photo}
+                    src={review?.seller?.photo}
                     className="size-8 border border-base-primary rounded-xs"
                   />
-                  <p className="label-md text-primary">{review.seller.name}</p>
+                  <p className="label-md text-primary">
+                    {review?.seller?.name}
+                  </p>
                 </div>
               )}
               <div
                 className={cn(
                   "flex flex-col gap-2 px-4",
-                  review.seller ? "col-span-5" : "col-span-6"
+                  review?.seller ? "col-span-5" : "col-span-6"
                 )}
               >
                 <div className="flex gap-3 items-center">

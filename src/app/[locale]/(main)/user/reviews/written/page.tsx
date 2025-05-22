@@ -14,7 +14,7 @@ export default async function Page() {
     <main className="container">
       <div className="grid grid-cols-1 md:grid-cols-4 mt-6 gap-5 md:gap-8">
         <UserNavigation />
-        <ReviewsWritten reviews={reviews} />
+        <ReviewsWritten reviews={reviews.filter(Boolean)} />
       </div>
     </main>
   )

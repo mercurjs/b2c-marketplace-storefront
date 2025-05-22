@@ -15,7 +15,7 @@ export default async function Page() {
   if (!orders || !reviews) return null
 
   const sellerReviews = reviews.filter(
-    (review) => review.reference === "seller"
+    (review) => review?.reference === "seller"
   )
 
   const sellerOrderCounts = orders.reduce((acc, order) => {
