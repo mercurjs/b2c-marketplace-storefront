@@ -20,7 +20,7 @@ for <a href="https://github.com/mercurjs/mercur">Mercur</a> - Open Source Market
   </p> 
 </div>
 
-## B2C Storefront for Marketplace [Under development]
+## B2C Storefront for Marketplace
 
 Customizable storefront designed for B2C with all elements including browsing and buying products across multiple vendors at once.
 
@@ -30,12 +30,9 @@ Ready to go:
 - Listing
 - Product Page
 - Shopping Cart
-- Seller Page - Moved to external <a href="https://github.com/mercurjs/vendor-panel">VendorPanel</a>
-
-Work in progress:
-
+- Seller Page
+- Selling Hub - Moved to external <a href="https://github.com/mercurjs/vendor-panel">VendorPanel</a>
 - Wishlist
-- Selling Hub
 
 # Part of Mercur
 
