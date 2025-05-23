@@ -28,7 +28,7 @@ export const ProductCarousel = ({
         className="embla__viewport overflow-hidden rounded-xs"
         ref={emblaRef}
       >
-        <div className="embla__container h-[350px] lg:h-fit max-h-[700px] flex lg:block">
+        <div className="embla__container h-[350px] lg:h-fit max-h-[698px] flex lg:block">
           {(slides || []).map((slide) => (
             <div
               key={slide.id}
@@ -39,7 +39,8 @@ export const ProductCarousel = ({
                 alt="Product image"
                 width={700}
                 height={700}
-                className="w-full h-auto aspect-square object-cover object-center object-center"
+                quality={100}
+                className="max-h-[700px] w-full h-auto aspect-square object-cover object-center object-center"
               />
             </div>
           ))}
