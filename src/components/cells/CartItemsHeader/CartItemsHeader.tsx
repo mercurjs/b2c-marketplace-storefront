@@ -2,7 +2,7 @@ import { Divider } from "@/components/atoms"
 import { SingleProductSeller } from "@/types/product"
 import { format } from "date-fns"
 import { SellerAvatar } from "../SellerAvatar/SellerAvatar"
-import { Link } from "@/i18n/routing"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 
 export const CartItemsHeader = ({
   seller,
@@ -10,7 +10,7 @@ export const CartItemsHeader = ({
   seller: SingleProductSeller
 }) => {
   return (
-    <Link href={`/sellers/${seller.handle}`}>
+    <LocalizedClientLink href={`/sellers/${seller.handle}`}>
       <div className="border rounded-sm p-4 flex gap-4 items-center">
         <SellerAvatar photo={seller.photo} size={32} alt={seller.name} />
 
@@ -26,6 +26,6 @@ export const CartItemsHeader = ({
           )}
         </div>
       </div>
-    </Link>
+    </LocalizedClientLink>
   )
 }

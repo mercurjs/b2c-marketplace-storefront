@@ -30,11 +30,7 @@ export const HomeProductsCarousel = async ({
         align="start"
         items={(sellerProducts.length ? sellerProducts : products).map(
           (product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              sellerPage={Boolean(sellerProducts.length) || home}
-            />
+            <ProductCard key={product.id} product={product} />
           )
         )}
       />

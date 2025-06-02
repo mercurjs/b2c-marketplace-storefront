@@ -1,6 +1,6 @@
 import { Button } from "@/components/atoms"
 import { CartItems, CartSummary } from "@/components/organisms"
-import { Link } from "@/i18n/routing"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { retrieveCart } from "@/lib/data/cart"
 import CartPromotionCode from "../CartReview/CartPromotionCode"
 
@@ -25,11 +25,11 @@ export const Cart = async () => {
             currency_code={cart?.currency_code || ""}
             tax={cart?.tax_total || 0}
           />
-          <Link href="/checkout?step=address">
+          <LocalizedClientLink href="/checkout?step=address">
             <Button className="w-full py-3 flex justify-center items-center">
               Go to checkout
             </Button>
-          </Link>
+          </LocalizedClientLink>
         </div>
       </div>
     </>

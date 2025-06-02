@@ -8,7 +8,7 @@ import {
 } from "react-hook-form"
 import { Button } from "@/components/atoms"
 import { zodResolver } from "@hookform/resolvers/zod"
-import Link from "next/link"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { LabeledInput } from "@/components/cells"
 import { loginFormSchema, LoginFormData } from "./schema"
 import { useState } from "react"
@@ -80,9 +80,9 @@ const Form = () => {
           </Button>
           <p className="text-center label-md">
             Don&apos;t have an account yet?{" "}
-            <Link href="/user/register" className="underline">
+            <LocalizedClientLink href="/user/register" className="underline">
               Sign up!
-            </Link>
+            </LocalizedClientLink>
           </p>
         </div>
       </form>

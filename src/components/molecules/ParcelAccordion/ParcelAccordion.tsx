@@ -4,7 +4,7 @@ import { CollapseIcon } from "@/icons"
 import { cn } from "@/lib/utils"
 import { useEffect, useRef, useState } from "react"
 import { OrderProductListItem } from "@/components/cells"
-import Link from "next/link"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { format } from "date-fns"
 import { convertToLocale } from "@/lib/helpers/money"
 
@@ -63,11 +63,11 @@ export const ParcelAccordion = ({
           </h2>
         </div>
         <div className="col-span-1 flex justify-end items-center gap-4">
-          <Link href={`/user/orders/${orderId}`}>
+          <LocalizedClientLink href={`/user/orders/${orderId}`}>
             <Button variant="tonal" onClick={(e) => e.stopPropagation()}>
               <span className="label-md text-primary">VIEW ORDER</span>
             </Button>
-          </Link>
+          </LocalizedClientLink>
           <CollapseIcon
             size={20}
             className={cn(

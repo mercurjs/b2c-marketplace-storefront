@@ -41,7 +41,6 @@ const CountrySelect = forwardRef<
   }, [region])
 
   const handleSelect = (value: string) => {
-    console.log({ value, name: props.name })
     props.onChange?.({
       target: {
         name: props.name,

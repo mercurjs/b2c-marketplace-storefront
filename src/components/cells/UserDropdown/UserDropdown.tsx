@@ -2,7 +2,7 @@
 
 import { Divider, LogoutButton, NavigationItem } from "@/components/atoms"
 import { Dropdown } from "@/components/molecules"
-import { Link } from "@/i18n/routing"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { ProfileIcon } from "@/icons"
 import { HttpTypes } from "@medusajs/types"
 import { useState } from "react"
@@ -21,9 +21,9 @@ export const UserDropdown = ({
       onMouseLeave={() => setOpen(false)}
       onFocus={() => setOpen(true)}
     >
-      <Link href="/user" className="relative">
+      <LocalizedClientLink href="/user" className="relative">
         <ProfileIcon size={20} />
-      </Link>
+      </LocalizedClientLink>
       <Dropdown show={open}>
         {user ? (
           <div className="p-1">

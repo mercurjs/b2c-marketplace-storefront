@@ -1,4 +1,4 @@
-import { Link } from "@/i18n/routing"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import footerLinks from "@/data/footerLinks"
 
 export function Footer() {
@@ -12,9 +12,13 @@ export function Footer() {
           </h2>
           <nav className="space-y-3" aria-label="Customer services navigation">
             {footerLinks.customerServices.map(({ label, path }) => (
-              <Link key={label} href={path} className="block label-md">
+              <LocalizedClientLink
+                key={label}
+                href={path}
+                className="block label-md"
+              >
                 {label}
-              </Link>
+              </LocalizedClientLink>
             ))}
           </nav>
         </div>
@@ -24,9 +28,13 @@ export function Footer() {
           <h2 className="heading-sm text-primary mb-3 uppercase">About</h2>
           <nav className="space-y-3" aria-label="About navigation">
             {footerLinks.about.map(({ label, path }) => (
-              <Link key={label} href={path} className="block label-md">
+              <LocalizedClientLink
+                key={label}
+                href={path}
+                className="block label-md"
+              >
                 {label}
-              </Link>
+              </LocalizedClientLink>
             ))}
           </nav>
         </div>
@@ -36,7 +44,7 @@ export function Footer() {
           <h2 className="heading-sm text-primary mb-3 uppercase">connect</h2>
           <nav className="space-y-3" aria-label="Social media navigation">
             {footerLinks.connect.map(({ label, path }) => (
-              <Link
+              <LocalizedClientLink
                 key={label}
                 href={path}
                 className="block label-md"
@@ -44,7 +52,7 @@ export function Footer() {
                 rel="noopener noreferrer"
               >
                 {label}
-              </Link>
+              </LocalizedClientLink>
             ))}
           </nav>
         </div>

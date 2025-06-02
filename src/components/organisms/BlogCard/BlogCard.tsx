@@ -1,5 +1,5 @@
 import Image from "next/image"
-import Link from "next/link"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { BlogPost } from "@/types/blog"
 import { ArrowRightIcon } from "@/icons"
 import tailwindConfig from "../../../../tailwind.config"
@@ -12,7 +12,7 @@ interface BlogCardProps {
 
 export function BlogCard({ post, index }: BlogCardProps) {
   return (
-    <Link
+    <LocalizedClientLink
       href={post.href}
       className={cn(
         "group block border border-secondary p-1 rounded-sm relative",
@@ -40,6 +40,6 @@ export function BlogCard({ post, index }: BlogCardProps) {
           />
         </div>
       </div>
-    </Link>
+    </LocalizedClientLink>
   )
 }

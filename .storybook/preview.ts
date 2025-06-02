@@ -1,15 +1,13 @@
-import type { Preview } from '@storybook/react';
-import nextIntl from './next-intl';
+import type { Preview } from "@storybook/react"
 
 const preview: Preview = {
   initialGlobals: {
-    locale: 'en',
+    locale: "en",
     locales: {
-      en: 'English',
+      en: "English",
     },
   },
   parameters: {
-    nextIntl,
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -17,6 +15,6 @@ const preview: Preview = {
       },
     },
   },
-};
+}
 
-export default preview;
+export default preview

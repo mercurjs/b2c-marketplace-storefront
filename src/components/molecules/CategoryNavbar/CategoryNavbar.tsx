@@ -1,6 +1,6 @@
 "use client"
 import { HttpTypes } from "@medusajs/types"
-import { Link } from "@/i18n/routing"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { cn } from "@/lib/utils"
 import { useParams } from "next/navigation"
 import { CollapseIcon } from "@/icons"
@@ -16,7 +16,7 @@ export const CategoryNavbar = ({
 
   return (
     <nav className="flex md:items-center flex-col md:flex-row">
-      <Link
+      <LocalizedClientLink
         href="/categories"
         onClick={() => (onClose ? onClose(false) : null)}
         className={cn(
@@ -24,9 +24,9 @@ export const CategoryNavbar = ({
         )}
       >
         All Products
-      </Link>
+      </LocalizedClientLink>
       {categories?.map(({ id, handle, name }) => (
-        <Link
+        <LocalizedClientLink
           key={id}
           href={`/categories/${handle}`}
           onClick={() => (onClose ? onClose(false) : null)}
@@ -37,7 +37,7 @@ export const CategoryNavbar = ({
         >
           {name}
           <CollapseIcon size={18} className="-rotate-90 md:hidden" />
-        </Link>
+        </LocalizedClientLink>
       ))}
     </nav>
   )

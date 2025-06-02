@@ -1,4 +1,4 @@
-import { Link } from "@/i18n/routing"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { ArrowUpIcon } from "@/icons"
 import { Metadata } from "next"
 
@@ -14,13 +14,13 @@ export default function NotFound() {
       <p className="text-small-regular text-ui-fg-base">
         The page you tried to access does not exist.
       </p>
-      <Link className="flex gap-x-1 items-center group" href="/">
+      <LocalizedClientLink className="flex gap-x-1 items-center group" href="/">
         Go to frontpage
         <ArrowUpIcon
           className="group-hover:rotate-45 ease-in-out duration-150"
           color="var(--fg-interactive)"
         />
-      </Link>
+      </LocalizedClientLink>
     </div>
   )
 }

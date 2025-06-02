@@ -2,7 +2,7 @@ import { Divider } from "@/components/atoms"
 import { convertToLocale } from "@/lib/helpers/money"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
-import Link from "next/link"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { Fragment } from "react"
 
 export const OrderProductListItem = ({
@@ -33,13 +33,13 @@ export const OrderProductListItem = ({
       <div className="grid grid-cols-1 sm:grid-cols-5 w-full px-4 sm:gap-4">
         <div className="sm:col-span-2">
           <p className="label-md text-secondary">{item.product_title}</p>
-          <Link
+          <LocalizedClientLink
             href={`/products/${item.variant?.product?.handle}`}
             target="_blank"
             className="heading-xs text-primary"
           >
             {item.variant?.product?.title}
-          </Link>
+          </LocalizedClientLink>
         </div>
         <div className="sm:col-span-2 flex flex-col justify-center">
           <p className="label-md text-secondary">

@@ -1,5 +1,5 @@
 import { Button } from "@/components/atoms"
-import { Link } from "@/i18n/routing"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import Image from "next/image"
 
 export const BannerSection = () => {
@@ -19,11 +19,11 @@ export const BannerSection = () => {
               of the unconventional.
             </p>
           </div>
-          <Link href="/collections/boho">
+          <LocalizedClientLink href="/collections/boho">
             <Button size="large" className="w-fit bg-secondary/10">
               EXPLORE
             </Button>
-          </Link>
+          </LocalizedClientLink>
         </div>
         <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full flex justify-end rounded-sm">
           <Image

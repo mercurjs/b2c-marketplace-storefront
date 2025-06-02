@@ -1,4 +1,4 @@
-import { Link } from "@/i18n/routing"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import Image from "next/image"
 
 export function CategoryCard({
@@ -7,7 +7,7 @@ export function CategoryCard({
   category: { id: number; name: string; handle: string }
 }) {
   return (
-    <Link
+    <LocalizedClientLink
       href={`/categories/${category.handle}`}
       className="relative flex flex-col items-center border rounded-sm bg-component transition-all hover:rounded-full w-[233px] aspect-square"
     >
@@ -23,6 +23,6 @@ export function CategoryCard({
       <h3 className="w-full text-center label-lg text-primary">
         {category.name}
       </h3>
-    </Link>
+    </LocalizedClientLink>
   )
 }

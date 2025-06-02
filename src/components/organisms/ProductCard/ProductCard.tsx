@@ -3,19 +3,17 @@ import Image from "next/image"
 
 import { Button } from "@/components/atoms"
 import { HttpTypes } from "@medusajs/types"
-import { Link } from "@/i18n/routing"
+
 import { getSellerProductPrice } from "@/lib/helpers/get-seller-product-price"
 import { getProductPrice } from "@/lib/helpers/get-product-price"
 import { BaseHit, Hit } from "instantsearch.js"
 import clsx from "clsx"
-import { WishlistButton } from "@/components/cells/WishlistButton/WishlistButton"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 
 export const ProductCard = ({
   product,
-  sellerPage = false,
 }: {
   product: Hit<HttpTypes.StoreProduct> | Partial<Hit<BaseHit>>
-  sellerPage?: boolean
 }) => {
   const { cheapestPrice } = getProductPrice({
     product,
@@ -28,18 +26,11 @@ export const ProductCard = ({
   return (
     <div
       className={clsx(
-        "relative group border rounded-sm flex flex-col justify-between p-1 ",
-        {
-          "w-[250px] lg:w-[370px]": sellerPage,
-          "w-full h-full": !sellerPage,
-        }
+        "relative group border rounded-sm flex flex-col justify-between p-1 w-full lg:w-[calc(25%-1rem)] min-w-[250px]"
       )}
     >
       <div className="relative w-full h-full bg-primary aspect-square">
-        {/* <div className="absolute right-3 top-3 z-10 cursor-pointer">
-          <WishlistButton productId={product.id} />
-        </div> */}
-        <Link href={`/products/${product.handle}`}>
+        <LocalizedClientLink href={`/products/${product.handle}`}>
           <div className="overflow-hidden rounded-sm w-full h-full flex justify-center align-center ">
             {product.thumbnail ? (
               <Image
@@ -56,18 +47,17 @@ export const ProductCard = ({
                 alt="Product placeholder"
                 width={100}
                 height={100}
-                className="flex margin-auto w-[100px] h-auto"
               />
             )}
           </div>
-        </Link>
-        <Link href={`/products/${product.handle}`}>
+        </LocalizedClientLink>
+        <LocalizedClientLink href={`/products/${product.handle}`}>
           <Button className="absolute rounded-sm bg-action text-action-on-primary h-auto lg:h-[48px] lg:group-hover:block hidden w-full uppercase bottom-1 z-10">
             See More
           </Button>
-        </Link>
+        </LocalizedClientLink>
       </div>
-      <Link href={`/products/${product.handle}`}>
+      <LocalizedClientLink href={`/products/${product.handle}`}>
         <div className="flex justify-between p-4">
           <div className="w-full">
             <h3 className="heading-sm truncate">{product.title}</h3>
@@ -92,7 +82,7 @@ export const ProductCard = ({
             </div>
           </div>
         </div>
-      </Link>
+      </LocalizedClientLink>
     </div>
   )
 }

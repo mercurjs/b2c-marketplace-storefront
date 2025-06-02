@@ -10,7 +10,7 @@ export const CartDropdownItem = ({
   currency_code: string
 }) => {
   const original_total = convertToLocale({
-    amount: item.compare_at_unit_price || 0,
+    amount: (item.compare_at_unit_price || 0) * item.quantity,
     currency_code,
   })
 

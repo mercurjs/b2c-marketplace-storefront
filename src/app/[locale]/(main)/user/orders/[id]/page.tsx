@@ -1,7 +1,7 @@
 import { UserNavigation } from "@/components/molecules"
 import { retrieveCustomer } from "@/lib/data/customer"
 import { Avatar, Button, Card } from "@/components/atoms"
-import Link from "next/link"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { ArrowLeftIcon } from "@/icons"
 import { OrderProductListItem } from "@/components/cells"
 import { redirect } from "next/navigation"
@@ -33,7 +33,7 @@ export default async function UserPage({
       <div className="grid grid-cols-1 md:grid-cols-4 mt-6 gap-5 md:gap-8">
         <UserNavigation />
         <div className="md:col-span-3 space-y-8">
-          <Link href="/user/orders" className="block w-fit">
+          <LocalizedClientLink href="/user/orders" className="block w-fit">
             <Button
               variant="tonal"
               className="label-md text-action-on-secondary uppercase flex items-center gap-2"
@@ -41,7 +41,7 @@ export default async function UserPage({
               <ArrowLeftIcon className="size-4" />
               All orders
             </Button>
-          </Link>
+          </LocalizedClientLink>
           <h1 className="heading-md uppercase">Order #{order.display_id}</h1>
           <div className="w-full max-w-full">
             <div className="flex items-center justify-between text-secondary border border-primary py-4 px-4 rounded-sm w-full">

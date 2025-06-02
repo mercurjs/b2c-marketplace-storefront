@@ -1,4 +1,4 @@
-import { Link } from "@/i18n/routing"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import Image from "next/image"
 import { Brand } from "@/types/brands"
 
@@ -8,7 +8,7 @@ interface BrandCardProps {
 
 export function BrandCard({ brand }: BrandCardProps) {
   return (
-    <Link href={brand.href}>
+    <LocalizedClientLink href={brand.href}>
       <div className="relative border border-secondary rounded-sm bg-action h-[320px] w-[320px] 2xl:h-[400px] 2xl:w-[400px] flex items-center justify-center hover:rounded-full transition-all duration-200">
         <Image
           src={decodeURIComponent(brand.logo)}
@@ -17,6 +17,6 @@ export function BrandCard({ brand }: BrandCardProps) {
           className="object-contain brightness-0 invert"
         />
       </div>
-    </Link>
+    </LocalizedClientLink>
   )
 }

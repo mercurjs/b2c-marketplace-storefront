@@ -265,7 +265,8 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
                                     value={option.id}
                                     key={option.id}
                                   >
-                                    {option.name} -
+                                    {option.name}
+                                    {" - "}
                                     {option.price_type === "flat" ? (
                                       convertToLocale({
                                         amount: option.amount!,

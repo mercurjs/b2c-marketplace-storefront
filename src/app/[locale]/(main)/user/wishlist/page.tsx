@@ -2,7 +2,7 @@ import { retrieveCustomer } from "@/lib/data/customer"
 import { redirect } from "next/navigation"
 import { isEmpty } from "lodash"
 import { Wishlist as WishlistType } from "@/types/wishlist"
-import Link from "next/link"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { Button } from "@/components/atoms"
 import { WishlistItem } from "@/components/cells"
 import { getUserWishlists } from "@/lib/data/wishlist"
@@ -37,9 +37,9 @@ export default async function Wishlist() {
               <p className="text-lg text-secondary mb-6">
                 Your wishlist is currently empty.
               </p>
-              <Link href="/categories" className="w-full">
+              <LocalizedClientLink href="/categories" className="w-full">
                 <Button className="w-full">Explore</Button>
-              </Link>
+              </LocalizedClientLink>
             </div>
           ) : (
             <div className="flex flex-col gap-6">

@@ -1,16 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
 import { Hero } from "./Hero"
-import { NextIntlClientProvider } from "next-intl"
-import defaultMessages from "../../../translations/gb.json"
 
 const meta: Meta<typeof Hero> = {
   component: Hero,
-  decorators: (Story) => (
-    <NextIntlClientProvider locale="en" messages={defaultMessages}>
-      <Story />
-    </NextIntlClientProvider>
-  ),
+  decorators: (Story) => <Story />,
 }
 
 export default meta

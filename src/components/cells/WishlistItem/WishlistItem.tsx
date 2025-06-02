@@ -1,4 +1,4 @@
-import Link from "next/link"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import Image from "next/image"
 import { HttpTypes } from "@medusajs/types"
 import { WishlistButton } from "../WishlistButton/WishlistButton"
@@ -38,7 +38,7 @@ export const WishlistItem = ({
             user={user}
           />
         </div>
-        <Link href={`/products/${product.handle}`}>
+        <LocalizedClientLink href={`/products/${product.handle}`}>
           <div className="overflow-hidden rounded-sm w-full h-full flex justify-center align-center ">
             {product.thumbnail ? (
               <Image
@@ -59,21 +59,21 @@ export const WishlistItem = ({
               />
             )}
           </div>
-        </Link>
-        <Link href={`/products/${product.handle}`}>
+        </LocalizedClientLink>
+        <LocalizedClientLink href={`/products/${product.handle}`}>
           <Button className="absolute rounded-sm bg-action text-action-on-primary h-auto lg:h-[48px] lg:group-hover:block hidden w-full uppercase bottom-1 z-10">
             See More
           </Button>
-        </Link>
+        </LocalizedClientLink>
       </div>
-      <Link href={`/products/${product.handle}`}>
+      <LocalizedClientLink href={`/products/${product.handle}`}>
         <div className="flex justify-between p-4">
           <div className="w-full">
             <h3 className="heading-sm truncate">{product.title}</h3>
             <div className="flex items-center gap-2 mt-2">{price}</div>
           </div>
         </div>
-      </Link>
+      </LocalizedClientLink>
     </div>
   )
 }
