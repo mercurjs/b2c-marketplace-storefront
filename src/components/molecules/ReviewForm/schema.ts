@@ -5,7 +5,7 @@ export const reviewSchema = z.object({
   rating: z.number().min(1, "Please rate this seller").max(5),
   opinion: z
     .string()
-    .max(400, "Opinion must be less than 1000 characters")
+    .max(400, "Opinion must be less than 400 characters")
     .optional(),
 })
 

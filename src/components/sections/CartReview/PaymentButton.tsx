@@ -5,7 +5,7 @@ import { isManual, isStripe } from "../../../lib/constants"
 import { placeOrder } from "@/lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Button } from "@/components/atoms"
 import { useRouter } from "next/navigation"
 
@@ -60,6 +60,7 @@ const StripePaymentButton = ({
 }) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [disabled, setDisabled] = useState(true)
 
   const onPaymentCompleted = async () => {
     await placeOrder()
@@ -79,7 +80,10 @@ const StripePaymentButton = ({
     (s) => s.status === "pending"
   )
 
-  const disabled = !stripe || !elements ? true : false
+  useEffect(() => {
+    //@ts-ignore
+    setDisabled(!card?._complete)
+  }, [card, stripe, elements, cart])
 
   const handlePayment = async () => {
     setSubmitting(true)
