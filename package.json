@@ -15,6 +15,7 @@
     "@medusajs/ui": "^4.0.7",
     "@stripe/react-stripe-js": "^3.7.0",
     "@stripe/stripe-js": "^7.1.0",
+    "@talkjs/react": "^0.1.11",
     "@types/js-cookie": "^3.0.6",
     "algoliasearch": "^5.20.3",
     "clsx": "^2.1.1",
