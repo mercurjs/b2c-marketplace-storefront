@@ -6,6 +6,21 @@ import medusaError from "../helpers/medusa-error"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { HttpTypes } from "@medusajs/types"
 
+export const retrieveOrderSet = async (id: string) => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  return sdk.client
+    .fetch<any>(`/store/order-set/${id}`, {
+      method: "GET",
+      headers,
+      cache: "force-cache",
+    })
+    .then(({ order_set }) => order_set)
+    .catch((err) => medusaError(err))
+}
+
 export const retrieveOrder = async (id: string) => {
   const headers = {
     ...(await getAuthHeaders()),
@@ -22,7 +37,7 @@ export const retrieveOrder = async (id: string) => {
         method: "GET",
         query: {
           fields:
-            "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product,*seller",
+            "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product,*seller,*order_set",
         },
         headers,
         next,
@@ -61,7 +76,7 @@ export const listOrders = async (
         offset,
         order: "-created_at",
         fields:
-          "*items,+items.metadata,*items.variant,*items.product,*seller,*reviews",
+          "*items,+items.metadata,*items.variant,*items.product,*seller,*reviews,*order_set",
         ...filters,
       },
       headers,
@@ -121,4 +136,19 @@ export const declineTransferRequest = async (id: string, token: string) => {
     .declineTransfer(id, { token }, {}, headers)
     .then(({ order }) => ({ success: true, error: null, order }))
     .catch((err) => ({ success: false, error: err.message, order: null }))
+}
+
+export const retrieveReturnReasons = async () => {
+  const headers = await getAuthHeaders()
+
+  return sdk.client
+    .fetch<{
+      return_reasons: Array<HttpTypes.StoreReturnReason>
+    }>(`/store/return-reasons`, {
+      method: "GET",
+      headers,
+      cache: "force-cache",
+    })
+    .then(({ return_reasons }) => return_reasons)
+    .catch((err) => medusaError(err))
 }

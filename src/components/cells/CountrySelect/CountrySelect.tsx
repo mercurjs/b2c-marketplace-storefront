@@ -11,7 +11,6 @@ import NativeSelect, {
   NativeSelectProps,
 } from "@/components/molecules/NativeSelect/NativeSelect"
 import clsx from "clsx"
-import { SelectField } from "@/components/molecules"
 import { Listbox, Transition } from "@headlessui/react"
 import { clx } from "@medusajs/ui"
 import { ChevronUpDown } from "@medusajs/icons"

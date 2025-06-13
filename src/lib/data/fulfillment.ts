@@ -5,7 +5,10 @@ import { HttpTypes } from "@medusajs/types"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { StoreCardShippingMethod } from "@/components/sections/CartShippingMethodsSection/CartShippingMethodsSection"
 
-export const listCartShippingMethods = async (cartId: string) => {
+export const listCartShippingMethods = async (
+  cartId: string,
+  is_return: boolean = false
+) => {
   const headers = {
     ...(await getAuthHeaders()),
   }
@@ -21,6 +24,7 @@ export const listCartShippingMethods = async (cartId: string) => {
         method: "GET",
         query: {
           cart_id: cartId,
+          is_return,
           fields:
             "+service_zone.fulfllment_set.type,*service_zone.fulfillment_set.location.address",
         },
