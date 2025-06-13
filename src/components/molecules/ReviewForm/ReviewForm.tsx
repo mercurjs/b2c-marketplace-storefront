@@ -103,7 +103,7 @@ const Form: React.FC<Props> = ({ handleClose, seller }) => {
                 errors.opinion?.message ? "bottom-8" : "bottom-3 "
               )}
             >
-              {`${lettersCount} / 400`}
+              {`${lettersCount} / 300`}
             </div>
             {errors.opinion?.message && (
               <p className="label-sm text-negative">

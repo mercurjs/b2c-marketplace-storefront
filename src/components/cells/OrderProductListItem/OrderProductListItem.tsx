@@ -17,15 +17,15 @@ export const OrderProductListItem = ({
   <Fragment>
     {withDivider && <Divider className="mt-4" />}
     <li className={cn("flex items-center", withDivider && "mt-4")}>
-      <div className="w-[66px] h-24 relative rounded-xs overflow-hidden">
+      <div className="w-[66px] h-16 relative rounded-xs overflow-hidden flex items-center justify-center">
         {item.thumbnail ? (
           <Image src={item.thumbnail} alt={item.title} fill objectFit="cover" />
         ) : (
           <Image
             src={"/images/placeholder.svg"}
             alt={item.title}
-            width={66}
-            height={66}
+            width={45}
+            height={45}
             className="opacity-25"
           />
         )}
@@ -44,7 +44,9 @@ export const OrderProductListItem = ({
         <div className="sm:col-span-2 flex flex-col justify-center">
           <p className="label-md text-secondary">
             {`Variant: `}
-            <span className="text-primary">{item?.variant?.title}</span>
+            <span className="text-primary">
+              {item?.variant_title || item?.variant?.title}
+            </span>
           </p>
         </div>
         <div className="flex sm:justify-end label-lg text-primary sm:items-center">
