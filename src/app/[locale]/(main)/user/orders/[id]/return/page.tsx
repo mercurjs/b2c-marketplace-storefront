@@ -5,7 +5,7 @@ import { retrieveOrder, retrieveReturnReasons } from "@/lib/data/orders"
 export default async function ReturnOrderPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
   const { id } = await params
 

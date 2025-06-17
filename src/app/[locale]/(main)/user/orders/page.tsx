@@ -10,7 +10,7 @@ const LIMIT = 10
 export default async function UserPage({
   searchParams,
 }: {
-  searchParams: { page: string }
+  searchParams: Promise<{ page: string }>
 }) {
   const user = await retrieveCustomer()
 
