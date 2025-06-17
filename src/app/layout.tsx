@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Funnel_Display } from "next/font/google"
 import "./globals.css"
+import { Toaster } from "@medusajs/ui"
 
 const funnelDisplay = Funnel_Display({
   variable: "--font-funnel-sans",
@@ -34,12 +35,14 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>
 }>) {
   const { locale } = await params
+
   return (
     <html lang={locale} className="">
       <body
-        className={`${funnelDisplay.className} antialiased bg-primary text-secondary`}
+        className={`${funnelDisplay.className} antialiased bg-primary text-secondary relative`}
       >
         {children}
+        <Toaster position="top-right" />
       </body>
     </html>
   )
