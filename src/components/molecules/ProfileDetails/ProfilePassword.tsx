@@ -6,8 +6,9 @@ import { InfoIcon } from "@/icons"
 import { Divider, Heading } from "@medusajs/ui"
 import { useState } from "react"
 import { Modal } from "../Modal/Modal"
-import { ProfilePasswordForm } from "../ProfilePasswordForm/ProfilePasswordForm"
+// import { ProfilePasswordForm } from "../ProfilePasswordForm/ProfilePasswordForm"
 import { HttpTypes } from "@medusajs/types"
+import { sendResetPasswordEmail } from "@/lib/data/customer"
 
 export const ProfilePassword = ({
   user,
@@ -15,6 +16,13 @@ export const ProfilePassword = ({
   user: HttpTypes.StoreCustomer
 }) => {
   const [showForm, setShowForm] = useState(false)
+
+  const handleSendResetPasswordEmail = async () => {
+    const res = await sendResetPasswordEmail(user.email)
+    if (res.success) {
+      setShowForm(false)
+    }
+  }
 
   return (
     <>
@@ -45,7 +53,15 @@ export const ProfilePassword = ({
       </Card>
       {showForm && (
         <Modal heading="Change password" onClose={() => setShowForm(false)}>
-          <ProfilePasswordForm user={user} />
+          <div className="flex p-4 justify-center">
+            <Button
+              className="uppercase py-3 px-6 !font-semibold"
+              onClick={handleSendResetPasswordEmail}
+            >
+              Send reset password email
+            </Button>
+          </div>
+          {/* <ProfilePasswordForm user={user} /> */}
         </Modal>
       )}
     </>

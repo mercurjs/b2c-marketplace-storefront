@@ -9,9 +9,9 @@ export default async function ResetPasswordPage({
   const { token } = await searchParams
 
   return (
-    <main className="container w-96 flex justify-center">
-      <Card>
-        <ProfilePasswordForm />
+    <main className="container flex justify-center">
+      <Card className="w-full max-w-lg">
+        <ProfilePasswordForm token={token} />
       </Card>
     </main>
   )

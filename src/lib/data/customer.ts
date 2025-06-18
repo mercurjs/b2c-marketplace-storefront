@@ -255,24 +255,31 @@ export const updateCustomerAddress = async (
 
 export const updateCustomerPassword = async (
   password: string,
-  email: string
+  token: string
 ): Promise<any> => {
-  const headers = {
-    ...(await getAuthHeaders()),
-  }
+  const res = await sdk.auth
+    .updateProvider("customer", "emailpass", { password }, token as string)
+    .then(() => {
+      return { success: true, error: null }
+    })
+    .catch((err: any) => {
+      return { success: false, error: err.toString() }
+    })
 
-  // const token = await sdk.auth.resetPassword("customer", "emailpass", {
-  //   identifier: email,
-  // })
+  return res
+}
 
-  // const res = await sdk.auth
-  //   .updateProvider("customer", "emailpass", { password }, token as string)
-  //   .then(() => {
-  //     return { success: true, error: null }
-  //   })
-  //   .catch((err: any) => {
-  //     return { success: false, error: err.toString() }
-  //   })
+export const sendResetPasswordEmail = async (email: string) => {
+  const res = await sdk.auth
+    .resetPassword("customer", "emailpass", {
+      identifier: email,
+    })
+    .then(() => {
+      return { success: true, error: null }
+    })
+    .catch((err: any) => {
+      return { success: false, error: err.toString() }
+    })
 
-  // return res
+  return res
 }

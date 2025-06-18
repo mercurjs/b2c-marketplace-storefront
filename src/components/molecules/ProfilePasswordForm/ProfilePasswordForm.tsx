@@ -16,7 +16,6 @@ import { ProfilePasswordFormData, profilePasswordSchema } from "./schema"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { HttpTypes } from "@medusajs/types"
-import { sdk } from "@/lib/config"
 import { updateCustomerPassword } from "@/lib/data/customer"
 
 function validatePassword(password: string) {
@@ -35,8 +34,10 @@ function validatePassword(password: string) {
 
 export const ProfilePasswordForm = ({
   user,
+  token,
 }: {
   user?: HttpTypes.StoreCustomer
+  token?: string
 }) => {
   const form = useForm<ProfilePasswordFormData>({
     resolver: zodResolver(profilePasswordSchema),
@@ -49,7 +50,7 @@ export const ProfilePasswordForm = ({
 
   return (
     <FormProvider {...form}>
-      <Form form={form} user={user} />
+      <Form form={form} user={user} token={token} />
     </FormProvider>
   )
 }
@@ -57,9 +58,11 @@ export const ProfilePasswordForm = ({
 const Form = ({
   form,
   user,
+  token,
 }: {
   form: UseFormReturn<ProfilePasswordFormData>
   user?: HttpTypes.StoreCustomer
+  token?: string
 }) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState<
     FieldError | undefined
@@ -104,24 +107,8 @@ const Form = ({
 
     if (newPasswordError.isValid) {
       try {
-        const isValid = await sdk.auth
-          .login("customer", "emailpass", {
-            email: user?.email,
-            password: data.currentPassword,
-          })
-          .then(() => true)
-          .catch(() => false)
-
-        if (!isValid) {
-          form.setError("currentPassword", {
-            type: "validate",
-            message: "Current password is incorrect",
-          })
-
-          return
-        }
-
-        const res = await updateCustomerPassword(data.newPassword, user?.email!)
+        const res = await updateCustomerPassword(data.newPassword, token!)
+        console.log(res)
       } catch (err) {
         console.log(err)
         return
