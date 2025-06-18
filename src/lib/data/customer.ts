@@ -260,6 +260,7 @@ export const updateCustomerPassword = async (
   const res = await sdk.auth
     .updateProvider("customer", "emailpass", { password }, token as string)
     .then(() => {
+      removeAuthToken()
       return { success: true, error: null }
     })
     .catch((err: any) => {

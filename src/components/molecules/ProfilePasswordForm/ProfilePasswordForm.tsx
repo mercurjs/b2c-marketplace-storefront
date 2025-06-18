@@ -17,6 +17,8 @@ import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { HttpTypes } from "@medusajs/types"
 import { updateCustomerPassword } from "@/lib/data/customer"
+import { Heading, toast } from "@medusajs/ui"
+import LocalizedClientLink from "../LocalizedLink/LocalizedLink"
 
 function validatePassword(password: string) {
   const errors = {
@@ -64,6 +66,7 @@ const Form = ({
   user?: HttpTypes.StoreCustomer
   token?: string
 }) => {
+  const [success, setSuccess] = useState(false)
   const [confirmPasswordError, setConfirmPasswordError] = useState<
     FieldError | undefined
   >(undefined)
@@ -108,14 +111,41 @@ const Form = ({
     if (newPasswordError.isValid) {
       try {
         const res = await updateCustomerPassword(data.newPassword, token!)
-        console.log(res)
+        if (res.success) {
+          toast.success("Password updated")
+          setSuccess(true)
+        } else {
+          toast.error(res.error || "Something went wrong")
+        }
       } catch (err) {
         console.log(err)
         return
       }
     }
   }
-  return (
+
+  return success ? (
+    <div className="p-4">
+      <Heading
+        level="h1"
+        className="uppercase heading-md text-primary text-center"
+      >
+        Password updated
+      </Heading>
+      <p className="text-center my-8">
+        Your password has been updated. You can now login with your new
+        password.
+      </p>
+      <LocalizedClientLink href="/user">
+        <Button
+          className="uppercase py-3 px-6 !font-semibold w-full"
+          size="large"
+        >
+          Go to user page
+        </Button>
+      </LocalizedClientLink>
+    </div>
+  ) : (
     <form
       className="flex flex-col gap-4 px-4"
       onSubmit={handleSubmit(updatePassword)}
