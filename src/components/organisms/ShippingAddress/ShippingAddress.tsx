@@ -35,18 +35,13 @@ const ShippingAddress = ({
     email: cart?.email || "",
   })
 
-  const countriesInRegion = useMemo(
-    () => cart?.region?.countries?.map((c) => c.iso_2),
-    [cart?.region]
-  )
-
   // check if customer has saved addresses that are in the current region
   const addressesInRegion = useMemo(
     () =>
       customer?.addresses.filter(
-        (a) => a.country_code && countriesInRegion?.includes(a.country_code)
+        (a) => a.country_code && a.country_code === locale
       ),
-    [customer?.addresses, countriesInRegion]
+    [customer?.addresses]
   )
 
   const setFormAddress = (
@@ -62,7 +57,7 @@ const ShippingAddress = ({
         "shipping_address.company": address?.company || "",
         "shipping_address.postal_code": address?.postal_code || "",
         "shipping_address.city": address?.city || "",
-        "shipping_address.country_code": address?.country_code || "",
+        "shipping_address.country_code": address?.country_code || locale,
         "shipping_address.province": address?.province || "",
         "shipping_address.phone": address?.phone || "",
       }))
@@ -95,10 +90,6 @@ const ShippingAddress = ({
       [e.target.name]: e.target.value,
     })
   }
-
-  const countries = useMemo(() => {
-    return cart?.region?.countries?.find((c) => c.iso_2 === locale)
-  }, [cart?.region, formData])
 
   return (
     <>
@@ -177,8 +168,7 @@ const ShippingAddress = ({
         <CountrySelect
           name="shipping_address.country_code"
           autoComplete="country"
-          // @ts-ignore
-          region={{ ...cart?.region, countries: [countries!] }}
+          region={cart?.region}
           value={formData["shipping_address.country_code"]}
           onChange={handleChange}
           required

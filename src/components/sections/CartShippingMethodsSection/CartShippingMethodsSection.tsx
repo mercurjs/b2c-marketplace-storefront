@@ -164,7 +164,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
 
   return (
     <div className="border p-4 rounded-sm bg-ui-bg-interactive">
-      {missingModal && (
+      {/* {missingModal && (
         <Modal
           heading="Missing seller shipping option"
           onClose={() => router.push(`/${pathname.split("/")[1]}/cart`)}
@@ -190,7 +190,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
             </p>
           </div>
         </Modal>
-      )}
+      )} */}
       <div className="flex flex-row items-center justify-between mb-6">
         <Heading
           level="h2"

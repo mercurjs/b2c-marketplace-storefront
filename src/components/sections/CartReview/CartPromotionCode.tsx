@@ -4,6 +4,7 @@ import { Button, Input } from "@/components/atoms"
 import { Heading, Label } from "@medusajs/ui"
 import { useState } from "react"
 import { applyPromotions } from "@/lib/data/cart"
+import { toast } from "@/lib/helpers/toast"
 
 export default function CartPromotionCode({
   cart,
@@ -18,7 +19,12 @@ export default function CartPromotionCode({
   const handleApplyPromotionCode = async () => {
     setIsLoading(true)
     try {
-      await applyPromotions([promotionCode])
+      const res = await applyPromotions([promotionCode])
+      if (res) {
+        toast.success({ title: "Promotion code applied" })
+      } else {
+        toast.error({ title: "Promotion code not found" })
+      }
       setPromotionCode("")
     } catch (err) {
       console.log(err)
