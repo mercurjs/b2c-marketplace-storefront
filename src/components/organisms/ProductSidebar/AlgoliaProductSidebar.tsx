@@ -5,6 +5,7 @@ import { Accordion, FilterCheckboxOption } from "@/components/molecules"
 import useFilters from "@/hooks/useFilters"
 import useUpdateSearchParams from "@/hooks/useUpdateSearchParams"
 import { DollarIcon } from "@/icons"
+import { retrieveCart } from "@/lib/data/cart"
 import { cn } from "@/lib/utils"
 import { useSearchParams } from "next/navigation"
 import React, { useEffect, useState } from "react"
@@ -164,17 +165,29 @@ function PriceFilter() {
         <form method="POST" onSubmit={updateMinPriceHandler}>
           <Input
             placeholder="Min"
-            icon={<DollarIcon size={16} />}
             onChange={(e) => priceChangeHandler("min", e.target.value)}
             value={min}
+            onBlur={(e) => {
+              setTimeout(() => {
+                updateMinPriceHandler(
+                  e as unknown as React.FormEvent<HTMLFormElement>
+                )
+              }, 500)
+            }}
           />
           <input type="submit" className="hidden" />
         </form>
         <form method="POST" onSubmit={updateMaxPriceHandler}>
           <Input
             placeholder="Max"
-            icon={<DollarIcon size={16} />}
             onChange={(e) => priceChangeHandler("max", e.target.value)}
+            onBlur={(e) => {
+              setTimeout(() => {
+                updateMaxPriceHandler(
+                  e as unknown as React.FormEvent<HTMLFormElement>
+                )
+              }, 500)
+            }}
             value={max}
           />
           <input type="submit" className="hidden" />

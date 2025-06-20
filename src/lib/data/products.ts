@@ -160,7 +160,11 @@ export const listProductsWithSort = async ({
     ? products.filter((product) => product.seller?.id === seller_id)
     : products
 
-  const sortedProducts = sortProducts(filteredProducts, sortBy)
+  const pricedProducts = filteredProducts.filter((prod) =>
+    prod.variants?.some((variant) => variant.calculated_price !== null)
+  )
+
+  const sortedProducts = sortProducts(pricedProducts, sortBy)
 
   const pageParam = (page - 1) * limit
 
