@@ -103,7 +103,6 @@ const Form = ({
     if (newPasswordError.isValid) {
       try {
         const res = await updateCustomerPassword(data.newPassword, token!)
-
         if (res.success) {
           toast.success("Password updated")
           setSuccess(true)
