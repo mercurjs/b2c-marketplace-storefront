@@ -34,13 +34,7 @@ function validatePassword(password: string) {
   }
 }
 
-export const ProfilePasswordForm = ({
-  user,
-  token,
-}: {
-  user?: HttpTypes.StoreCustomer
-  token?: string
-}) => {
+export const ProfilePasswordForm = ({ token }: { token?: string }) => {
   const form = useForm<ProfilePasswordFormData>({
     resolver: zodResolver(profilePasswordSchema),
     defaultValues: {
@@ -52,18 +46,16 @@ export const ProfilePasswordForm = ({
 
   return (
     <FormProvider {...form}>
-      <Form form={form} user={user} token={token} />
+      <Form form={form} token={token} />
     </FormProvider>
   )
 }
 
 const Form = ({
   form,
-  user,
   token,
 }: {
   form: UseFormReturn<ProfilePasswordFormData>
-  user?: HttpTypes.StoreCustomer
   token?: string
 }) => {
   const [success, setSuccess] = useState(false)
@@ -111,6 +103,7 @@ const Form = ({
     if (newPasswordError.isValid) {
       try {
         const res = await updateCustomerPassword(data.newPassword, token!)
+
         if (res.success) {
           toast.success("Password updated")
           setSuccess(true)

@@ -257,10 +257,21 @@ export const updateCustomerPassword = async (
   password: string,
   token: string
 ): Promise<any> => {
-  const res = await sdk.auth
-    .updateProvider("customer", "emailpass", { password }, token as string)
-    .then(() => {
-      removeAuthToken()
+  const res = await fetch(
+    `${process.env.MEDUSA_BACKEND_URL}/auth/customer/emailpass/update`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ password }),
+    }
+  )
+    .then(async () => {
+      await removeAuthToken()
+      const customerCacheTag = await getCacheTag("customers")
+      revalidateTag(customerCacheTag)
       return { success: true, error: null }
     })
     .catch((err: any) => {

@@ -1,5 +1,6 @@
 import { Card } from "@/components/atoms"
 import { ProfilePasswordForm } from "@/components/molecules/ProfilePasswordForm/ProfilePasswordForm"
+import { retrieveCustomer } from "@/lib/data/customer"
 
 export default async function ResetPasswordPage({
   searchParams,
