@@ -8,6 +8,7 @@ import { BaseHit, Hit } from "instantsearch.js"
 import clsx from "clsx"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { convertToLocale } from "@/lib/helpers/money"
+import { getImageUrl } from "@/lib/helpers/get-image-url"
 
 const getRegionPrice = (product: any, currency_code: string) => {
   const variant = product.variants?.find((variant: any) => {
@@ -79,7 +80,7 @@ export const ProductCard = ({
           <div className="overflow-hidden rounded-sm w-full h-full flex justify-center align-center ">
             {product.thumbnail ? (
               <Image
-                src={decodeURIComponent(product.thumbnail)}
+                src={decodeURIComponent(getImageUrl(product.thumbnail))}
                 alt={product.title}
                 width={360}
                 height={360}

@@ -14,6 +14,7 @@ import {
   setCartId,
 } from "./cookies"
 import { getRegion } from "./regions"
+import { getImageUrl } from "../helpers/get-image-url"
 
 /**
  * Retrieves a cart by its ID. If no ID is provided, it will use the cart ID from the cookies.
@@ -42,7 +43,26 @@ export async function retrieveCart(cartId?: string) {
       headers,
       cache: "no-cache",
     })
-    .then(({ cart }) => cart)
+    .then(({ cart }) => {
+      console.log(cart)
+      return {
+        ...cart,
+        items: cart.items?.map((item) => ({
+          ...item,
+          thumbnail: getImageUrl(item.thumbnail || ""),
+          product: {
+            ...item.product,
+            thumbnail: getImageUrl(item.product?.thumbnail || ""),
+            seller: {
+              // @ts-ignore
+              ...item.product?.seller,
+              // @ts-ignore
+              photo: getImageUrl(item.product?.seller?.photo || ""),
+            },
+          },
+        })),
+      }
+    })
     .catch(() => null)
 }
 
@@ -65,8 +85,10 @@ export async function getOrSetCart(countryCode: string) {
       {},
       headers
     )
+    // @ts-ignore
     cart = cartResp.cart
 
+    // @ts-ignore
     await setCartId(cart.id)
 
     const cartCacheTag = await getCacheTag("carts")

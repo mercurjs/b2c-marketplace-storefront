@@ -45,7 +45,7 @@ export const OrderProductListItem = ({
           <p className="label-md text-secondary">
             {`Variant: `}
             <span className="text-primary">
-              {item?.variant_title || item?.variant?.title}
+              {item?.variant_titleitem?.variant?.title}
             </span>
           </p>
         </div>

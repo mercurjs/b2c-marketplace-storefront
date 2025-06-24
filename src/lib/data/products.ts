@@ -7,6 +7,7 @@ import { SortOptions } from "@/types/product"
 import { getAuthHeaders } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
 import { SellerProps } from "@/types/seller"
+import { getImageUrl } from "../helpers/get-image-url"
 
 export const listProducts = async ({
   pageParam = 1,
@@ -93,6 +94,7 @@ export const listProducts = async ({
           // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
           prod?.seller && {
             ...prod,
+            thumbnail: getImageUrl(prod.thumbnail || ""),
             seller: {
               // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
               ...prod.seller,
@@ -104,7 +106,24 @@ export const listProducts = async ({
 
       return {
         response: {
-          products: response,
+          products: response.map((prod) => ({
+            ...prod,
+            thumbnail: getImageUrl(prod.thumbnail || ""),
+            images: prod.images?.map((image) => ({
+              ...image,
+              url: getImageUrl(image.url || ""),
+            })),
+            seller: {
+              ...prod.seller,
+              photo: getImageUrl(prod.seller?.photo || ""),
+              products: prod.seller?.products?.map((product) => {
+                return {
+                  ...product,
+                  thumbnail: getImageUrl(product.thumbnail || ""),
+                }
+              }),
+            },
+          })),
           count,
         },
         nextPage: nextPage,

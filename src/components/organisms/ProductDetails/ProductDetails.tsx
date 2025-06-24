@@ -3,7 +3,6 @@ import {
   ProductDetailsHeader,
   ProductDetailsMeasurements,
   ProductDetailsSeller,
-  ProductDetailsSellerReviews,
   ProductDetailsShipping,
   ProductPageDetails,
 } from "@/components/cells"
@@ -41,9 +40,6 @@ export const ProductDetails = async ({
       <ProductDetailsMeasurements measurements={singleProduct.measurements} />
       <ProductDetailsShipping />
       <ProductDetailsSeller seller={product?.seller} />
-      {/* <ProductDetailsSellerReviews
-        reviews={seller.reviews}
-      /> */}
       <ProductDetailsFooter
         tags={product?.tags || []}
         posted={product?.created_at}
