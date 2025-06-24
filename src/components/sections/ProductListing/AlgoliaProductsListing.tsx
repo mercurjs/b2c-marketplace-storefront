@@ -75,10 +75,14 @@ const ProductsListing = ({ currency_code }: { currency_code?: string }) => {
 
   if (!results?.processingTimeMS) return <ProductListingSkeleton />
 
+  const count = results?.hits.filter((hit) =>
+    hit.variants.some((variant: any) => variant?.prices?.length > 0)
+  ).length
+
   return (
     <>
       <div className="flex justify-between w-full items-center">
-        <div className="my-4 label-md">{`${results?.nbHits} listings`}</div>
+        <div className="my-4 label-md">{`${count} listings`}</div>
         {/* <div className="hidden md:flex gap-2 items-center">
           Sort by:{" "}
           <SelectField
