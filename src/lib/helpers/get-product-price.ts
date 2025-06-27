@@ -39,6 +39,21 @@ export function getProductPrice({
     throw new Error("No product provided")
   }
 
+  const cheapestVariant = () => {
+    if (!product || !product.variants?.length) {
+      return null
+    }
+
+    return product.variants
+      .filter((v: any) => !!v.calculated_price)
+      .sort((a: any, b: any) => {
+        return (
+          a.calculated_price.calculated_amount -
+          b.calculated_price.calculated_amount
+        )
+      })[0]
+  }
+
   const cheapestPrice = () => {
     if (!product || !product.variants?.length) {
       return null
@@ -76,5 +91,6 @@ export function getProductPrice({
     product,
     cheapestPrice: cheapestPrice(),
     variantPrice: variantPrice(),
+    cheapestVariant: cheapestVariant(),
   }
 }

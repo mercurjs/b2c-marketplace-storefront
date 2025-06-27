@@ -42,9 +42,12 @@ export const ProductDetailsHeader = ({
   const [isAdding, setIsAdding] = useState(false)
   const { allSearchParams } = useGetAllSearchParams()
 
+  const { cheapestVariant } = getProductPrice({
+    product,
+  })
   // set default variant
   const selectedVariant = {
-    ...optionsAsKeymap(product?.variants?.[0].options ?? null),
+    ...optionsAsKeymap(cheapestVariant.options ?? null),
     ...allSearchParams,
   }
 

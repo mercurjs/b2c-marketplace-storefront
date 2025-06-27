@@ -1,13 +1,15 @@
 "use client"
 
-import { Chip, Input, StarRating } from "@/components/atoms"
-import { Accordion, FilterCheckboxOption } from "@/components/molecules"
+import { Button, Chip, Input, StarRating } from "@/components/atoms"
+import { Accordion, FilterCheckboxOption, Modal } from "@/components/molecules"
 import useFilters from "@/hooks/useFilters"
 import useUpdateSearchParams from "@/hooks/useUpdateSearchParams"
 import { cn } from "@/lib/utils"
 import { useSearchParams } from "next/navigation"
 import React, { useEffect, useState } from "react"
 import { useRefinementList } from "react-instantsearch"
+import { ProductListingActiveFilters } from "../ProductListingActiveFilters/ProductListingActiveFilters"
+import useGetAllSearchParams from "@/hooks/useGetAllSearchParams"
 
 const filters = [
   { label: "5", amount: 40 },
@@ -18,18 +20,52 @@ const filters = [
 ]
 
 export const AlgoliaProductSidebar = () => {
-  return (
+  const [isMobile, setIsMobile] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+
+  const { allSearchParams } = useGetAllSearchParams()
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  return isMobile ? (
+    <>
+      <Button onClick={() => setIsOpen(true)} className="w-full uppercase mb-4">
+        Filters
+      </Button>
+      {isOpen && (
+        <Modal heading="Filters" onClose={() => setIsOpen(false)}>
+          <div className="px-4">
+            <ProductListingActiveFilters />
+            <PriceFilter
+              defaultOpen={Boolean(
+                allSearchParams.min_price || allSearchParams.max_price
+              )}
+            />
+            <SizeFilter defaultOpen={Boolean(allSearchParams.size)} />
+            <ColorFilter defaultOpen={Boolean(allSearchParams.color)} />
+            <ConditionFilter defaultOpen={Boolean(allSearchParams.condition)} />
+          </div>
+        </Modal>
+      )}
+    </>
+  ) : (
     <div>
       <PriceFilter />
       <SizeFilter />
       <ColorFilter />
       <ConditionFilter />
-      <RatingFilter />
+      {/* <RatingFilter /> */}
     </div>
   )
 }
 
-function ConditionFilter() {
+function ConditionFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
   const { items } = useRefinementList({
     attribute: "variants.condition",
     limit: 100,
@@ -41,7 +77,7 @@ function ConditionFilter() {
     updateFilters(option)
   }
   return (
-    <Accordion heading="Condition">
+    <Accordion heading="Condition" defaultOpen={defaultOpen}>
       <ul className="px-4">
         {items.map(({ label, count }) => (
           <li key={label} className="mb-4">
@@ -58,7 +94,7 @@ function ConditionFilter() {
   )
 }
 
-function ColorFilter() {
+function ColorFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
   const { items } = useRefinementList({
     attribute: "variants.color",
     limit: 100,
@@ -72,7 +108,7 @@ function ColorFilter() {
     updateFilters(option)
   }
   return (
-    <Accordion heading="Color">
+    <Accordion heading="Color" defaultOpen={defaultOpen}>
       <ul className="px-4">
         {items.map(({ label, count }) => (
           <li key={label} className="mb-4 flex items-center justify-between">
@@ -96,7 +132,7 @@ function ColorFilter() {
   )
 }
 
-function SizeFilter() {
+function SizeFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
   const { items } = useRefinementList({
     attribute: "variants.size",
     limit: 100,
@@ -109,7 +145,7 @@ function SizeFilter() {
   }
 
   return (
-    <Accordion heading="Size">
+    <Accordion heading="Size" defaultOpen={defaultOpen}>
       <ul className="grid grid-cols-4 mt-2 gap-2">
         {items.map(({ label }) => (
           <li key={label} className="mb-4">
@@ -126,7 +162,7 @@ function SizeFilter() {
   )
 }
 
-function PriceFilter() {
+function PriceFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
   const [min, setMin] = useState("")
   const [max, setMax] = useState("")
 
@@ -156,7 +192,7 @@ function PriceFilter() {
     updateSearchParams("max_price", max)
   }
   return (
-    <Accordion heading="Price">
+    <Accordion heading="Price" defaultOpen={defaultOpen}>
       <div className="flex gap-2 mb-4">
         <form method="POST" onSubmit={updateMinPriceHandler}>
           <Input
