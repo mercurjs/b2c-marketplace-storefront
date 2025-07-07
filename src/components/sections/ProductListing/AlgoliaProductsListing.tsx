@@ -23,11 +23,13 @@ export const AlgoliaProductsListing = ({
   collection_id,
   seller_handle,
   locale = process.env.NEXT_PUBLIC_DEFAULT_REGION,
+  currency_code,
 }: {
   category_id?: string
   collection_id?: string
   locale?: string
   seller_handle?: string
+  currency_code?: string
 }) => {
   const searchParamas = useSearchParams()
 

@@ -10,7 +10,7 @@ export const SellerReview = ({ review }: { review: SingleProductReview }) => {
         <p className="label-md text-secondary mb-2 truncate">
           {review.customer.first_name} {review.customer.last_name}
         </p>
-        <StarRating starSize={16} rate={Number(review.rating.toFixed(1))} />
+        <StarRating starSize={12} rate={Number(review.rating.toFixed(1))} />
         <p className="text-sm text-secondary mt-2">
           {formatDistanceToNow(new Date(review.created_at), {
             addSuffix: true,

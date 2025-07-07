@@ -416,6 +416,8 @@ export async function placeOrder(cartId?: string) {
     .catch(medusaError)
 
   if (cartRes?.order_set) {
+    revalidatePath("/user/reviews")
+    revalidatePath("/user/orders")
     removeCartId()
     redirect(`/order/${cartRes?.order_set.orders[0].id}/confirmed`)
   }

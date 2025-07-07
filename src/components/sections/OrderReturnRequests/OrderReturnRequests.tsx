@@ -9,10 +9,12 @@ export const OrderReturnRequests = ({
   returns = [],
   user,
   page,
+  currentReturn,
 }: {
   returns: any[]
   user: any
   page: string
+  currentReturn: string
 }) => {
   const pages = Math.ceil(returns.length / LIMIT)
   const currentPage = +page || 1
@@ -38,7 +40,12 @@ export const OrderReturnRequests = ({
   return (
     <div>
       {processedReturns.map((item) => (
-        <SingleOrderReturn key={item.id} item={item} user={user} />
+        <SingleOrderReturn
+          key={item.id}
+          item={item}
+          user={user}
+          defaultOpen={currentReturn === item.id}
+        />
       ))}
       <div className="mt-8 flex justify-center">
         <OrdersPagination pages={pages} />

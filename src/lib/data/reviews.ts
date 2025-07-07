@@ -53,6 +53,7 @@ const createReview = async (review: any) => {
     }
   ).then((res) => {
     revalidatePath("/user/reviews")
+    revalidatePath("/user/reviews/written")
     return res
   })
 

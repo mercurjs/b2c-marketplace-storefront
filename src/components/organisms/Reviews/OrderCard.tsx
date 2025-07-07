@@ -12,24 +12,26 @@ export const OrderCard = ({
 }) => {
   return (
     <Card className="flex gap-6 px-4 justify-between w-full">
-      <div className="flex gap-2 max-lg:items-center">
-        {order?.items?.[0]?.thumbnail ? (
-          <Image
-            alt="Seller photo"
-            src={order.items[0].thumbnail}
-            className="border border-base-primary rounded-xs"
-            width={64}
-            height={64}
-          />
-        ) : (
-          <Image
-            alt="Seller photo"
-            src={"/images/placeholder.svg"}
-            className="opacity-25 scale-75"
-            width={64}
-            height={64}
-          />
-        )}
+      <div className="flex gap-4 max-lg:items-center">
+        <div>
+          {order?.items?.[0]?.thumbnail ? (
+            <Image
+              alt="Seller photo"
+              src={order.items[0].thumbnail}
+              className="border border-base-primary rounded-xs"
+              width={64}
+              height={64}
+            />
+          ) : (
+            <Image
+              alt="Seller photo"
+              src={"/images/placeholder.svg"}
+              className="opacity-25 scale-75"
+              width={64}
+              height={64}
+            />
+          )}
+        </div>
         <div>
           <p className="label-md text-primary font-normal">
             {order.seller.name}
