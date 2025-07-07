@@ -1,72 +1,30 @@
 "use client"
-import Image from "next/image"
 
+import Image from "next/image"
 import { Button } from "@/components/atoms"
 import { HttpTypes } from "@medusajs/types"
-
 import { BaseHit, Hit } from "instantsearch.js"
 import clsx from "clsx"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
-import { convertToLocale } from "@/lib/helpers/money"
-
-const getRegionPrice = (product: any, currency_code: string) => {
-  const variant = product.variants?.find((variant: any) => {
-    return variant.prices
-      ? variant.prices?.some(
-          (price: any) => price.currency_code === currency_code
-        )
-      : variant.calculated_price
-  })
-
-  const price = variant?.calculated_price
-    ? {
-        calculated_price: convertToLocale({
-          amount: variant.calculated_price.calculated_amount,
-          currency_code: variant.calculated_price.currency_code,
-        }),
-        original_price: convertToLocale({
-          amount: variant.calculated_price.original_amount,
-          currency_code: variant.calculated_price.currency_code,
-        }),
-      }
-    : {
-        calculated_price: variant?.prices?.find(
-          (price: any) => price.currency_code === currency_code
-        ).amount
-          ? convertToLocale({
-              amount: variant?.prices?.find(
-                (price: any) => price.currency_code === currency_code
-              ).amount,
-              currency_code,
-            })
-          : null,
-        original_price: variant?.prices?.find(
-          (price: any) => price.currency_code === currency_code
-        ).original_amount
-          ? convertToLocale({
-              amount: variant.prices.find(
-                (price: any) => price.currency_code === currency_code
-              ).original_amount,
-              currency_code,
-            })
-          : null,
-      }
-
-  return price
-}
+import { listProducts } from "@/lib/data/products"
+import { useEffect, useState } from "react"
+import { SkeletonProductCard } from "./SkeletonProductCard"
+import { getProductPrice } from "@/lib/helpers/get-product-price"
 
 export const ProductCard = ({
   product,
-  currency_code,
+  api_product,
 }: {
   product: Hit<HttpTypes.StoreProduct> | Partial<Hit<BaseHit>>
-  currency_code?: string
+  api_product?: HttpTypes.StoreProduct | null
 }) => {
-  const price = getRegionPrice(product, currency_code || "usd")
-
-  if (!price.calculated_price) {
+  if (!api_product) {
     return null
   }
+
+  const { cheapestPrice } = getProductPrice({
+    product: api_product! as HttpTypes.StoreProduct,
+  })
 
   return (
     <div
@@ -107,33 +65,14 @@ export const ProductCard = ({
           <div className="w-full">
             <h3 className="heading-sm truncate">{product.title}</h3>
             <div className="flex items-center gap-2 mt-2">
-              <p className="font-medium">{price.calculated_price}</p>
-              {price.original_price &&
-                price.calculated_price !== price.original_price && (
-                  <p className="text-sm text-gray-500 line-through">
-                    {price.original_price}
-                  </p>
-                )}
+              <p className="font-medium">{cheapestPrice?.calculated_price}</p>
+              {cheapestPrice?.calculated_price !==
+                cheapestPrice?.original_price && (
+                <p className="text-sm text-gray-500 line-through">
+                  {cheapestPrice?.original_price}
+                </p>
+              )}
             </div>
-            {/* <div className="flex items-center gap-2 mt-2">
-              <p className="font-medium">
-                {sellerVariantPrice?.calculated_price ||
-                  variantPrice?.calculated_price}
-              </p>
-              {sellerVariantPrice?.calculated_price
-                ? sellerVariantPrice?.calculated_price !==
-                    sellerVariantPrice?.original_price && (
-                    <p className="text-sm text-gray-500 line-through">
-                      {sellerVariantPrice?.original_price}
-                    </p>
-                  )
-                : variantPrice?.calculated_price !==
-                    variantPrice?.original_price && (
-                    <p className="text-sm text-gray-500 line-through">
-                      {variantPrice?.original_price}
-                    </p>
-                  )}
-            </div> */}
           </div>
         </div>
       </LocalizedClientLink>

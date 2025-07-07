@@ -19,7 +19,7 @@ export default async function RequestSuccessPage({
             Your return request has been submitted. Once the seller confirms it,
             you will receive a confirmation email.
           </p>
-          <LocalizedClientLink href={`/user/returns/${id}`}>
+          <LocalizedClientLink href={`/user/returns${id && `?return=${id}`}`}>
             <Button className="label-md uppercase px-12 py-3">
               Return details
             </Button>

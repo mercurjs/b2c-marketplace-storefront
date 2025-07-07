@@ -32,6 +32,12 @@ export const HomeProductSection = async ({
           sellerProducts={products.slice(0, 4)}
           home={home}
         />
+      ) : Boolean(seller_handle) ? (
+        <HomeProductsCarousel
+          locale={locale}
+          sellerProducts={products.slice(0, 4)}
+          home={home}
+        />
       ) : (
         <AlgoliaProductsCarousel
           locale={locale}

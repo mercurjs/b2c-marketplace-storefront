@@ -73,7 +73,8 @@ export const listProducts = async ({
         offset,
         region_id: region?.id,
         fields:
-          "*variants.calculated_price,+variants.inventory_quantity,*seller,*variants,*seller.products,*seller.reviews,*seller.reviews.customer",
+          "*variants.calculated_price,+variants.inventory_quantity,*seller,*variants,*seller.products," +
+          "*seller.reviews,*seller.reviews.customer,*seller.reviews.seller,*seller.products.variants,*attribute_values,*attribute_values.attribute",
         ...queryParams,
       },
       headers,
@@ -160,7 +161,11 @@ export const listProductsWithSort = async ({
     ? products.filter((product) => product.seller?.id === seller_id)
     : products
 
-  const sortedProducts = sortProducts(filteredProducts, sortBy)
+  const pricedProducts = filteredProducts.filter((prod) =>
+    prod.variants?.some((variant) => variant.calculated_price !== null)
+  )
+
+  const sortedProducts = sortProducts(pricedProducts, sortBy)
 
   const pageParam = (page - 1) * limit
 

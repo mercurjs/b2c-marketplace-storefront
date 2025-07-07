@@ -97,7 +97,7 @@ export const retriveReturnMethods = async (order_id: string) => {
       cache: "force-cache",
     })
     .then(({ shipping_options }) => shipping_options)
-    .catch((err) => medusaError(err))
+    .catch(() => [])
 }
 
 export const listOrders = async (
@@ -133,7 +133,7 @@ export const listOrders = async (
       },
       headers,
       next,
-      cache: "force-cache",
+      cache: "no-cache",
     })
     .then(({ orders }) => orders)
     .catch((err) => medusaError(err))

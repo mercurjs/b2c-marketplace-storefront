@@ -1,3 +1,15 @@
+import { SellerProps } from "./seller"
+
+export interface AdditionalAttributeProps {
+  id: string
+  attribute_id: string
+  value: string
+  attribute: {
+    id: string
+    name: string
+  }
+}
+
 export interface Product {
   id: number
   brand: string
@@ -26,6 +38,9 @@ export interface SingleProductReview {
   customer: { first_name: string; last_name: string }
   customer_note: string
   image: string
+  seller_note?: string
+  updated_at: string
+  seller: SellerProps
 }
 
 export interface SingleProductSeller {

@@ -17,9 +17,15 @@ export const OrderProductListItem = ({
   <Fragment>
     {withDivider && <Divider className="mt-4" />}
     <li className={cn("flex items-center", withDivider && "mt-4")}>
-      <div className="w-[66px] h-16 relative rounded-xs overflow-hidden flex items-center justify-center">
+      <div className="w-[66px] h-16 relative rounded-sm overflow-hidden flex items-center justify-center">
         {item.thumbnail ? (
-          <Image src={item.thumbnail} alt={item.title} fill objectFit="cover" />
+          <Image
+            src={item.thumbnail}
+            alt={item.title}
+            width={66}
+            height={66}
+            className="object-cover"
+          />
         ) : (
           <Image
             src={"/images/placeholder.svg"}

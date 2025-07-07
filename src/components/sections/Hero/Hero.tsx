@@ -1,9 +1,9 @@
-import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import Image from "next/image"
 import { v4 as uuidv4 } from "uuid"
 
 import tailwindConfig from "../../../../tailwind.config"
 import { ArrowRightIcon } from "@/icons"
+import Link from "next/link"
 type HeroProps = {
   image: string
   heading: string

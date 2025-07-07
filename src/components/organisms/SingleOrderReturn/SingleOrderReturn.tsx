@@ -13,8 +13,16 @@ import { StepProgressBar } from "@/components/cells/StepProgressBar/StepProgress
 
 const steps = ["pending", "processing", "sent"]
 
-export const SingleOrderReturn = ({ item, user }: { item: any; user: any }) => {
-  const [isOpen, setIsOpen] = useState(false)
+export const SingleOrderReturn = ({
+  item,
+  user,
+  defaultOpen,
+}: {
+  item: any
+  user: any
+  defaultOpen: boolean
+}) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen)
   const [height, setHeight] = useState(0)
   const contentRef = useRef<HTMLDivElement>(null)
 
