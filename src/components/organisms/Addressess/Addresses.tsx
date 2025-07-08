@@ -60,7 +60,7 @@ export const Addresses = ({
     <>
       <div
         className={cn(
-          "md:col-span-3",
+          "md:col-span-5",
           isEmpty(user.addresses) ? "space-y-8" : "space-y-4"
         )}
       >

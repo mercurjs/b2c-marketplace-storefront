@@ -21,7 +21,7 @@ export const ReviewsToWrite = ({ orders }: { orders: Array<Order> }) => {
 
   return (
     <>
-      <div className="md:col-span-3 space-y-8">
+      <div className="md:col-span-5 space-y-8">
         <h1 className="heading-md uppercase">Reviews</h1>
         <div className="flex gap-4">
           {navigation.map((item) => (

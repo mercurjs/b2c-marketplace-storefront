@@ -1,12 +1,14 @@
 "use client"
 
-import { Inbox } from "@talkjs/react"
+import { Chatbox, Inbox } from "@talkjs/react"
 import { useCallback } from "react"
 import Talk from "talkjs"
 
-export const UserMessagesSection = () => {
+export const UserMessagesSection = ({ user_id }: { user_id: string }) => {
   const syncConversation = useCallback((session: Talk.Session) => {
-    const conversation = session.getOrCreateConversation("welcome")
+    const conversation = session.getOrCreateConversation(
+      "my_conversations_" + user_id
+    )
     conversation.setParticipant(session.me)
     return conversation
   }, [])
