@@ -6,18 +6,14 @@ export const ReturnSummaryTab = ({
   selectedItems,
   items,
   currency_code,
-  handleTabChange,
-  tab,
-  returnMethod,
   handleSubmit,
+  disabled,
 }: {
   selectedItems: any[]
   items: any[]
   currency_code: string
-  handleTabChange: (tab: number) => void
-  tab: number
-  returnMethod: any
   handleSubmit: () => void
+  disabled: boolean
 }) => {
   const selected = items.filter((item) =>
     selectedItems.some((i) => i.line_item_id === item.id)
@@ -80,18 +76,10 @@ export const ReturnSummaryTab = ({
         </p>
         <Button
           className="label-md w-full uppercase"
-          disabled={
-            (tab === 0 && !selected.length) || (tab === 1 && !returnMethod)
-          }
-          onClick={tab === 0 ? () => handleTabChange(1) : () => handleSubmit()}
+          disabled={!selected.length || disabled}
+          onClick={handleSubmit}
         >
-          {tab === 0
-            ? selected.length
-              ? "Continue"
-              : "Select Items"
-            : !returnMethod
-            ? "Select return method"
-            : "Request return"}
+          Request return
         </Button>
       </Card>
     </div>
