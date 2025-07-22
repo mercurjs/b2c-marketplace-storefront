@@ -7,6 +7,7 @@ import { generateCategoryMetadata } from "@/lib/helpers/seo"
 import { Breadcrumbs } from "@/components/atoms"
 import { AlgoliaProductsListing, ProductListing } from "@/components/sections"
 import { notFound } from "next/navigation"
+import isBot from "@/lib/helpers/isBot"
 
 const ALGOLIA_ID = process.env.NEXT_PUBLIC_ALGOLIA_ID
 const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
@@ -39,6 +40,8 @@ async function Category({
     return notFound()
   }
 
+  const bot = isBot(navigator.userAgent)
+
   const breadcrumbsItems = [
     {
       path: category?.handle,
@@ -55,7 +58,7 @@ async function Category({
       <h1 className="heading-xl uppercase">{category.name}</h1>
 
       <Suspense fallback={<ProductListingSkeleton />}>
-        {!ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
+        {bot || !ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
           <ProductListing category_id={category.id} showSidebar />
         ) : (
           <AlgoliaProductsListing category_id={category.id} locale={locale} />

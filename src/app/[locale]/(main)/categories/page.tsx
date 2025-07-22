@@ -4,6 +4,7 @@ import { Suspense } from "react"
 import { Breadcrumbs } from "@/components/atoms"
 import { AlgoliaProductsListing, ProductListing } from "@/components/sections"
 import { getRegion } from "@/lib/data/regions"
+import isBot from "@/lib/helpers/isBot"
 
 const ALGOLIA_ID = process.env.NEXT_PUBLIC_ALGOLIA_ID
 const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
@@ -14,6 +15,8 @@ async function AllCategories({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
+
+  const bot = isBot(navigator.userAgent)
 
   const breadcrumbsItems = [
     {
@@ -33,7 +36,7 @@ async function AllCategories({
       <h1 className="heading-xl uppercase">All Products</h1>
 
       <Suspense fallback={<ProductListingSkeleton />}>
-        {!ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
+        {bot || !ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
           <ProductListing showSidebar locale={locale} />
         ) : (
           <AlgoliaProductsListing
