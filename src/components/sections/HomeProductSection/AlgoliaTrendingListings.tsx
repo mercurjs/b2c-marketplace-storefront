@@ -11,10 +11,10 @@ export const AlgoliaTrendingListings = () => {
           Trending Listings
         </h2>
 
-        <TrendingItems
+        {/* <TrendingItems
           limit={4}
           emptyComponent={() => <div>No recommendation</div>}
-        />
+        /> */}
       </section>
     </InstantSearch>
   )
