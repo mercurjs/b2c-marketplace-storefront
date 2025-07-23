@@ -8,8 +8,5 @@ export const checkRegion = async (locale: string) => {
     })
     .flat()
 
-  const region =
-    locale === "robot.txt" ? false : countries.includes(locale) ? true : false
-
-  return region
+  return countries.includes(locale) ? true : false
 }
