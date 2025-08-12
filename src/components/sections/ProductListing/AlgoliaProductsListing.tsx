@@ -96,7 +96,7 @@ const ProductsListing = ({ locale }: { locale?: string }) => {
   const pages = Math.ceil(count / PRODUCT_LIMIT) || 1
 
   return (
-    <>
+    <div className="min-h-[70vh]">
       <div className="flex justify-between w-full items-center">
         <div className="my-4 label-md">{`${count} listings`}</div>
       </div>
@@ -104,7 +104,7 @@ const ProductsListing = ({ locale }: { locale?: string }) => {
         <ProductListingActiveFilters />
       </div>
       <div className="md:flex gap-4">
-        <div>
+        <div className="w-[280px] flex-shrink-0 hidden md:block">
           <AlgoliaProductSidebar />
         </div>
         <div className="w-full">
@@ -136,6 +136,6 @@ const ProductsListing = ({ locale }: { locale?: string }) => {
         </div>
       </div>
       <ProductsPagination pages={pages} />
-    </>
+    </div>
   )
 }

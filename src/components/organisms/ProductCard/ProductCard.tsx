@@ -23,6 +23,8 @@ export const ProductCard = ({
     product: api_product! as HttpTypes.StoreProduct,
   })
 
+  const productName = String(product.title || "Product")
+
   return (
     <div
       className={clsx(
@@ -30,37 +32,52 @@ export const ProductCard = ({
       )}
     >
       <div className="relative w-full h-full bg-primary aspect-square">
-        <LocalizedClientLink href={`/products/${product.handle}`}>
+        <LocalizedClientLink
+          href={`/products/${product.handle}`}
+          aria-label={`View ${productName}`}
+          title={`View ${productName}`}
+        >
           <div className="overflow-hidden rounded-sm w-full h-full flex justify-center align-center ">
             {product.thumbnail ? (
               <Image
-                loading="lazy"
+                priority
                 fetchPriority="high"
                 src={decodeURIComponent(product.thumbnail)}
-                alt={product.title}
+                alt={`${productName} image`}
                 width={360}
                 height={360}
+                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                 className="object-cover aspect-square w-full object-center h-full lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
               />
             ) : (
               <Image
-                loading="lazy"
+                priority
                 fetchPriority="high"
                 src="/images/placeholder.svg"
-                alt="Product placeholder"
+                alt={`${productName} image placeholder`}
                 width={100}
                 height={100}
+                className="h-full w-full scale-50 opacity-50"
+                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
               />
             )}
           </div>
         </LocalizedClientLink>
-        <LocalizedClientLink href={`/products/${product.handle}`}>
+        <LocalizedClientLink
+          href={`/products/${product.handle}`}
+          aria-label={`See more about ${productName}`}
+          title={`See more about ${productName}`}
+        >
           <Button className="absolute rounded-sm bg-action text-action-on-primary h-auto lg:h-[48px] lg:group-hover:block hidden w-full uppercase bottom-1 z-10">
             See More
           </Button>
         </LocalizedClientLink>
       </div>
-      <LocalizedClientLink href={`/products/${product.handle}`}>
+      <LocalizedClientLink
+        href={`/products/${product.handle}`}
+        aria-label={`Go to ${productName} page`}
+        title={`Go to ${productName} page`}
+      >
         <div className="flex justify-between p-4">
           <div className="w-full">
             <h3 className="heading-sm truncate">{product.title}</h3>

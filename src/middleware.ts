@@ -62,11 +62,6 @@ async function getRegionMap(cacheId: string) {
   return regionMapCache.regionMap
 }
 
-/**
- * Fetches regions from Medusa and sets the region cookie.
- * @param request
- * @param response
- */
 async function getCountryCode(
   request: NextRequest,
   regionMap: Map<string, HttpTypes.StoreRegion | number>
@@ -100,53 +95,44 @@ async function getCountryCode(
   }
 }
 
-/**
- * Middleware to handle region selection and onboarding status.
- */
 export async function middleware(request: NextRequest) {
-  let redirectUrl = request.nextUrl.href
+  // Short-circuit static assets
+  if (request.nextUrl.pathname.includes(".")) {
+    return NextResponse.next()
+  }
 
-  let response = NextResponse.redirect(redirectUrl, 307)
+  const cacheIdCookie = request.cookies.get("_medusa_cache_id")
+  const urlSegment = request.nextUrl.pathname.split("/")[1]
+  const looksLikeLocale = /^[a-z]{2}$/i.test(urlSegment || "")
 
-  let cacheIdCookie = request.cookies.get("_medusa_cache_id")
+  // Fast path: URL already has a locale segment and cache cookie exists
+  if (looksLikeLocale && cacheIdCookie) {
+    return NextResponse.next()
+  }
 
-  let cacheId = cacheIdCookie?.value || crypto.randomUUID()
+  let response = NextResponse.next()
+
+  // Ensure cache id cookie exists (set without redirect)
+  const cacheId = cacheIdCookie?.value || crypto.randomUUID()
+  if (!cacheIdCookie) {
+    response.cookies.set("_medusa_cache_id", cacheId, {
+      maxAge: 60 * 60 * 24,
+    })
+  }
 
   const regionMap = await getRegionMap(cacheId)
-
   const countryCode = regionMap && (await getCountryCode(request, regionMap))
 
   const urlHasCountryCode =
     countryCode && request.nextUrl.pathname.split("/")[1].includes(countryCode)
 
-  // if one of the country codes is in the url and the cache id is set, return next
-  if (urlHasCountryCode && cacheIdCookie) {
-    return NextResponse.next()
-  }
-
-  // if one of the country codes is in the url and the cache id is not set, set the cache id and redirect
-  if (urlHasCountryCode && !cacheIdCookie) {
-    response.cookies.set("_medusa_cache_id", cacheId, {
-      maxAge: 60 * 60 * 24,
-    })
-
-    return response
-  }
-
-  // check if the url is a static asset
-  if (request.nextUrl.pathname.includes(".")) {
-    return NextResponse.next()
-  }
-
-  const redirectPath =
-    request.nextUrl.pathname === "/" ? "" : request.nextUrl.pathname
-
-  const queryString = request.nextUrl.search ? request.nextUrl.search : ""
-
-  // If no country code is set, we redirect to the relevant region.
+  // If no country code in URL but we can resolve one, redirect to locale-prefixed path
   if (!urlHasCountryCode && countryCode) {
-    redirectUrl = `${request.nextUrl.origin}/${countryCode}${redirectPath}${queryString}`
-    response = NextResponse.redirect(`${redirectUrl}`, 307)
+    const redirectPath =
+      request.nextUrl.pathname === "/" ? "" : request.nextUrl.pathname
+    const queryString = request.nextUrl.search ? request.nextUrl.search : ""
+    const redirectUrl = `${request.nextUrl.origin}/${countryCode}${redirectPath}${queryString}`
+    return NextResponse.redirect(redirectUrl, 307)
   }
 
   return response
