@@ -44,8 +44,8 @@ export const ProductCard = ({
                 fetchPriority="high"
                 src={decodeURIComponent(product.thumbnail)}
                 alt={`${productName} image`}
-                width={360}
-                height={360}
+                width={100}
+                height={100}
                 sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                 className="object-cover aspect-square w-full object-center h-full lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
               />
@@ -57,7 +57,7 @@ export const ProductCard = ({
                 alt={`${productName} image placeholder`}
                 width={100}
                 height={100}
-                className="h-full w-full scale-50 opacity-50"
+                // className="h-full w-full scale-50 opacity-50"
                 sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
               />
             )}

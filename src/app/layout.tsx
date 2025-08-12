@@ -60,6 +60,8 @@ export default async function RootLayout({
           crossOrigin="anonymous"
         />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://i.imgur.com" />
+        <link rel="dns-prefetch" href="https://i.imgur.com" />
         {ALGOLIA_APP && (
           <>
             <link
