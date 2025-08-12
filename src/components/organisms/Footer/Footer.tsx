@@ -44,7 +44,9 @@ export function Footer() {
           <h2 className="heading-sm text-primary mb-3 uppercase">connect</h2>
           <nav className="space-y-3" aria-label="Social media navigation">
             {footerLinks.connect.map(({ label, path }) => (
-              <LocalizedClientLink
+              <a
+                aria-label={`Go to ${label} page`}
+                title={`Go to ${label} page`}
                 key={label}
                 href={path}
                 className="block label-md"
@@ -52,7 +54,7 @@ export function Footer() {
                 rel="noopener noreferrer"
               >
                 {label}
-              </LocalizedClientLink>
+              </a>
             ))}
           </nav>
         </div>
