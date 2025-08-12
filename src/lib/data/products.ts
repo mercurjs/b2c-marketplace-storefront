@@ -60,6 +60,8 @@ export const listProducts = async ({
     ...(await getAuthHeaders()),
   }
 
+  const useCached = limit <= 8 && !category_id && !collection_id
+
   return sdk.client
     .fetch<{
       products: (HttpTypes.StoreProduct & { seller?: SellerProps })[]
@@ -79,7 +81,8 @@ export const listProducts = async ({
         ...queryParams,
       },
       headers,
-      cache: "no-cache",
+      next: useCached ? { revalidate: 60 } : undefined,
+      cache: useCached ? "force-cache" : "no-cache",
     })
     .then(({ products: productsRaw, count }) => {
       const products = productsRaw.filter(

@@ -50,11 +50,12 @@ export function ShopByStyleSection() {
         </div>
         <div className="relative hidden lg:block">
           <Image
+            loading="lazy"
+            fetchPriority="high"
             src="/images/shop-by-styles/Image.jpg"
             alt="Models showcasing luxury fashion styles"
             width={700}
             height={600}
-            priority
             className="object-cover rounded-sm w-full h-auto"
           />
         </div>

@@ -13,8 +13,10 @@ export function CategoryCard({
     >
       <div className="flex relative aspect-square overflow-hidden w-[200px]">
         <Image
+          loading="lazy"
+          fetchPriority="high"
           src={`/images/categories/${category.handle}.png`}
-          alt={category.name}
+          alt={`category - ${category.name}`}
           width={233}
           height={193}
           className="object-contain scale-90 rounded-full"

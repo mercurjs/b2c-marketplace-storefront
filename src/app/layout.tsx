@@ -37,7 +37,7 @@ export default async function RootLayout({
   const { locale } = await params
 
   return (
-    <html lang={locale} className="">
+    <html lang={locale || "en"} className="">
       <body
         className={`${funnelDisplay.className} antialiased bg-primary text-secondary relative`}
       >

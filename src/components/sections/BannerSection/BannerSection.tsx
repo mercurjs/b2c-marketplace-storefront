@@ -11,9 +11,9 @@ export const BannerSection = () => {
             <span className="text-sm inline-block px-4 py-1 border border-secondary rounded-sm">
               #COLLECTION
             </span>
-            <h1 className="display-sm">
+            <h2 className="display-sm">
               BOHO VIBES: WHERE COMFORT MEETS CREATIVITY
-            </h1>
+            </h2>
             <p className="text-lg text-tertiary max-w-lg">
               Discover boho styles that inspire adventure and embrace the beauty
               of the unconventional.
@@ -27,12 +27,13 @@ export const BannerSection = () => {
         </div>
         <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full flex justify-end rounded-sm">
           <Image
+            loading="lazy"
+            fetchPriority="high"
             src="/images/banner-section/Image.jpg"
             alt="Boho fashion collection - Model wearing a floral dress with yellow boots"
             width={700}
             height={600}
             className="object-cover object-top rounded-sm"
-            priority
           />
         </div>
       </div>

@@ -34,15 +34,18 @@ export const ProductCard = ({
           <div className="overflow-hidden rounded-sm w-full h-full flex justify-center align-center ">
             {product.thumbnail ? (
               <Image
+                loading="lazy"
+                fetchPriority="high"
                 src={decodeURIComponent(product.thumbnail)}
                 alt={product.title}
                 width={360}
                 height={360}
                 className="object-cover aspect-square w-full object-center h-full lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
-                priority
               />
             ) : (
               <Image
+                loading="lazy"
+                fetchPriority="high"
                 src="/images/placeholder.svg"
                 alt="Product placeholder"
                 width={100}

@@ -71,7 +71,11 @@ export const CartDropdown = ({
       onMouseOver={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <LocalizedClientLink href="/cart" className="relative">
+      <LocalizedClientLink
+        href="/cart"
+        className="relative"
+        aria-label="Go to cart"
+      >
         <CartIcon size={20} />
         {Boolean(cartItemsCount) && (
           <Badge className="absolute -top-2 -right-2 w-4 h-4 p-0">

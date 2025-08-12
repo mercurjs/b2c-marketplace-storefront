@@ -77,6 +77,7 @@ const CountrySelect = ({ regions }: CountrySelectProps) => {
                 <span className="txt-compact-small flex items-center gap-x-2">
                   {/* @ts-ignore */}
                   <ReactCountryFlag
+                    alt={`${current.country?.toUpperCase()} flag`}
                     svg
                     style={{
                       width: "16px",

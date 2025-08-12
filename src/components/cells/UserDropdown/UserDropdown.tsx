@@ -29,7 +29,11 @@ export const UserDropdown = ({
       onMouseLeave={() => setOpen(false)}
       onFocus={() => setOpen(true)}
     >
-      <LocalizedClientLink href="/user" className="relative">
+      <LocalizedClientLink
+        href="/user"
+        className="relative"
+        aria-label="Go to user profile"
+      >
         <ProfileIcon size={20} />
       </LocalizedClientLink>
       <Dropdown show={open}>

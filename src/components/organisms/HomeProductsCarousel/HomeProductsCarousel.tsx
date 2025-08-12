@@ -21,6 +21,9 @@ export const HomeProductsCarousel = async ({
     queryParams: {
       limit: home ? 4 : 99999,
       order: "created_at",
+      ...(home
+        ? { fields: "id,title,handle,thumbnail,*variants.calculated_price" }
+        : {}),
     },
   })
 
