@@ -3,7 +3,6 @@ import { Funnel_Display } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@medusajs/ui"
 import Head from "next/head"
-import Script from "next/script"
 
 const funnelDisplay = Funnel_Display({
   variable: "--font-funnel-sans",
@@ -45,7 +44,6 @@ export default async function RootLayout({
 
   const ALGOLIA_APP = process.env.NEXT_PUBLIC_ALGOLIA_ID
   const htmlLang = locale || "en"
-  const TALKJS_APP_ID = process.env.NEXT_PUBLIC_TALKJS_APP_ID
 
   return (
     <html lang={htmlLang} className="">
@@ -120,14 +118,6 @@ export default async function RootLayout({
         className={`${funnelDisplay.className} antialiased bg-primary text-secondary relative`}
       >
         {children}
-        {/* Lazy load TalkJS only after page load to defer third-party JS cost */}
-        {TALKJS_APP_ID ? (
-          <Script
-            id="talkjs-lazy"
-            src="https://cdn.talkjs.com/talk.js"
-            strategy="lazyOnload"
-          />
-        ) : null}
         <Toaster position="top-right" />
       </body>
     </html>

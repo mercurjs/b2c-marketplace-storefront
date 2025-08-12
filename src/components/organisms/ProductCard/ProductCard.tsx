@@ -57,7 +57,6 @@ export const ProductCard = ({
                 alt={`${productName} image placeholder`}
                 width={100}
                 height={100}
-                // className="h-full w-full scale-50 opacity-50"
                 sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
               />
             )}

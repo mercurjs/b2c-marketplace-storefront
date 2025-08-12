@@ -1,5 +1,4 @@
 import Image from "next/image"
-import { v4 as uuidv4 } from "uuid"
 
 import tailwindConfig from "../../../../tailwind.config"
 import { ArrowRightIcon } from "@/icons"
@@ -23,7 +22,7 @@ export const Hero = ({ image, heading, paragraph, buttons }: HeroProps) => {
         className="w-full order-2 lg:order-1"
         priority
         fetchPriority="high"
-        sizes="(min-width: 1024px) 33vw, 100vw"
+        sizes="(min-width: 1024px) 50vw, 100vw"
       />
       <div className="w-full lg:order-2">
         <div className="border rounded-sm w-full px-6 flex items-end h-[calc(100%-144px)]">
