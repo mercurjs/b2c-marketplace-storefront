@@ -35,6 +35,8 @@ export const ProductCarousel = ({
               className="embla__slide min-w-0 h-[350px] lg:h-fit"
             >
               <Image
+                priority
+                fetchPriority="high"
                 src={decodeURIComponent(slide.url)}
                 alt="Product image"
                 width={700}
