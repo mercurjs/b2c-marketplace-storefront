@@ -22,6 +22,7 @@ export const Hero = ({ image, heading, paragraph, buttons }: HeroProps) => {
         className="w-full order-2 lg:order-1"
         priority
         fetchPriority="high"
+        quality={50}
         sizes="(min-width: 1024px) 50vw, 100vw"
       />
       <div className="w-full lg:order-2">
