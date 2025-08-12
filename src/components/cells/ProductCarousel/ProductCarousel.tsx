@@ -29,19 +29,20 @@ export const ProductCarousel = ({
         ref={emblaRef}
       >
         <div className="h-[350px] lg:h-fit max-h-[698px] flex lg:block">
-          {(slides || []).map((slide) => (
+          {(slides || []).map((slide, idx) => (
             <div
               key={slide.id}
               className="embla__slide min-w-0 h-[350px] lg:h-fit"
             >
               <Image
-                priority
-                fetchPriority="high"
+                priority={idx === 0}
+                fetchPriority={idx === 0 ? "high" : "auto"}
                 src={decodeURIComponent(slide.url)}
                 alt="Product image"
                 width={700}
                 height={700}
-                quality={100}
+                quality={idx === 0 ? 85 : 70}
+                sizes="(min-width: 1024px) 50vw, 100vw"
                 className="max-h-[700px] w-full h-auto aspect-square object-cover object-center object-center"
               />
             </div>
