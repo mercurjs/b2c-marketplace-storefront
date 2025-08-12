@@ -1,5 +1,4 @@
 "use client"
-import { v4 as uuidv4 } from "uuid"
 import { PaginationButton } from "@/components/atoms"
 import { CollapseIcon, MeatballsMenuIcon } from "@/icons"
 
