@@ -22,8 +22,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
       <div className="relative overflow-hidden rounded-xs h-full">
         <Image
           loading="lazy"
-          fetchPriority="high"
-          sizes="(min-width: 1024px) 50vw, 100vw"
+          sizes="(min-width: 1024px) 33vw, 100vw"
           src={decodeURIComponent(post.image)}
           alt={post.title}
           width={467}
