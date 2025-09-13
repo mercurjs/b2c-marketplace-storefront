@@ -79,14 +79,7 @@ export async function generateMetadata({
 const ALGOLIA_ID = process.env.NEXT_PUBLIC_ALGOLIA_ID
 const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
 
-async function Category({
-  params,
-}: {
-  params: Promise<{
-    category: string
-    locale: string
-  }>
-}) {
+async function Category({ params, searchParams }) {
   const { category: handle, locale } = await params
 
   const category = await getCategoryByHandle([handle])
@@ -163,11 +156,12 @@ async function Category({
       <h1 className="heading-xl uppercase">{category.name}</h1>
 
       <Suspense fallback={<ProductListingSkeleton />}>
-        {bot || !ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
-          <ProductListing category_id={category.id} showSidebar />
-        ) : (
-          <AlgoliaProductsListing category_id={category.id} locale={locale} />
-        )}
+        <ProductListing
+          locale={locale}
+          category_id={category.id}
+          filters={searchParams}
+          showSidebar
+        />
       </Suspense>
     </main>
   )

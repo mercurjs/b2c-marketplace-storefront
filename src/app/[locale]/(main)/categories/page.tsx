@@ -2,7 +2,7 @@ import { ProductListingSkeleton } from "@/components/organisms/ProductListingSke
 import { Suspense } from "react"
 
 import { Breadcrumbs } from "@/components/atoms"
-import { AlgoliaProductsListing, ProductListing } from "@/components/sections"
+import { ProductListing } from "@/components/sections"
 import { getRegion } from "@/lib/data/regions"
 import isBot from "@/lib/helpers/isBot"
 import { headers } from "next/headers"
@@ -11,14 +11,11 @@ import Script from "next/script"
 import { listRegions } from "@/lib/data/regions"
 import { listProducts } from "@/lib/data/products"
 import { toHreflang } from "@/lib/helpers/hreflang"
+import { log } from "console"
 
 export const revalidate = 60
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>
-}): Promise<Metadata> {
+export async function generateMetadata({ params }) {
   const { locale } = await params
   const headersList = await headers()
   const host = headersList.get("host")
@@ -68,12 +65,10 @@ export async function generateMetadata({
 const ALGOLIA_ID = process.env.NEXT_PUBLIC_ALGOLIA_ID
 const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
 
-async function AllCategories({
-  params,
-}: {
-  params: Promise<{ locale: string }>
-}) {
+async function AllCategories({ params, searchParams }) {
   const { locale } = await params
+  // const { color } = await params
+  // console.log(color)
 
   const ua = (await headers()).get("user-agent") || ""
   const bot = isBot(ua)
@@ -144,14 +139,7 @@ async function AllCategories({
       <h1 className="heading-xl uppercase">All Products</h1>
 
       <Suspense fallback={<ProductListingSkeleton />}>
-        {bot || !ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
-          <ProductListing showSidebar locale={locale} />
-        ) : (
-          <AlgoliaProductsListing
-            locale={locale}
-            currency_code={currency_code}
-          />
-        )}
+        <ProductListing showSidebar locale={locale} filters={searchParams} />
       </Suspense>
     </main>
   )

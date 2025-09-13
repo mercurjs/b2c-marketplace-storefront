@@ -12,6 +12,7 @@ export const ProductListing = async ({
   category_id,
   collection_id,
   seller_id,
+  filters,
   showSidebar = false,
   locale = process.env.NEXT_PUBLIC_DEFAULT_REGION || "pl",
 }: {
@@ -19,6 +20,7 @@ export const ProductListing = async ({
   collection_id?: string
   seller_id?: string
   showSidebar?: boolean
+  filters: any
   locale?: string
 }) => {
   const { response } = await listProductsWithSort({
@@ -27,6 +29,7 @@ export const ProductListing = async ({
     collection_id,
     countryCode: locale,
     sortBy: "created_at",
+    // ...filters,
     queryParams: {
       limit: PRODUCT_LIMIT,
     },
@@ -37,6 +40,9 @@ export const ProductListing = async ({
   const count = products.length
 
   const pages = Math.ceil(count / PRODUCT_LIMIT) || 1
+
+  console.log(filters)
+  console.log(category_id)
 
   return (
     <div className="py-4">
