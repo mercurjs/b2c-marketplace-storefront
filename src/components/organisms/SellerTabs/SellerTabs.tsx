@@ -11,6 +11,7 @@ export const SellerTabs = ({
   tab,
   seller_handle,
   seller_id,
+  filters,
   locale,
   currency_code,
 }: {
@@ -18,6 +19,7 @@ export const SellerTabs = ({
   seller_handle: string
   seller_id: string
   locale: string
+  filters: any
   currency_code?: string
 }) => {
   const tabsList = [
@@ -33,15 +35,12 @@ export const SellerTabs = ({
       <TabsList list={tabsList} activeTab={tab} />
       <TabsContent value="products" activeTab={tab}>
         <Suspense fallback={<ProductListingSkeleton />}>
-          {!ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
-            <ProductListing showSidebar seller_id={seller_id} />
-          ) : (
-            <AlgoliaProductsListing
-              locale={locale}
-              seller_handle={seller_handle}
-              currency_code={currency_code}
-            />
-          )}
+          <ProductListing
+            locale={locale}
+            filters={filters}
+            showSidebar
+            seller_id={seller_id}
+          />
         </Suspense>
       </TabsContent>
       <TabsContent value="reviews" activeTab={tab}>

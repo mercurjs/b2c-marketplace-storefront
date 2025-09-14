@@ -6,8 +6,10 @@ import { SellerProps } from "@/types/seller"
 
 export default async function SellerReviewsPage({
   params,
+  searchParams,
 }: {
-  params: Promise<{ handle: string; locale: string }>
+  params: any
+  searchParams: any
 }) {
   const { handle, locale } = await params
 
@@ -21,6 +23,7 @@ export default async function SellerReviewsPage({
     <main className="container">
       <SellerPageHeader header seller={seller} user={user} />
       <SellerTabs
+        filters={searchParams}
         tab={tab}
         seller_id={seller.id}
         seller_handle={seller.handle}
