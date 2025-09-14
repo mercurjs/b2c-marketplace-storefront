@@ -79,7 +79,13 @@ export async function generateMetadata({
 const ALGOLIA_ID = process.env.NEXT_PUBLIC_ALGOLIA_ID
 const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
 
-async function Category({ params, searchParams }) {
+async function Category({
+  params,
+  searchParams,
+}: {
+  params: any
+  searchParams: any
+}) {
   const { category: handle, locale } = await params
 
   const category = await getCategoryByHandle([handle])

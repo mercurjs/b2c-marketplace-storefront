@@ -15,7 +15,7 @@ import { log } from "console"
 
 export const revalidate = 60
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }: { params: any }) {
   const { locale } = await params
   const headersList = await headers()
   const host = headersList.get("host")
@@ -65,7 +65,13 @@ export async function generateMetadata({ params }) {
 const ALGOLIA_ID = process.env.NEXT_PUBLIC_ALGOLIA_ID
 const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
 
-async function AllCategories({ params, searchParams }) {
+async function AllCategories({
+  params,
+  searchParams,
+}: {
+  params: any
+  searchParams: any
+}) {
   const { locale } = await params
   // const { color } = await params
   // console.log(color)
