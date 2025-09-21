@@ -12,7 +12,7 @@ import { headers } from "next/headers"
 import Script from "next/script"
 import { listRegions } from "@/lib/data/regions"
 import { toHreflang } from "@/lib/helpers/hreflang"
-import { redirect } from "next/navigation"
+// import { redirect } from "next/navigation"
 
 export async function generateMetadata({
   params,
