@@ -36,7 +36,7 @@ export default function CartPromotionCode({ cart }: { cart: any }) {
         Promotion codes
       </Heading>
       <div>
-        {cart?.promotions?.map((promo) => (
+        {cart?.promotions?.map((promo: any) => (
           <div
             key={promo.id}
             className="mb-4 flex flex-row gap-x-2 items-center"
