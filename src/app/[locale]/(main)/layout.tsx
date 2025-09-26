@@ -24,18 +24,21 @@ export default async function RootLayout({
   if (!APP_ID || !user)
     return (
       <>
-        <Header />
-        {children}
-        <Footer />
+        <div className="min-h-screen">
+          <Header />
+          <main className="container mx-auto px-4 py-24">{children}</main>
+        </div>
+        ){/* <Footer /> */}
       </>
     )
 
   return (
     <>
       <Session appId={APP_ID} userId={user.id}>
-        <Header />
-        {children}
-        <Footer />
+        <div className="min-h-screen">
+          <Header />
+          <main className="container mx-auto px-4 py-24">{children}</main>
+        </div>
       </Session>
     </>
   )

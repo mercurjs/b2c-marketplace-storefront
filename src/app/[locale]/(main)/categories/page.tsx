@@ -145,7 +145,11 @@ async function AllCategories({
       <h1 className="heading-xl uppercase">All Products</h1>
 
       <Suspense fallback={<ProductListingSkeleton />}>
-        <ProductListing showSidebar locale={locale} filters={searchParams} />
+        <ProductListing
+          showSidebar={false}
+          locale={locale}
+          filters={searchParams}
+        />
       </Suspense>
     </main>
   )

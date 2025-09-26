@@ -166,7 +166,7 @@ async function Category({
           locale={locale}
           category_id={category.id}
           filters={searchParams}
-          showSidebar
+          showSidebar={false}
         />
       </Suspense>
     </main>
