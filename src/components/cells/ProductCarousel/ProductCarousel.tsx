@@ -23,12 +23,12 @@ export const ProductCarousel = ({
   })
 
   return (
-    <div className="embla relative">
+    <div className="embla relative z-0">
       <div
-        className="embla__viewport overflow-hidden rounded-xs"
+        className="embla__viewport overflow-hidden rounded-xs pointer-events-none"
         ref={emblaRef}
       >
-        <div className="h-[350px] lg:h-fit max-h-[698px] flex lg:block">
+        <div className="h-[350px] lg:h-fit max-h-[698px] block">
           {(slides || []).map((slide, idx) => (
             <div
               key={slide.id}
