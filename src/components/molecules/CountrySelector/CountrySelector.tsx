@@ -66,9 +66,7 @@ const CountrySelect = ({ regions }: CountrySelectProps) => {
         <Listbox
           onChange={handleChange}
           defaultValue={
-            countryCode
-              ? options?.find((o) => o?.country === countryCode)
-              : undefined
+            countryCode ? options?.find((o) => o?.country === countryCode) : ""
           }
         >
           <ListboxButton className="relative w-16 flex justify-between items-center h-10 bg-component-secondary text-left  cursor-default focus:outline-none border rounded-lg focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-gray-300 focus-visible:ring-offset-2 focus-visible:border-gray-300 text-base-regular">
