@@ -6,13 +6,7 @@ import { useState } from "react"
 import { applyPromotions } from "@/lib/data/cart"
 import { toast } from "@/lib/helpers/toast"
 
-export default function CartPromotionCode({
-  cart,
-}: {
-  cart:
-    | (HttpTypes.StoreCart & { promotions?: HttpTypes.StorePromotion[] })
-    | null
-}) {
+export default function CartPromotionCode({ cart }: { cart: any }) {
   const [promotionCode, setPromotionCode] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
