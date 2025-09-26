@@ -9,7 +9,7 @@ export const Item = ({
   currencyCode: string
 }) => {
   const original_total = convertToLocale({
-    amount: item.original_total,
+    amount: item.original_total ?? 0,
     currency_code: currencyCode,
   })
 
