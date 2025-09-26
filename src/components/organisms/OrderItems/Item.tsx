@@ -14,7 +14,7 @@ export const Item = ({
   })
 
   const total = convertToLocale({
-    amount: item.total,
+    amount: item.total ?? 0,
     currency_code: currencyCode,
   })
 
