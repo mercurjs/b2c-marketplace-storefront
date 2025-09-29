@@ -135,7 +135,7 @@ export const ProductDetailsHeader = ({
         onClick={handleAddToCart}
         disabled={isAdding || !variantStock || !variantHasPrice}
         loading={isAdding}
-        className="w-full uppercase mb-4 py-3 flex justify-center z-50"
+        className="w-full uppercase mb-4 py-3 flex justify-center z-[9998] relative"
         size="large"
       >
         {variantStock && variantHasPrice ? "ADD TO CART" : "OUT OF STOCK"}

@@ -125,7 +125,7 @@ export default async function Home({
     "Mercur B2C Demo - Marketplace Storefront"
 
   return (
-    <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start text-primary">
+    <main className="flex flex-col pb-20 text-primary">
       <link
         rel="preload"
         as="image"
@@ -177,12 +177,6 @@ export default async function Home({
           },
         ]}
       />
-      <div className="px-4 lg:px-8 w-full"></div>
-      <div className="px-4 lg:px-8 w-full">
-        {/* <HomeCategories heading="SHOP BY CATEGORY" /> */}
-        {/* <HomeProductSection heading="SHOP BY CATEGORY" /> */}
-        {/* <ShopByStyleSection /> */}
-      </div>
       <BannerSection />
       <BlogSection />
     </main>

@@ -14,30 +14,32 @@ export function BlogCard({ post, index }: BlogCardProps) {
   return (
     <LocalizedClientLink
       href={post.href}
-      className={cn(
-        "group block border border-secondary p-1 rounded-sm relative",
-        index > 0 && "hidden lg:block"
-      )}
+      className="group block bg-white rounded-lg shadow-sm border border-neutral-100 overflow-hidden hover:shadow-md transition-all duration-200"
     >
-      <div className="relative overflow-hidden rounded-xs h-full">
+      <div className="relative overflow-hidden h-48">
         <Image
           loading="lazy"
-          sizes="(min-width: 1024px) 33vw, 100vw"
+          sizes="100vw"
           src={decodeURIComponent(post.image)}
           alt={post.title}
           width={467}
-          height={472}
-          className="object-cover max-h-[472px] h-full w-full"
+          height={192}
+          className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-200"
         />
+        <div className="absolute top-3 left-3">
+          <span className="text-xs inline-block px-2 py-1 bg-kiddo-secondary text-kiddo-dark rounded-full font-medium border border-kiddo-primary/20">
+            {post.category}
+          </span>
+        </div>
       </div>
-      <div className="p-4 bg-tertiary text-tertiary absolute bottom-0 left-1 lg:opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-b-xs w-[calc(100%-8px)]">
-        <h3 className="heading-sm">{post.title}</h3>
-        <p className="text-md line-clamp-2">{post.excerpt}</p>
-        <div className="flex items-center gap-4 uppercase label-md mt-[26px]">
-          Read more{" "}
+      <div className="p-4">
+        <h3 className="text-md font-semibold mb-2 text-primary leading-tight">{post.title}</h3>
+        <p className="text-sm text-secondary line-clamp-2 mb-3 leading-relaxed">{post.excerpt}</p>
+        <div className="flex items-center gap-2 text-kiddo-accent text-sm font-medium">
+          Read more
           <ArrowRightIcon
-            size={20}
-            color={tailwindConfig.theme.extend.colors.tertiary}
+            size={16}
+            color="currentColor"
           />
         </div>
       </div>

@@ -13,7 +13,7 @@ export const ProductsPagination = ({
     setPage(`${page}`);
   };
   return (
-    <div className='mt-6 flex justify-center'>
+    <div className='mt-8 mb-6 flex justify-center'>
       <Pagination
         pages={pages}
         setPage={setPageHandler}

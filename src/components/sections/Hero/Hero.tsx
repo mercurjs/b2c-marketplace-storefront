@@ -13,44 +13,44 @@ type HeroProps = {
 
 export const Hero = ({ image, heading, paragraph, buttons }: HeroProps) => {
   return (
-    <section className="w-full flex container mt-5 flex-col lg:flex-row text-primary">
-      <Image
-        src={decodeURIComponent(image)}
-        width={700}
-        height={600}
-        alt={`Hero banner - ${heading}`}
-        className="w-full order-2 lg:order-1"
-        priority
-        fetchPriority="high"
-        quality={50}
-        sizes="(min-width: 1024px) 50vw, 100vw"
-      />
-      <div className="w-full lg:order-2">
-        <div className="border rounded-sm w-full px-6 flex items-end h-[calc(100%-144px)]">
+    <section className="w-full flex flex-col px-6 py-8 text-primary bg-primary">
+      <div className="w-full mb-6">
+        <Image
+          src={decodeURIComponent(image)}
+          width={700}
+          height={400}
+          alt={`Hero banner - ${heading}`}
+          className="w-full rounded-lg shadow-sm"
+          priority
+          fetchPriority="high"
+          quality={75}
+          sizes="100vw"
+        />
+      </div>
+      <div className="w-full">
+        <div className="w-full px-4 py-6">
           <div>
-            <h2 className="font-bold mb-6 uppercase display-md max-w-[652px] text-4xl md:text-5xl leading-tight">
+            <h2 className="font-bold mb-4 text-2xl md:text-3xl leading-tight text-primary">
               {heading}
             </h2>
-            <p className="text-lg mb-8">{paragraph}</p>
+            <p className="text-md mb-6 text-secondary leading-relaxed">{paragraph}</p>
           </div>
         </div>
         {buttons.length && (
-          <div className="h-[72px] lg:h-[144px] flex font-bold uppercase">
+          <div className="flex flex-col gap-3 font-semibold">
             {buttons.map(({ label, path }) => (
               <Link
                 key={path}
                 href={path}
-                className="group flex border rounded-sm h-full w-1/2 bg-content hover:bg-action hover:text-tertiary transition-all duration-300 p-6 justify-between items-end"
+                className="group flex border border-kiddo-primary rounded-lg h-12 bg-kiddo-accent hover:bg-kiddo-dark text-white transition-all duration-300 px-4 justify-between items-center shadow-sm hover:shadow-md"
                 aria-label={label}
                 title={label}
               >
-                <span>
-                  <span className="group-hover:inline-flex hidden">#</span>
+                <span className="text-sm font-medium">
                   {label}
                 </span>
-
                 <ArrowRightIcon
-                  color={tailwindConfig.theme.extend.backgroundColor.primary}
+                  color="white"
                   aria-hidden
                 />
               </Link>

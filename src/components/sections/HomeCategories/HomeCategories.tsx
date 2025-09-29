@@ -44,15 +44,14 @@ const CategoryCard = ({ category }: { category: (typeof categories)[0] }) => {
 
   return (
     <Link href={`/categories/${category.handle}`} className="block">
-      <div className="flex flex-col items-center space-y-1 p-2">
-        <div className="w-14 h-14 bg-green-200 rounded-full flex items-center justify-center">
-          {/* FIX: Renders the Font Awesome solid icon */}
+      <div className="flex flex-col items-center justify-center px-3 py-4 mx-2   hover:shadow-md transition-all duration-200 min-w-[80px]">
+        <div className="w-12 h-12 bg-kiddo-secondary/70 rounded-full flex items-center justify-center mb-3 border-2 border-kiddo-primary/20">
           <FontAwesomeIcon
-            icon={IconComponent} // Pass the icon object
-            className="w-6 h-6 text-primary-300" // Sets size and color
+            icon={IconComponent}
+            className="w-5 h-5 text-kiddo-dark"
           />
         </div>
-        <span className="text-md font-medium text-center text-foreground pt-2">
+        <span className="text-xs font-medium text-center text-primary leading-tight">
           {category.name}
         </span>
       </div>
@@ -63,17 +62,18 @@ const CategoryCard = ({ category }: { category: (typeof categories)[0] }) => {
 // HomeCategories is a Client Component
 export const HomeCategories = ({ heading }: { heading: string }) => {
   return (
-    <section className="bg-background py-4 w-full">
-      <div className="mb-2 px-4 lg:px-8">
-        <h3 className="heading-md text-foreground pb-2">{heading}</h3>
+    <section className="bg-primary py-6 w-full">
+      <div className="mb-4 px-6">
+        <h3 className="heading-md text-primary font-semibold">{heading}</h3>
       </div>
-      <Carousel
-        // The items prop receives an array of rendered React elements, which is safe
-        items={categories?.map((category) => (
-          <CategoryCard key={category.id} category={category} />
-        ))}
-        showIndicator={false}
-      />
+      <div className="px-4">
+        <Carousel
+          items={categories?.map((category) => (
+            <CategoryCard key={category.id} category={category} />
+          ))}
+          showIndicator={false}
+        />
+      </div>
     </section>
   )
 }

@@ -46,7 +46,7 @@ export const ProductListing = async ({
   console.log(products[0]?.images) // Added optional chaining for safety
 
   return (
-    <div className="py-4">
+    <div className="py-4 pb-24">
       <ProductListingHeader total={count} />
       <div className="hidden md:block">
         <ProductListingActiveFilters />

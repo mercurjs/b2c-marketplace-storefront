@@ -31,7 +31,7 @@ export const HomeProductsCarousel = async ({
   if (!products.length && !sellerProducts.length) return null
 
   return (
-    <div className="flex flex-col w-full px-4 lg:px-8 py-1">
+    <div className="flex flex-col w-full px-4 lg:px-8 py-1 relative z-10">
       {/* MODIFIED: Combined title and button into a single flex row (justify-between) */}
       <div className="flex justify-between items-center mb-6">
         <h3 className="heading-md text-foreground pb-2">Featured Products</h3>

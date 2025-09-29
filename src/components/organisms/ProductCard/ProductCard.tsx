@@ -28,19 +28,16 @@ export const ProductCard = ({
   return (
     <div
       className={clsx(
-        // FIX APPLIED HERE:
-        // Removed 'w-full'. The card's width is now determined entirely by the
-        // parent grid ('grid-cols-2'), allowing two cards per row.
-        "relative group border rounded-sm flex flex-col justify-between p-1"
+        "relative group border border-neutral-200 rounded-lg bg-white shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between"
       )}
     >
-      <div className="relative w-full h-full bg-primary aspect-square">
+      <div className="relative w-full h-full  aspect-square rounded-lg overflow-hidden">
         <LocalizedClientLink
           href={`/products/${product.handle}`}
           aria-label={`View ${productName}`}
           title={`View ${productName}`}
         >
-          <div className="overflow-hidden rounded-sm w-full h-full flex justify-center align-center ">
+          <div className="overflow-hidden p-2 rounded-sm w-full h-full flex justify-center align-center ">
             {product.thumbnail ? (
               <Image
                 priority
@@ -71,7 +68,7 @@ export const ProductCard = ({
           aria-label={`See more about ${productName}`}
           title={`See more about ${productName}`}
         >
-          <Button className="absolute rounded-sm bg-action text-action-on-primary h-auto lg:h-[48px] lg:group-hover:block hidden w-full uppercase bottom-1 z-10">
+          <Button className="absolute rounded-lg bg-kiddo-accent hover:bg-kiddo-dark text-white h-auto lg:h-[48px] lg:group-hover:block hidden w-full uppercase bottom-2 z-10 font-medium">
             See More
           </Button>
         </LocalizedClientLink>
@@ -81,14 +78,14 @@ export const ProductCard = ({
         aria-label={`Go to ${productName} page`}
         title={`Go to ${productName} page`}
       >
-        <div className="flex justify-between p-4">
+        <div className="flex justify-between p-2 bg-gray-100 rounded-b-lg">
           <div className="w-full">
-            <h3 className="heading-sm truncate">{product.title}</h3>
-            <div className="flex items-center gap-2 mt-2">
-              <p className="font-medium">{cheapestPrice?.calculated_price}</p>
+            <h3 className="text-xs truncate text-primary font-medium mb-1">{product.title}</h3>
+            <div className="flex items-center gap-2">
+              <p className="font-bold text-primary text-sm">{cheapestPrice?.calculated_price}</p>
               {cheapestPrice?.calculated_price !==
                 cheapestPrice?.original_price && (
-                <p className="text-sm text-gray-500 line-through">
+                <p className="text-xs text-secondary line-through">
                   {cheapestPrice?.original_price}
                 </p>
               )}
