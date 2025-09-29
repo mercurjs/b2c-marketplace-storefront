@@ -47,8 +47,8 @@ export const Header = async () => {
   }
 
   return (
-    <header className="fixed bottom-0 left-0 right-0 bg-primary border-t shadow-lg">
-      <nav className="flex items-center justify-around py-3 pb-12 px-4 bg-primary">
+    <header className="fixed bottom-0 left-0 right-0 bg-primary border-t shadow-lg z-[100]">
+      <nav className="flex items-center justify-around py-3 pb-12 px-4 bg-primary z-[100]">
         <Link href="/categories" className={getTabClassName("/")}>
           <Home size={22} />
           <span>Home</span>

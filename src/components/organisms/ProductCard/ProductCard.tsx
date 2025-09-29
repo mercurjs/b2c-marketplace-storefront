@@ -28,7 +28,10 @@ export const ProductCard = ({
   return (
     <div
       className={clsx(
-        "relative group border rounded-sm flex flex-col justify-between p-1 w-full lg:w-[calc(25%-1rem)] min-w-[250px]"
+        // FIX APPLIED HERE:
+        // Removed 'w-full'. The card's width is now determined entirely by the
+        // parent grid ('grid-cols-2'), allowing two cards per row.
+        "relative group border rounded-sm flex flex-col justify-between p-1"
       )}
     >
       <div className="relative w-full h-full bg-primary aspect-square">
@@ -46,7 +49,8 @@ export const ProductCard = ({
                 alt={`${productName} image`}
                 width={100}
                 height={100}
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                // Updated sizes to reflect 2-column layout on larger screens
+                sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
                 className="object-cover aspect-square w-full object-center h-full lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
               />
             ) : (
@@ -57,7 +61,7 @@ export const ProductCard = ({
                 alt={`${productName} image placeholder`}
                 width={100}
                 height={100}
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
               />
             )}
           </div>

@@ -2,7 +2,7 @@ import {
   BannerSection,
   BlogSection,
   Hero,
-  HomeCategories,
+  // HomeCategories,
   // HomeProductSection,
   // ShopByStyleSection,
 } from "@/components/sections"
@@ -179,7 +179,9 @@ export default async function Home({
       />
       <div className="px-4 lg:px-8 w-full"></div>
       <div className="px-4 lg:px-8 w-full">
-        <HomeCategories heading="SHOP BY CATEGORY" />
+        {/* <HomeCategories heading="SHOP BY CATEGORY" /> */}
+        {/* <HomeProductSection heading="SHOP BY CATEGORY" /> */}
+        {/* <ShopByStyleSection /> */}
       </div>
       <BannerSection />
       <BlogSection />

@@ -91,7 +91,7 @@ export const listProducts = async ({
 
       const nextPage = count > offset + limit ? pageParam + 1 : null
 
-      const response = products.filter((prod) => {
+      let response = products.filter((prod) => {
         // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
         const reviews = prod.seller?.reviews.filter((item) => !!item) ?? []
         return (
@@ -105,6 +105,34 @@ export const listProducts = async ({
             },
           }
         )
+      })
+
+      response = response.map((product) => {
+        if (product.thumbnail) {
+          product.thumbnail = product.thumbnail.replace(
+            "http://localhost:3000",
+            "https://admin.techstore-iq.com"
+          )
+          product.thumbnail = product.thumbnail.replace(
+            "http://localhost:9000",
+            "https://admin.techstore-iq.com"
+          )
+        }
+        if (product.images) {
+          product.images = product.images.map((img) => {
+            img.url = img.url.replace(
+              "http://localhost:9000",
+              "https://admin.techstore-iq.com"
+            )
+            img.url = img.url.replace(
+              "http://localhost:3000",
+              "https://admin.techstore-iq.com"
+            )
+            console.log(img.url)
+            return img
+          })
+        }
+        return product
       })
 
       return {

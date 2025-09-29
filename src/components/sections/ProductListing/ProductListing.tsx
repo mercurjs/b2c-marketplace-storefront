@@ -43,6 +43,7 @@ export const ProductListing = async ({
 
   console.log(filters)
   console.log(category_id)
+  console.log(products[0]?.images) // Added optional chaining for safety
 
   return (
     <div className="py-4">
@@ -50,10 +51,21 @@ export const ProductListing = async ({
       <div className="hidden md:block">
         <ProductListingActiveFilters />
       </div>
+      {/* 1. Main Layout Grid: Use responsive grid for overall layout */}
       <div className="grid grid-cols-1 md:grid-cols-4 mt-6 gap-4">
+        {/* Sidebar is hidden on small screens, takes col-span-1 on md and up */}
         {showSidebar && <ProductSidebar />}
-        <section className={showSidebar ? "col-span-3" : "col-span-4"}>
-          <div className="flex flex-wrap gap-4">
+
+        {/* 2. Product Listing Area: Spans 4 on mobile, adjusts based on sidebar on md+ */}
+        <section
+          className={
+            showSidebar
+              ? "col-span-1 md:col-span-3"
+              : "col-span-1 md:col-span-4"
+          }
+        >
+          {/* 3. Products Grid (The Fix): 1 column on small screens, 2 columns on medium screens and larger (md:grid-cols-2) */}
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
             <ProductsList products={products} />
           </div>
           <ProductsPagination pages={pages} />

@@ -1,6 +1,11 @@
 import { ProductListingSkeleton } from "@/components/organisms/ProductListingSkeleton/ProductListingSkeleton"
 import { Suspense } from "react"
 
+import { HomeCategories } from "@/components/sections"
+import { HomeProductSection } from "@/components/sections/HomeProductSection/HomeProductSection"
+import { HomeDiscountedProductSection } from "@/components/sections/HomeProductSection/HomeDiscountedProductSection"
+import { HomeTopSellingProductSection } from "@/components/sections/HomeProductSection/HomeTopSellingProductSection"
+
 import { Breadcrumbs } from "@/components/atoms"
 import { ProductListing } from "@/components/sections"
 import { getRegion } from "@/lib/data/regions"
@@ -11,7 +16,6 @@ import Script from "next/script"
 import { listRegions } from "@/lib/data/regions"
 import { listProducts } from "@/lib/data/products"
 import { toHreflang } from "@/lib/helpers/hreflang"
-import { log } from "console"
 
 export const revalidate = 60
 
@@ -141,9 +145,11 @@ async function AllCategories({
       <div className="hidden md:block mb-2">
         <Breadcrumbs items={breadcrumbsItems} />
       </div>
-
+      <HomeCategories heading="Categories" />
+      <HomeProductSection />
+      <HomeDiscountedProductSection />
+      <HomeTopSellingProductSection />
       <h1 className="heading-xl uppercase">All Products</h1>
-
       <Suspense fallback={<ProductListingSkeleton />}>
         <ProductListing
           showSidebar={false}
