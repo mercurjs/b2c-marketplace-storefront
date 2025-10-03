@@ -15,18 +15,24 @@
     --neutral-1000: 9, 9, 9;
 
     /* Brand colors are used across all interactive elements such as buttons, links, inputs, etc. This color can define the overall feel and can elicit emotion. */
-    --brand-25: 247, 247, 247;
-    --brand-50: 238, 238, 238;
-    --brand-100: 226, 226, 226;
-    --brand-200: 198, 198, 198;
-    --brand-300: 163, 163, 163;
-    --brand-400: 115, 115, 115;
-    --brand-500: 82, 82, 82;
-    --brand-600: 64, 64, 64;
-    --brand-700: 27, 27, 27;
-    --brand-800: 22, 22, 22;
-    --brand-900: 9, 9, 9;
-    
+    --brand-25: 248, 254, 250;
+    --brand-50: 240, 253, 244;
+    --brand-100: 220, 252, 231;
+    --brand-200: 184, 242, 201;
+    --brand-300: 126, 227, 163;
+    --brand-400: 74, 212, 126;
+    --brand-500: 34, 197, 94;
+    --brand-600: 22, 163, 74;
+    --brand-700: 21, 128, 61;
+    --brand-800: 22, 101, 52;
+    --brand-900: 20, 83, 45;
+
+    /* Kiddo-specific colors matching the logo */
+    --kiddo-primary: 126, 227, 163;        /* Light green from logo */
+    --kiddo-secondary: 220, 252, 231;      /* Light mint green with slightly more opacity */
+    --kiddo-accent: 34, 197, 94;           /* Vibrant green for highlights */
+    --kiddo-dark: 22, 101, 52;             /* Dark green for text/borders */
+
     /* Red colors are used across error states and in "destructive" actions. */
     --red-25: 254, 243, 242;
     --red-50: 254, 228, 226;
@@ -92,8 +98,8 @@
     --bg-component-secondary-hover: var(--neutral-50);
     --bg-component-secondary-pressed: var(--neutral-100);
 
-    --bg-action-primary: var(--brand-900);
-    --bg-action-primary-hover: var(--brand-800);
+    --bg-action-primary: var(--kiddo-accent);
+    --bg-action-primary-hover: var(--brand-600);
     --bg-action-primary-pressed: var(--brand-700);
     --bg-action-secondary: rgba(var(--neutral-1000), 0.05);
     --bg-action-secondary-hover: rgba(var(--neutral-1000), 0.1);
@@ -129,8 +135,8 @@
     --content-secondary: var(--neutral-500);
     --content-tertiary: var(--neutral-0);
 
-    --content-action-primary: var(--brand-900);
-    --content-action-primary-hover: var(--brand-800);
+    --content-action-primary: var(--kiddo-accent);
+    --content-action-primary-hover: var(--brand-600);
     --content-action-primary-pressed: var(--brand-700);
     --content-action-on-primary: var(--brand-25);
     --content-action-on-secondary: var(--neutral-1000);
@@ -152,7 +158,7 @@
 
     --border-primary: var(--neutral-50);
     --border-secondary: var(--neutral-800);
-    --border-action: var(--brand-900);
+    --border-action: var(--kiddo-accent);
     --border-negative-primary: var(--red-700);
     --border-negative-secondary: var(--red-200);
     --border-positive-primary: var(--green-800);

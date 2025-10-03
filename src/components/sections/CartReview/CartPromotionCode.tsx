@@ -6,13 +6,7 @@ import { useState } from "react"
 import { applyPromotions } from "@/lib/data/cart"
 import { toast } from "@/lib/helpers/toast"
 
-export default function CartPromotionCode({
-  cart,
-}: {
-  cart:
-    | (HttpTypes.StoreCart & { promotions?: HttpTypes.StorePromotion[] })
-    | null
-}) {
+export default function CartPromotionCode({ cart }: { cart: any }) {
   const [promotionCode, setPromotionCode] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -42,7 +36,7 @@ export default function CartPromotionCode({
         Promotion codes
       </Heading>
       <div>
-        {cart?.promotions?.map((promo) => (
+        {cart?.promotions?.map((promo: any) => (
           <div
             key={promo.id}
             className="mb-4 flex flex-row gap-x-2 items-center"

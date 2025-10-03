@@ -9,9 +9,9 @@ export function CategoryCard({
   return (
     <LocalizedClientLink
       href={`/categories/${category.handle}`}
-      className="relative flex flex-col items-center border rounded-sm bg-component transition-all hover:rounded-full w-[233px] aspect-square"
+      className="relative flex flex-col items-center border border-kiddo-primary/20 rounded-lg bg-white shadow-sm hover:shadow-md transition-all duration-200 w-[233px] aspect-square p-4"
     >
-      <div className="flex relative aspect-square overflow-hidden w-[200px]">
+      <div className="flex relative aspect-square overflow-hidden w-[200px] bg-kiddo-secondary rounded-full p-2">
         <Image
           loading="lazy"
           src={`/images/categories/${category.handle}.png`}
@@ -22,7 +22,7 @@ export function CategoryCard({
           className="object-contain scale-90 rounded-full"
         />
       </div>
-      <h3 className="w-full text-center label-lg text-primary">
+      <h3 className="w-full text-center label-lg text-kiddo-dark font-semibold mt-3">
         {category.name}
       </h3>
     </LocalizedClientLink>

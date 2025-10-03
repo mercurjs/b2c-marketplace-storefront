@@ -1,8 +1,13 @@
 import { ProductListingSkeleton } from "@/components/organisms/ProductListingSkeleton/ProductListingSkeleton"
 import { Suspense } from "react"
 
+import { HomeCategories } from "@/components/sections"
+import { HomeProductSection } from "@/components/sections/HomeProductSection/HomeProductSection"
+import { HomeDiscountedProductSection } from "@/components/sections/HomeProductSection/HomeDiscountedProductSection"
+import { HomeTopSellingProductSection } from "@/components/sections/HomeProductSection/HomeTopSellingProductSection"
+
 import { Breadcrumbs } from "@/components/atoms"
-import { AlgoliaProductsListing, ProductListing } from "@/components/sections"
+import { ProductListing } from "@/components/sections"
 import { getRegion } from "@/lib/data/regions"
 import isBot from "@/lib/helpers/isBot"
 import { headers } from "next/headers"
@@ -14,11 +19,7 @@ import { toHreflang } from "@/lib/helpers/hreflang"
 
 export const revalidate = 60
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: any }) {
   const { locale } = await params
   const headersList = await headers()
   const host = headersList.get("host")
@@ -70,10 +71,14 @@ const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
 
 async function AllCategories({
   params,
+  searchParams,
 }: {
-  params: Promise<{ locale: string }>
+  params: any
+  searchParams: any
 }) {
   const { locale } = await params
+  // const { color } = await params
+  // console.log(color)
 
   const ua = (await headers()).get("user-agent") || ""
   const bot = isBot(ua)
@@ -140,18 +145,17 @@ async function AllCategories({
       <div className="hidden md:block mb-2">
         <Breadcrumbs items={breadcrumbsItems} />
       </div>
-
+      <HomeCategories heading="Categories" />
+      <HomeProductSection />
+      <HomeDiscountedProductSection />
+      <HomeTopSellingProductSection />
       <h1 className="heading-xl uppercase">All Products</h1>
-
       <Suspense fallback={<ProductListingSkeleton />}>
-        {bot || !ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
-          <ProductListing showSidebar locale={locale} />
-        ) : (
-          <AlgoliaProductsListing
-            locale={locale}
-            currency_code={currency_code}
-          />
-        )}
+        <ProductListing
+          showSidebar={false}
+          locale={locale}
+          filters={searchParams}
+        />
       </Suspense>
     </main>
   )

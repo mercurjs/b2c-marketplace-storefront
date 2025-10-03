@@ -12,10 +12,12 @@ export const CustomCarousel = ({
   variant = "light",
   items,
   align = "start",
+  showIndicator = true,
 }: {
   variant?: "light" | "dark"
   items: React.ReactNode[]
   align?: "center" | "start" | "end"
+  showIndicator?: boolean
 }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
@@ -51,32 +53,34 @@ export const CustomCarousel = ({
   }
 
   return (
-    <div className="embla relative w-full flex justify-center">
+    <div className="embla relative w-full overflow-x-hidden">
       <div
-        className="embla__viewport overflow-hidden rounded-xs w-full xl:flex xl:justify-center"
+        className="embla__viewport overflow-hidden w-full"
         ref={emblaRef}
       >
-        <div className="embla__container flex">
+        <div className="embla__container flex gap-1" style={{ touchAction: 'pan-x pinch-zoom' }}>
           {items.map((slide) => slide)}
         </div>
 
-        <div className="flex justify-between items-center mt-4 sm:hidden">
-          <div className="w-1/2">
-            <Indicator
-              variant={variant}
-              maxStep={maxStep}
-              step={selectedIndex + 1}
-            />
+        {showIndicator ? (
+          <div className="flex justify-between items-center mt-4 sm:hidden">
+            <div className="w-1/2">
+              <Indicator
+                variant={variant}
+                maxStep={maxStep}
+                step={selectedIndex + 1}
+              />
+            </div>
+            <div>
+              <button onClick={() => changeSlideHandler(selectedIndex - 1)}>
+                <ArrowLeftIcon color={arrowColor[variant]} />
+              </button>
+              <button onClick={() => changeSlideHandler(selectedIndex + 1)}>
+                <ArrowRightIcon color={arrowColor[variant]} />
+              </button>
+            </div>
           </div>
-          <div>
-            <button onClick={() => changeSlideHandler(selectedIndex - 1)}>
-              <ArrowLeftIcon color={arrowColor[variant]} />
-            </button>
-            <button onClick={() => changeSlideHandler(selectedIndex + 1)}>
-              <ArrowRightIcon color={arrowColor[variant]} />
-            </button>
-          </div>
-        </div>
+        ) : null}
       </div>
     </div>
   )

@@ -40,6 +40,9 @@ async function CheckoutPageContent({}) {
   }
 
   const shippingMethods = await listCartShippingMethods(cart.id, false)
+  console.log(shippingMethods)
+  console.log(shippingMethods)
+  console.log(shippingMethods)
   const paymentMethods = await listCartPaymentMethods(cart.region?.id ?? "")
   const customer = await retrieveCustomer()
 
