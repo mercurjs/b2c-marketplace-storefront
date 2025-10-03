@@ -4,11 +4,14 @@ import {
   CartItemsProducts,
 } from "@/components/cells"
 import { HttpTypes } from "@medusajs/types"
+import { EmptyCart } from "./EmptyCart"
 
 export const CartItems = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
   if (!cart) return null
 
   const groupedItems: any = groupItemsBySeller(cart)
+
+  if (!groupedItems.length) return <EmptyCart />
 
   return Object.keys(groupedItems).map((key) => (
     <div key={key} className="mb-4">

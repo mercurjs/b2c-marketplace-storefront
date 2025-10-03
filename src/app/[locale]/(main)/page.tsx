@@ -169,9 +169,8 @@ export default async function Home({
           {
             label: "Sell now",
             path:
-              process.env.NEXT_PUBLIC_ALGOLIA_ID === "UO3C5Y8NHX"
-                ? "https://vendor-sandbox.vercel.app/"
-                : "https://vendor.mercurjs.com",
+              process.env.NEXT_PUBLIC_VENDOR_URL ||
+              "https://vendor.mercurjs.com",
           },
         ]}
       />
