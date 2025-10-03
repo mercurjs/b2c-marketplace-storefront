@@ -11,7 +11,7 @@ export const CartItems = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
 
   const groupedItems: any = groupItemsBySeller(cart)
 
-  if (!groupedItems.length) return <EmptyCart />
+  if (!Object.keys(groupedItems).length) return <EmptyCart />
 
   return Object.keys(groupedItems).map((key) => (
     <div key={key} className="mb-4">
