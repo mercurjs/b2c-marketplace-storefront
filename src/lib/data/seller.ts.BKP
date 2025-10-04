@@ -23,14 +23,3 @@ export const getSellerByHandle = async (handle: string) => {
     })
     .catch(() => [])
 }
-
-export const listSellers = async () => {
-  return sdk.client
-    .fetch<{ sellers: SellerProps[] }>(`/store/seller`, {
-      cache: "no-cache",
-    })
-    .then(({ sellers }) => {
-      return sellers.filter((seller) => seller.store_status !== "SUSPENDED")
-    })
-    .catch(() => [])
-}

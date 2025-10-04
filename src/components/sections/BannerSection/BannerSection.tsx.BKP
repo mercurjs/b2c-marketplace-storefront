@@ -12,14 +12,14 @@ export const BannerSection = () => {
               #COLLECTION
             </span>
             <h2 className="display-sm">
-              CELEBRATE MOMENTS: WHERE MEMORIES COME TO LIFE
+              BOHO VIBES: WHERE COMFORT MEETS CREATIVITY
             </h2>
             <p className="text-lg text-tertiary max-w-lg">
-              Discover curated event services and packages designed to make every 
-            occasion unforgettable.
+              Discover boho styles that inspire adventure and embrace the beauty
+              of the unconventional.
             </p>
           </div>
-          <LocalizedClientLink href="/collections/celebrate">
+          <LocalizedClientLink href="/collections/boho">
             <Button size="large" className="w-fit bg-secondary/10">
               EXPLORE
             </Button>
@@ -29,7 +29,7 @@ export const BannerSection = () => {
           <Image
             loading="lazy"
             fetchPriority="high"
-            src="/images/banner-section/celebrate.png"
+            src="/images/banner-section/Image.jpg"
             alt="Boho fashion collection - Model wearing a floral dress with yellow boots"
             width={700}
             height={600}
@@ -41,4 +41,3 @@ export const BannerSection = () => {
     </section>
   )
 }
-

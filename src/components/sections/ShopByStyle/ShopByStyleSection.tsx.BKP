@@ -6,45 +6,35 @@ import { Style } from "@/types/styles"
 export const styles: Style[] = [
   {
     id: 1,
-    name: "Weddings",
-    href: "/collections/weddings",
+    name: "LUXURY",
+    href: "/collections/luxury",
   },
   {
     id: 2,
-    name: "Birthdays & Private Parties",
-    href: "/collections/birthdaysNprivateparties",
+    name: "VINTAGE",
+    href: "/collections/vintage",
   },
   {
     id: 3,
-    name: "Corporate Events",
-    href: "/collections/corporateevents",
+    name: "CASUAL",
+    href: "/collections/casual",
   },
   {
     id: 4,
-    name: "Festivals & Cultural Programs",
-    href: "/collections/festivalsNculturalprograms",
+    name: "STREETWEAR",
+    href: "/collections/streetwear",
   },
   {
     id: 5,
-    name: "Luxury Packages",
-    href: "/collections/luxurypackages",
-  },
-  {
-    id: 6,
-    name: "Budget-Friendly Options",
-    href: "/collections/budget-friendlyoptions",
-  },
-  {
-    id: 7,
-    name: "Top Rated Vendors",
-    href: "/collections/topratedvendors",
+    name: "Y2K",
+    href: "/collections/y2k",
   },
 ]
 
 export function ShopByStyleSection() {
   return (
     <section className="bg-primary container">
-      <h2 className="heading-lg text-primary mb-12">SHOP BY OCCASION</h2>
+      <h2 className="heading-lg text-primary mb-12">SHOP BY STYLE</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
         <div className="py-[52px] px-[58px] h-full border rounded-sm">
           {styles.map((style) => (
@@ -62,7 +52,7 @@ export function ShopByStyleSection() {
           <Image
             loading="lazy"
             fetchPriority="high"
-            src="/images/shop-by-styles/image.jpeg"
+            src="/images/shop-by-styles/Image.jpg"
             alt="Models showcasing luxury fashion styles"
             width={700}
             height={600}
@@ -73,4 +63,3 @@ export function ShopByStyleSection() {
     </section>
   )
 }
-

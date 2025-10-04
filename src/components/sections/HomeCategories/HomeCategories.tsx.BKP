@@ -4,23 +4,28 @@ import { CategoryCard } from "@/components/organisms"
 export const categories: { id: number; name: string; handle: string }[] = [
   {
     id: 1,
-    name: "Event Planning",
-    handle: "eventplanning",
+    name: "Sneakers",
+    handle: "sneakers",
   },
   {
     id: 2,
-    name: "Photography & Videography",
-    handle: "PhotoNvideography",
+    name: "Sandals",
+    handle: "sandals",
   },
   {
     id: 3,
-    name: "Decoration & Themes",
-    handle: "decorationNthemes",
+    name: "Boots",
+    handle: "boots",
   },
   {
     id: 4,
-    name: "Entertainment & Artists",
-    handle: "entertainmentartists",
+    name: "Sport",
+    handle: "sport",
+  },
+  {
+    id: 5,
+    name: "Accessories",
+    handle: "accessories",
   },
 ]
 
@@ -38,4 +43,3 @@ export const HomeCategories = async ({ heading }: { heading: string }) => {
     </section>
   )
 }
-
