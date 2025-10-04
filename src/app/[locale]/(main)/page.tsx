@@ -166,13 +166,12 @@ export default async function Home({
         paragraph="Buy, sell, and discover pre-loved gems from the trendiest brands."
         buttons={[
           { label: "Buy now", path: "/categories" },
-          // {
-          //   label: "Sell now",
-          //   path:
-          //     process.env.NEXT_PUBLIC_ALGOLIA_ID === "UO3C5Y8NHX"
-          //       ? "https://vendor-sandbox.vercel.app/"
-          //       : "https://vendor.mercurjs.com",
-          // },
+          {
+            label: "Sell now",
+            path:
+              process.env.NEXT_PUBLIC_VENDOR_URL ||
+              "https://vendor.mercurjs.com",
+          },
         ]}
       />
       <div className="px-4 lg:px-8 w-full">
