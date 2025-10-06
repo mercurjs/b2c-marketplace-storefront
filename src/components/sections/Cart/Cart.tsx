@@ -8,7 +8,7 @@ import { EmptyCart } from "@/components/organisms/CartItems/EmptyCart"
 export const Cart = async () => {
   const cart = await retrieveCart()
 
-  const emptyCart = !cart?.items?.length || true
+  const emptyCart = !cart?.items?.length
 
   if (emptyCart) {
     return (
