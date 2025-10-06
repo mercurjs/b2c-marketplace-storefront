@@ -4,7 +4,7 @@ import Image from "next/image"
 export function CategoryCard({
   category,
 }: {
-  category: { id: number; name: string; handle: string }
+  category: { name: string; handle: string }
 }) {
   return (
     <LocalizedClientLink

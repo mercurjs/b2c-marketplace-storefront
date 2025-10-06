@@ -3,9 +3,20 @@ import { CartItems, CartSummary } from "@/components/organisms"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { retrieveCart } from "@/lib/data/cart"
 import CartPromotionCode from "../CartReview/CartPromotionCode"
+import { EmptyCart } from "@/components/organisms/CartItems/EmptyCart"
 
 export const Cart = async () => {
   const cart = await retrieveCart()
+
+  const emptyCart = !cart?.items?.length || true
+
+  if (emptyCart) {
+    return (
+      <div className="col-span-12">
+        <EmptyCart />
+      </div>
+    )
+  }
 
   return (
     <>
