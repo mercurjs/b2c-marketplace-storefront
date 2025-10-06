@@ -51,7 +51,10 @@ const CountrySelect = forwardRef<
   return (
     <label className="label-md">
       <p className="mb-2">Country</p>
-      <Listbox onChange={handleSelect} value={props.value}>
+      <Listbox
+        onChange={handleSelect}
+        value={props.value as string | undefined}
+      >
         <div className="relative">
           <Listbox.Button
             className={clsx(

@@ -2,9 +2,9 @@ import {
   BannerSection,
   BlogSection,
   Hero,
-  HomeCategories,
-  HomeProductSection,
-  ShopByStyleSection,
+  // HomeCategories,
+  // HomeProductSection,
+  // ShopByStyleSection,
 } from "@/components/sections"
 
 import type { Metadata } from "next"
@@ -12,6 +12,7 @@ import { headers } from "next/headers"
 import Script from "next/script"
 import { listRegions } from "@/lib/data/regions"
 import { toHreflang } from "@/lib/helpers/hreflang"
+// import { redirect } from "next/navigation"
 
 export async function generateMetadata({
   params,
@@ -118,12 +119,13 @@ export default async function Home({
   const protocol = headersList.get("x-forwarded-proto") || "https"
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`
 
+  // redirect(`/${locale}/categories`)
   const siteName =
     process.env.NEXT_PUBLIC_SITE_NAME ||
     "Mercur B2C Demo - Marketplace Storefront"
 
   return (
-    <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start text-primary">
+    <main className="flex flex-col pb-20 text-primary">
       <link
         rel="preload"
         as="image"
@@ -140,7 +142,7 @@ export default async function Home({
             "@context": "https://schema.org",
             "@type": "Organization",
             name: siteName,
-            url: `${baseUrl}/${locale}`,
+            url: `${baseUrl}/${locale}/categories`,
             logo: `${baseUrl}/favicon.ico`,
           }),
         }}
@@ -174,14 +176,7 @@ export default async function Home({
           },
         ]}
       />
-      <div className="px-4 lg:px-8 w-full">
-        <HomeProductSection heading="trending listings" locale={locale} home />
-      </div>
-      <div className="px-4 lg:px-8 w-full">
-        <HomeCategories heading="SHOP BY CATEGORY" />
-      </div>
       <BannerSection />
-      <ShopByStyleSection />
       <BlogSection />
     </main>
   )

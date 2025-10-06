@@ -8,7 +8,6 @@ interface CategoriesProps {
 
 export const listCategories = async ({
   query,
-  headingCategories = [],
 }: Partial<CategoriesProps> = {}) => {
   const limit = query?.limit || 100
 
@@ -17,8 +16,12 @@ export const listCategories = async ({
       product_categories: HttpTypes.StoreProductCategory[]
     }>("/store/product-categories", {
       query: {
-        fields: "handle, name, rank, parent_category_id",
+        // fields: "handle, name, rank",
         limit,
+        // Start by fetching only top-level categories
+        parent_category_id: "null",
+        // Crucially, this parameter includes all nested children
+        include_descendants_tree: "true",
         ...query,
       },
       cache: "force-cache",
@@ -26,19 +29,8 @@ export const listCategories = async ({
     })
     .then(({ product_categories }) => product_categories)
 
-  const parentCategories = categories.filter(({ name }) =>
-    headingCategories.includes(name.toLowerCase())
-  )
-
-  const childrenCategories = categories.filter(
-    ({ name }) => !headingCategories.includes(name.toLowerCase())
-  )
-
   return {
-    categories: childrenCategories.filter(
-      ({ parent_category_id }) => !parent_category_id
-    ),
-    parentCategories: parentCategories,
+    categories: categories,
   }
 }
 

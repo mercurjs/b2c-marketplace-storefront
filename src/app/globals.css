@@ -139,6 +139,13 @@ button:disabled svg path {
 }
 .embla__slide {
   transform: translate3d(0, 0, 0);
-  flex: 0 0 100%;
+  flex: 0 0 auto;
   min-width: 0;
+}
+
+/* Ensure mobile navbar doesn't overlap content */
+@media (max-width: 1024px) {
+  body {
+    padding-bottom: 80px;
+  }
 }

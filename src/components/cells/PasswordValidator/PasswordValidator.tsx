@@ -57,7 +57,7 @@ export const PasswordValidator = ({
       <p
         className={cn(
           "label-md flex items-center gap-2 mb-2",
-          newPasswordError["8chars"] ? "text-red-700" : "text-green-700"
+          newPasswordError["8chars"] ? "text-red-700" : "text-kiddo-accent"
         )}
       >
         <CheckCircle /> At least 8 characters
@@ -65,7 +65,7 @@ export const PasswordValidator = ({
       <p
         className={cn(
           "label-md flex items-center gap-2 mb-2",
-          newPasswordError["lower"] ? "text-red-700" : "text-green-700"
+          newPasswordError["lower"] ? "text-red-700" : "text-kiddo-accent"
         )}
       >
         <CheckCircle /> One lowercase letter
@@ -73,7 +73,7 @@ export const PasswordValidator = ({
       <p
         className={cn(
           "label-md flex items-center gap-2 mb-2",
-          newPasswordError["upper"] ? "text-red-700" : "text-green-700"
+          newPasswordError["upper"] ? "text-red-700" : "text-kiddo-accent"
         )}
       >
         <CheckCircle /> One uppercase letter
@@ -81,7 +81,7 @@ export const PasswordValidator = ({
       <p
         className={cn(
           "label-md flex items-center gap-2 mb-2",
-          newPasswordError["symbolOrDigit"] ? "text-red-700" : "text-green-700"
+          newPasswordError["symbolOrDigit"] ? "text-red-700" : "text-kiddo-accent"
         )}
       >
         <CheckCircle /> One number or symbol

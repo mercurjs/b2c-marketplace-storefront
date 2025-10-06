@@ -33,7 +33,7 @@ export const ProductDetailsPage = async ({
       </div>
       <div className="my-8">
         <HomeProductSection
-          heading="More from this seller"
+          // heading="More from this seller"
           products={prod.seller?.products}
           // seller_handle={prod.seller?.handle}
           locale={locale}

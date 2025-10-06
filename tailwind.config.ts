@@ -14,6 +14,12 @@ export default {
         secondary: "rgba(var(--bg-secondary))",
         tertiary: "rgba(var(--bg-tertiary))",
         disabled: "rgba(var(--bg-disabled))",
+        kiddo: {
+          primary: "rgba(var(--kiddo-primary))",
+          secondary: "rgba(var(--kiddo-secondary))",
+          accent: "rgba(var(--kiddo-accent))",
+          dark: "rgba(var(--kiddo-dark))",
+        },
         component: {
           DEFAULT: "rgba(var(--bg-component-primary))",
           hover: "rgba(var(--bg-component-primary-hover))",
@@ -73,6 +79,12 @@ export default {
         secondary: "rgba(var(--content-secondary))",
         tertiary: "rgba(var(--content-tertiary))",
         disabled: "rgba(var(--content-disabled))",
+        kiddo: {
+          primary: "rgba(var(--kiddo-primary))",
+          secondary: "rgba(var(--kiddo-secondary))",
+          accent: "rgba(var(--kiddo-accent))",
+          dark: "rgba(var(--kiddo-dark))",
+        },
         action: {
           DEFAULT: "rgba(var(--content-action-primary))",
           hover: "rgba(var(--content-action-primary-hover))",
