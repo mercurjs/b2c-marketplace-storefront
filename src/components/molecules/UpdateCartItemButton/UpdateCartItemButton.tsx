@@ -24,19 +24,24 @@ export const UpdateCartItemButton = ({
     setIsChanging(true)
 
     try {
-      await updateLineItem({ lineId, quantity })
+      const res = await updateLineItem({ lineId, quantity })
+      if (!res.ok) {
+        return handleError(res.error?.message)
+      }
     } catch (error: any) {
-      toast.error({
-        title: "Error updating cart",
-        description: error.message.replace(
-          "Error setting up the request: ",
-          ""
-        ),
-      })
+      handleError(error.message.replace("Error setting up the request: ", ""))
     } finally {
       setIsChanging(false)
     }
   }
+
+  function handleError(message: string) {
+    toast.error({
+      title: "Error updating cart",
+      description: message,
+    })
+  }
+
   return (
     <div className="flex items-center gap-4 mt-2">
       <Button

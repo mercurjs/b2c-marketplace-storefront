@@ -1,6 +1,6 @@
 "use server"
 
-import { sdk } from "../config"
+import { fetchQuery, sdk } from "../config"
 import medusaError from "@/lib/helpers/medusa-error"
 import { HttpTypes } from "@medusajs/types"
 import { revalidatePath, revalidateTag } from "next/cache"
@@ -183,13 +183,16 @@ export async function updateLineItem({
     ...(await getAuthHeaders()),
   }
 
-  await sdk.store.cart
-    .updateLineItem(cartId, lineId, { quantity }, {}, headers)
-    .then(async () => {
-      const cartCacheTag = await getCacheTag("carts")
-      await revalidateTag(cartCacheTag)
-    })
-    .catch(medusaError)
+  const res = await fetchQuery(`/store/carts/${cartId}/line-items/${lineId}`, {
+    body: JSON.stringify({ quantity }),
+    method: "POST",
+    headers,
+  })
+
+  const cartCacheTag = await getCacheTag("carts")
+  await revalidateTag(cartCacheTag)
+
+  return res
 }
 
 export async function deleteLineItem(lineId: string) {
