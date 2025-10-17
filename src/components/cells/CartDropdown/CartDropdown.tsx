@@ -6,6 +6,7 @@ import { usePrevious } from "@/hooks/usePrevious"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { CartIcon } from "@/icons"
 import { convertToLocale } from "@/lib/helpers/money"
+import { filterValidCartItems } from "@/lib/helpers/filter-valid-cart-items"
 import { HttpTypes } from "@medusajs/types"
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
@@ -24,6 +25,9 @@ export const CartDropdown = ({
   const previousItemCount = usePrevious(getItemCount(cart))
   const cartItemsCount = (cart && getItemCount(cart)) || 0
   const pathname = usePathname()
+
+  // Filter out items with invalid data (missing prices/variants)
+  const validItems = filterValidCartItems(cart?.items)
 
   const total = convertToLocale({
     amount: cart?.total || 0,
@@ -90,11 +94,11 @@ export const CartDropdown = ({
             {Boolean(cartItemsCount) ? (
               <div>
                 <div className="overflow-y-scroll max-h-[360px] no-scrollbar">
-                  {cart?.items?.map((item) => (
+                  {validItems.map((item) => (
                     <CartDropdownItem
                       key={item.id}
                       item={item}
-                      currency_code={cart.currency_code}
+                      currency_code={cart?.currency_code || "eur"}
                     />
                   ))}
                 </div>

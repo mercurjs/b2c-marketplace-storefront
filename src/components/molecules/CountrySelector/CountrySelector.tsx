@@ -13,8 +13,9 @@ import ReactCountryFlag from "react-country-flag"
 import { useParams, usePathname, useRouter } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
 
-import { updateRegion } from "@/lib/data/cart"
+import { updateRegionWithValidation } from "@/lib/data/cart"
 import { Label } from "@medusajs/ui"
+import { toast } from "@/lib/helpers/toast"
 
 type CountryOption = {
   country: string
@@ -33,6 +34,7 @@ const CountrySelect = ({ regions }: CountrySelectProps) => {
   >(undefined)
 
   const { locale: countryCode } = useParams()
+  const router = useRouter()
   const currentPath = usePathname().split(`/${countryCode}`)[1]
 
   const options = useMemo(() => {
@@ -55,8 +57,27 @@ const CountrySelect = ({ regions }: CountrySelectProps) => {
     }
   }, [options, countryCode])
 
-  const handleChange = (option: CountryOption) => {
-    updateRegion(option.country, currentPath)
+  const handleChange = async (option: CountryOption) => {
+    try {
+      const result = await updateRegionWithValidation(option.country, currentPath)
+      
+      if (result.removedItems.length > 0) {
+        const itemsList = result.removedItems.join(", ")
+        toast.info({
+          title: "Cart updated",
+          description: `${itemsList} ${result.removedItems.length === 1 ? "is" : "are"} not available in ${option.label} and ${result.removedItems.length === 1 ? "was" : "were"} removed from your cart.`,
+        })
+      }
+      
+      // Navigate to new region
+      router.push(result.newPath)
+      router.refresh()
+    } catch (error: any) {
+      toast.error({
+        title: "Error switching region",
+        description: error?.message || "Failed to update region. Please try again.",
+      })
+    }
   }
 
   return (
