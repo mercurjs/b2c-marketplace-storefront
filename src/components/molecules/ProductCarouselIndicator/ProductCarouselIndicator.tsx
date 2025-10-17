@@ -45,8 +45,8 @@ export const ProductCarouselIndicator = ({
   }, [parentEmbla, onSelect])
 
   return (
-    <div className="embla__dots absolute lg:top-3 bottom-3 lg:bottom-auto left-3 w-[calc(100%-24px)] h-[2px]">
-      <div className="lg:hidden">
+    <div className="embla__dots absolute lg:top-3 bottom-3 lg:bottom-auto left-3 w-[calc(100%-24px)] h-[2px] pointer-events-none">
+      <div className="lg:hidden pointer-events-auto">
         <Indicator
           step={selectedIndex + 1}
           size="large"
@@ -54,7 +54,7 @@ export const ProductCarouselIndicator = ({
         />
       </div>
 
-      <div className="embla relative">
+      <div className="embla relative hidden lg:block pointer-events-auto">
         <div
           className="embla__viewport overflow-hidden rounded-xs"
           ref={emblaRef}
