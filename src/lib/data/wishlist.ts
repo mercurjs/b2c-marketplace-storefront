@@ -4,7 +4,13 @@ import { sdk } from "../config"
 import { getAuthHeaders } from "./cookies"
 import { revalidatePath } from "next/cache"
 
-export const getUserWishlists = async () => {
+export const getUserWishlists = async ({
+  page = 1,
+  limit = 12,
+}: {
+  page?: number
+  limit?: number
+} = {}) => {
   const headers = {
     ...(await getAuthHeaders()),
     "Content-Type": "application/json",
@@ -12,8 +18,16 @@ export const getUserWishlists = async () => {
       .NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY as string,
   }
 
+  // Calculate offset from page number
+  const offset = (page - 1) * limit
+
+  const queryParams = new URLSearchParams({
+    offset: offset.toString(),
+    limit: limit.toString(),
+  }).toString()
+
   return sdk.client
-    .fetch<{ wishlists: Wishlist[]; count: number }>(`/store/wishlist`, {
+    .fetch<{ wishlists: Wishlist[]; count: number }>(`/store/wishlist?${queryParams}`, {
       cache: "no-cache",
       headers,
       method: "GET",

@@ -115,7 +115,12 @@ export const listProducts = async ({
         nextPage: nextPage,
         queryParams,
       }
-    })
+    }).catch(e => {
+
+      console.log(e)
+        console.log(e.response)
+      return { response : { products :[]} }
+      })
 }
 
 /**
