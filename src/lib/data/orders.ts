@@ -129,7 +129,7 @@ export const listOrders = async (
         offset,
         order: "-created_at",
         fields:
-          "*items,+items.metadata,*items.variant,*items.product,*seller,*reviews,*order_set",
+          "*items,+items.metadata,*items.variant,*items.product,*seller,*reviews,*order_set,shipping_total,total,created_at",
         ...filters,
       },
       headers,

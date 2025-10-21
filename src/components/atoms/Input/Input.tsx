@@ -67,7 +67,7 @@ export function Input({
           value={props.value}
           onChange={(e) => changeHandler(e.target.value)}
           {...props}
-          type={inputType}
+          type={props.type === "password" ? inputType : props.type}
         />
         {clearable && props.value && (
           <span

@@ -1,6 +1,6 @@
 "use server"
 
-import { sdk } from "../config"
+import { fetchQuery, sdk } from "../config"
 import medusaError from "@/lib/helpers/medusa-error"
 import { HttpTypes } from "@medusajs/types"
 import { revalidatePath, revalidateTag } from "next/cache"
@@ -14,6 +14,7 @@ import {
   setCartId,
 } from "./cookies"
 import { getRegion } from "./regions"
+import { parseVariantIdsFromError } from "@/lib/helpers/parse-variant-error"
 
 /**
  * Retrieves a cart by its ID. If no ID is provided, it will use the cart ID from the cookies.
@@ -183,13 +184,16 @@ export async function updateLineItem({
     ...(await getAuthHeaders()),
   }
 
-  await sdk.store.cart
-    .updateLineItem(cartId, lineId, { quantity }, {}, headers)
-    .then(async () => {
-      const cartCacheTag = await getCacheTag("carts")
-      await revalidateTag(cartCacheTag)
-    })
-    .catch(medusaError)
+  const res = await fetchQuery(`/store/carts/${cartId}/line-items/${lineId}`, {
+    body: JSON.stringify({ quantity }),
+    method: "POST",
+    headers,
+  })
+
+  const cartCacheTag = await getCacheTag("carts")
+  await revalidateTag(cartCacheTag)
+
+  return res
 }
 
 export async function deleteLineItem(lineId: string) {
@@ -407,23 +411,22 @@ export async function placeOrder(cartId?: string) {
     ...(await getAuthHeaders()),
   }
 
-  const cartRes: any = await sdk.store.cart
-    .complete(id, {}, headers)
-    .then(async (cartRes) => {
-      const cartCacheTag = await getCacheTag("carts")
-      revalidateTag(cartCacheTag)
-      return cartRes
-    })
-    .catch(medusaError)
+  const res = await fetchQuery(`/store/carts/${id}/complete`, {
+    method: "POST",
+    headers,
+  })
 
-  if (cartRes?.order_set) {
+  const cartCacheTag = await getCacheTag("carts")
+  revalidateTag(cartCacheTag)
+
+  if (res?.data?.order_set) {
     revalidatePath("/user/reviews")
     revalidatePath("/user/orders")
     removeCartId()
-    redirect(`/order/${cartRes?.order_set.orders[0].id}/confirmed`)
+    redirect(`/order/${res?.data?.order_set.orders[0].id}/confirmed`)
   }
 
-  return cartRes.order_set.cart
+  return res
 }
 
 /**
@@ -452,6 +455,102 @@ export async function updateRegion(countryCode: string, currentPath: string) {
   revalidateTag(productsCacheTag)
 
   redirect(`/${countryCode}${currentPath}`)
+}
+
+/**
+ * Updates the region and returns removed items for notification
+ * This is a wrapper around updateRegion that doesn't redirect
+ * Uses error-driven approach: tries to update, catches price errors, removes problem items, retries
+ * @param countryCode - The country code to update to
+ * @param currentPath - The current path for redirect
+ * @returns Array of removed item names and new path
+ */
+export async function updateRegionWithValidation(
+  countryCode: string,
+  currentPath: string
+): Promise<{ removedItems: string[]; newPath: string }> {
+  const cartId = await getCartId()
+  const region = await getRegion(countryCode)
+
+  if (!region) {
+    throw new Error(`Region not found for country code: ${countryCode}`)
+  }
+
+  let removedItems: string[] = []
+
+  if (cartId) {
+    const headers = {
+      ...(await getAuthHeaders()),
+    }
+
+    try {
+      await updateCart({ region_id: region.id })
+    } catch (error: any) {
+      // Check if error is about variants not having prices
+      if (!error?.message?.includes("do not have a price")) {
+        // Re-throw if it's a different error
+        throw error
+      }
+
+      // Parse variant IDs from error message
+      const problematicVariantIds = parseVariantIdsFromError(error.message)
+
+      // Early return if no variant IDs found
+      if (!problematicVariantIds.length) {
+        throw new Error("Failed to parse variant IDs from error")
+      }
+
+      // Fetch cart with minimal fields to get items
+      try {
+        const { cart } = await sdk.client.fetch<HttpTypes.StoreCartResponse>(
+          `/store/carts/${cartId}`,
+          {
+            method: "GET",
+            query: {
+              fields: "*items",
+            },
+            headers,
+            cache: "no-cache",
+          }
+        )
+
+        // Iterate over problematic variants and remove corresponding items
+        for (const variantId of problematicVariantIds) {
+          const item = cart?.items?.find(item => item.variant_id === variantId)
+          if (item) {
+            try {
+              await sdk.store.cart.deleteLineItem(cart.id, item.id, headers)
+              removedItems.push(item.product_title || "Unknown product")
+            } catch (deleteError) {
+              // Silent failure - item removal failed but continue
+            }
+          }
+        }
+
+        // Retry region update after removing problematic items
+        if (removedItems.length > 0) {
+          await updateCart({ region_id: region.id })
+        }
+      } catch (fetchError) {
+        throw new Error("Failed to handle incompatible cart items")
+      }
+    }
+
+    // Revalidate caches
+    const cartCacheTag = await getCacheTag("carts")
+    revalidateTag(cartCacheTag)
+  }
+
+  const regionCacheTag = await getCacheTag("regions")
+  revalidateTag(regionCacheTag)
+
+  const productsCacheTag = await getCacheTag("products")
+  revalidateTag(productsCacheTag)
+
+  return {
+    removedItems,
+    newPath: `/${countryCode}${currentPath}`,
+  }
 }
 
 export async function listCartOptions() {

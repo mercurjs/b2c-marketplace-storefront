@@ -15,16 +15,18 @@ export const listProducts = async ({
   regionId,
   category_id,
   collection_id,
+  forceCache = false,
 }: {
   pageParam?: number
   queryParams?: HttpTypes.FindParams &
     HttpTypes.StoreProductParams & {
-      handle?: string
+      handle?: string[]
     }
   category_id?: string
   collection_id?: string
   countryCode?: string
   regionId?: string
+  forceCache?: boolean
 }): Promise<{
   response: {
     products: (HttpTypes.StoreProduct & { seller?: SellerProps })[]
@@ -60,7 +62,7 @@ export const listProducts = async ({
     ...(await getAuthHeaders()),
   }
 
-  const useCached = limit <= 8 && !category_id && !collection_id
+  const useCached = forceCache || (limit <= 8 && !category_id && !collection_id)
 
   return sdk.client
     .fetch<{
@@ -115,9 +117,17 @@ export const listProducts = async ({
         nextPage: nextPage,
         queryParams,
       }
-    }).catch(() => {
-      return { response : { products :[]} }
-      })
+    })
+    .catch(() => {
+      return {
+        response: {
+          products: [],
+          count: 0,
+        },
+        nextPage: 0,
+        queryParams,
+      }
+    })
 }
 
 /**

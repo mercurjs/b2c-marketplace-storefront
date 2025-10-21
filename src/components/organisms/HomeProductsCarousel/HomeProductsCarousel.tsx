@@ -25,6 +25,7 @@ export const HomeProductsCarousel = async ({
         ? { fields: "id,title,handle,thumbnail,*variants.calculated_price" }
         : {}),
     },
+    forceCache: !home,
   })
 
   if (!products.length && !sellerProducts.length) return null

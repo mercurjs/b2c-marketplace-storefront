@@ -142,3 +142,12 @@ button:disabled svg path {
   flex: 0 0 100%;
   min-width: 0;
 }
+
+.no-arrows-number-input::-webkit-inner-spin-button,
+.no-arrows-number-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.no-arrows-number-input {
+  -moz-appearance: textfield;
+}

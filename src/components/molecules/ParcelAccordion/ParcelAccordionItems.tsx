@@ -12,12 +12,10 @@ export const ParcelAccordionItems = ({
   order,
   index,
   currency_code,
-  shipping_total,
 }: {
   order: any
   index: number
   currency_code: string
-  shipping_total?: number
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [height, setHeight] = useState(0)
@@ -61,14 +59,12 @@ export const ParcelAccordionItems = ({
             {order.seller.name}
           </span>
         </p>
-        {shipping_total && (
-          <p className="label-md col-span-2 text-center px-2">
-            Shipping:{" "}
-            <span className="text-primary font-semibold">
-              {convertToLocale({ amount: shipping_total, currency_code })}
-            </span>
-          </p>
-        )}
+        <p className="label-md col-span-2 text-center px-2">
+          Shipping:{" "}
+          <span className="text-primary font-semibold">
+            {convertToLocale({ amount: order.shipping_total, currency_code })}
+          </span>
+        </p>
 
         <div className="flex items-center gap-4 justify-end">
           <p className="label-md">

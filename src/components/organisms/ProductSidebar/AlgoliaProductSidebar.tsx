@@ -174,14 +174,6 @@ function PriceFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
     setMax(searchParams.get("max_price") || "")
   }, [searchParams])
 
-  const priceChangeHandler = (field: string, value: string) => {
-    const reg = new RegExp("^[0-9]+$")
-    if (reg.test(value)) {
-      if (field === "min") setMin(value)
-      if (field === "max") setMax(value)
-    }
-  }
-
   const updateMinPriceHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     updateSearchParams("min_price", min)
@@ -197,7 +189,7 @@ function PriceFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
         <form method="POST" onSubmit={updateMinPriceHandler}>
           <Input
             placeholder="Min"
-            onChange={(e) => priceChangeHandler("min", e.target.value)}
+            onChange={(e) => setMin(e.target.value)}
             value={min}
             onBlur={(e) => {
               setTimeout(() => {
@@ -206,13 +198,15 @@ function PriceFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
                 )
               }, 500)
             }}
+            type="number"
+            className="no-arrows-number-input"
           />
           <input type="submit" className="hidden" />
         </form>
         <form method="POST" onSubmit={updateMaxPriceHandler}>
           <Input
             placeholder="Max"
-            onChange={(e) => priceChangeHandler("max", e.target.value)}
+            onChange={(e) => setMax(e.target.value)}
             onBlur={(e) => {
               setTimeout(() => {
                 updateMaxPriceHandler(
@@ -221,6 +215,8 @@ function PriceFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
               }, 500)
             }}
             value={max}
+            type="number"
+            className="no-arrows-number-input"
           />
           <input type="submit" className="hidden" />
         </form>

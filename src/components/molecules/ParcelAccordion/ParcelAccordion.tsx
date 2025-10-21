@@ -20,13 +20,6 @@ export const ParcelAccordion = ({
   orders: any[]
   defaultOpen?: boolean
 }) => {
-  const subtotal = orders
-    .map((order) => order.items)
-    .flat()
-    .reduce((acc, curr) => acc + curr.total, 0)
-
-  const shipping_total = total - subtotal
-
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-5 text-secondary border bg-component-secondary py-6 px-4 rounded-sm w-full">
@@ -61,7 +54,6 @@ export const ParcelAccordion = ({
               order={order}
               index={index + 1}
               currency_code={currency_code}
-              shipping_total={shipping_total}
             />
           ))}
         </ul>

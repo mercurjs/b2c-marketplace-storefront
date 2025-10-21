@@ -64,13 +64,20 @@ const StripePaymentButton = ({
   const [disabled, setDisabled] = useState(true)
 
   const onPaymentCompleted = async () => {
-    await placeOrder()
-      .catch((err) => {
-        setErrorMessage(err.message)
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
+    try {
+      const res = await placeOrder()
+      if (!res.ok) {
+        setErrorMessage(res.error?.message)
+      }
+    } catch (error: any) {
+      if (error?.message !== "NEXT_REDIRECT") {
+        setErrorMessage(
+          error?.message?.replace("Error setting up the request: ", "")
+        )
+      }
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const stripe = useStripe()
@@ -152,24 +159,33 @@ const StripePaymentButton = ({
       >
         Place order
       </Button>
-      {/* <ErrorMessage
+      <ErrorMessage
         error={errorMessage}
         data-testid="stripe-payment-error-message"
-      /> */}
+      />
     </>
   )
 }
 
 const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
-  // const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [submitting, setSubmitting] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const onPaymentCompleted = async () => {
-    await placeOrder().catch((err) => {
-      // toast.error({
-      //   title: "Error placing order",
-      //   description: "Please try again later",
-      // })
-    })
+    try {
+      const res = await placeOrder()
+      if (!res.ok) {
+        setErrorMessage(res.error?.message)
+      }
+    } catch (error: any) {
+      if (error?.message !== "NEXT_REDIRECT") {
+        setErrorMessage(
+          error?.message?.replace("Error setting up the request: ", "")
+        )
+      }
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const handlePayment = () => {
@@ -178,13 +194,18 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
 
   return (
     <>
-      <Button disabled={notReady} onClick={handlePayment} className="w-full">
+      <Button
+        disabled={notReady}
+        onClick={handlePayment}
+        className="w-full"
+        loading={submitting}
+      >
         Place order
       </Button>
-      {/* <ErrorMessage
+      <ErrorMessage
         error={errorMessage}
         data-testid="manual-payment-error-message"
-      /> */}
+      />
     </>
   )
 }

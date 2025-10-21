@@ -43,14 +43,20 @@ export const ProductDetailsHeader = ({
   const [isAdding, setIsAdding] = useState(false)
   const { allSearchParams } = useGetAllSearchParams()
 
-  const { cheapestVariant } = getProductPrice({
+  const { cheapestVariant, cheapestPrice } = getProductPrice({
     product,
   })
+
+  // Check if product has any valid prices in current region
+  const hasAnyPrice = cheapestPrice !== null && cheapestVariant !== null
+
   // set default variant
-  const selectedVariant = {
-    ...optionsAsKeymap(cheapestVariant.options ?? null),
-    ...allSearchParams,
-  }
+  const selectedVariant = hasAnyPrice
+    ? {
+        ...optionsAsKeymap(cheapestVariant.options ?? null),
+        ...allSearchParams,
+      }
+    : allSearchParams
 
   // get selected variant id
   const variantId =
@@ -70,7 +76,7 @@ export const ProductDetailsHeader = ({
 
   // add the selected variant to the cart
   const handleAddToCart = async () => {
-    if (!variantId) return null
+    if (!variantId || !hasAnyPrice) return null
 
     setIsAdding(true)
 
@@ -108,13 +114,21 @@ export const ProductDetailsHeader = ({
           </h2>
           <h1 className="heading-lg text-primary">{product.title}</h1>
           <div className="mt-2 flex gap-2 items-center">
-            <span className="heading-md text-primary">
-              {variantPrice?.calculated_price}
-            </span>
-            {variantPrice?.calculated_price_number !==
-              variantPrice?.original_price_number && (
-              <span className="label-md text-secondary line-through">
-                {variantPrice?.original_price}
+            {hasAnyPrice && variantPrice ? (
+              <>
+                <span className="heading-md text-primary">
+                  {variantPrice.calculated_price}
+                </span>
+                {variantPrice.calculated_price_number !==
+                  variantPrice.original_price_number && (
+                  <span className="label-md text-secondary line-through">
+                    {variantPrice.original_price}
+                  </span>
+                )}
+              </>
+            ) : (
+              <span className="label-md text-secondary pt-2 pb-4">
+                Not available in your region
               </span>
             )}
           </div>
@@ -129,16 +143,22 @@ export const ProductDetailsHeader = ({
         </div>
       </div>
       {/* Product Variants */}
-      <ProductVariants product={product} selectedVariant={selectedVariant} />
+      {hasAnyPrice && (
+        <ProductVariants product={product} selectedVariant={selectedVariant} />
+      )}
       {/* Add to Cart */}
       <Button
         onClick={handleAddToCart}
-        disabled={isAdding || !variantStock || !variantHasPrice}
+        disabled={isAdding || !variantStock || !variantHasPrice || !hasAnyPrice}
         loading={isAdding}
         className="w-full uppercase mb-4 py-3 flex justify-center"
         size="large"
       >
-        {variantStock && variantHasPrice ? "ADD TO CART" : "OUT OF STOCK"}
+        {!hasAnyPrice
+          ? "NOT AVAILABLE IN YOUR REGION"
+          : variantStock && variantHasPrice
+          ? "ADD TO CART"
+          : "OUT OF STOCK"}
       </Button>
       {/* Seller message */}
 
