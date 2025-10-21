@@ -66,7 +66,6 @@ export default function Wishlist() {
 
   const handleSortChange = (value: string) => {
     setSortBy(value)
-    // Reset to first page when sort order changes
     if (currentPage !== 1) {
       setPage('1')
     }
@@ -76,17 +75,13 @@ export default function Wishlist() {
     return <div className="container">Loading...</div>
   }
 
-  // Get all products from the wishlist
   const allProducts = wishlist?.[0]?.products || []
   const count = allProducts.length || 0
 
-  // Sort all products based on the current sort order
   const sortedAllProducts = sortProducts(allProducts)
 
-  // Calculate total pages based on the total count of products
   const totalPages = Math.ceil(count / ITEMS_PER_PAGE) || 1
 
-  // Paginate the sorted products on the client side
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
   const sortedProducts = sortedAllProducts.slice(startIndex, endIndex)
