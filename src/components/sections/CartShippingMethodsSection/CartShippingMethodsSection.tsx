@@ -44,7 +44,13 @@ type ShippingProps = {
   }
   availableShippingMethods:
     | (StoreCardShippingMethod &
-        { rules: any; seller_id: string; price_type: string; id: string }[])
+        {
+          rules: any
+          seller_id: string
+          price_type: string
+          id: string
+          amount?: number
+        }[])
     | null
 }
 
@@ -120,21 +126,28 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
   }
 
   const handleSetShippingMethod = async (id: string | null) => {
-    setIsLoadingPrices(true)
-    setError(null)
-
     if (!id) {
-      setIsLoadingPrices(false)
       return
     }
 
-    await setShippingMethod({ cartId: cart.id, shippingMethodId: id }).catch(
-      (err) => {
-        setError(err.message)
+    try {
+      setError(null)
+      setIsLoadingPrices(true)
+      const res = await setShippingMethod({
+        cartId: cart.id,
+        shippingMethodId: id,
+      })
+      if (!res.ok) {
+        return setError(res.error?.message)
       }
-    )
-
-    setIsLoadingPrices(false)
+    } catch (error: any) {
+      setError(
+        error?.message?.replace("Error setting up the request: ", "") ||
+          "An error occurred"
+      )
+    } finally {
+      setIsLoadingPrices(false)
+    }
   }
 
   useEffect(() => {
@@ -148,7 +161,16 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
       acc[sellerId] = []
     }
 
-    acc[sellerId]?.push(method)
+    const amount = Number(
+      method.price_type === "flat"
+        ? method.amount
+        : calculatedPricesMap[method.id]
+    )
+
+    if (!isNaN(amount)) {
+      acc[sellerId]?.push(method)
+    }
+
     return acc
   }, {})
 
