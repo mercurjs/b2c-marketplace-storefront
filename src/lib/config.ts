@@ -10,20 +10,40 @@ export const sdk = new Medusa({
   publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
 })
 
-type FetchQueryOptions = Omit<RequestInit, "headers"> & {
+type FetchQueryOptions = Omit<RequestInit, "headers" | "body"> & {
   headers?: Record<string, string | null | { tags: string[] }>
+  query?: Record<string, string | number>
+  body?: Record<string, any>
 }
 
-export async function fetchQuery(url: string, options: FetchQueryOptions) {
-  const res = await fetch(`${MEDUSA_BACKEND_URL}${url}`, {
-    ...options,
-    headers: {
-      ...options.headers,
-      "Content-Type": "application/json",
-      "x-publishable-api-key": process.env
-        .NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY as string,
+export async function fetchQuery(
+  url: string,
+  { method, query, headers, body }: FetchQueryOptions
+) {
+  const params = Object.entries(query || {}).reduce(
+    (acc, [key, value], index) => {
+      if (value && value !== undefined) {
+        const queryLength = Object.values(query || {}).filter((i) => !!i).length
+        acc += `${key}=${value}${index + 1 <= queryLength ? "&" : ""}`
+      }
+      return acc
     },
-  })
+    ""
+  )
+
+  const res = await fetch(
+    `${MEDUSA_BACKEND_URL}${url}${params && `?${params}`}`,
+    {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        "x-publishable-api-key": process.env
+          .NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY as string,
+        ...headers,
+      },
+      body: body ? JSON.stringify(body) : null,
+    }
+  )
 
   let data
   try {

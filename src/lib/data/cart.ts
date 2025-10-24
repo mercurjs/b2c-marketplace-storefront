@@ -185,7 +185,7 @@ export async function updateLineItem({
   }
 
   const res = await fetchQuery(`/store/carts/${cartId}/line-items/${lineId}`, {
-    body: JSON.stringify({ quantity }),
+    body: { quantity },
     method: "POST",
     headers,
   })
@@ -516,7 +516,9 @@ export async function updateRegionWithValidation(
 
         // Iterate over problematic variants and remove corresponding items
         for (const variantId of problematicVariantIds) {
-          const item = cart?.items?.find(item => item.variant_id === variantId)
+          const item = cart?.items?.find(
+            (item) => item.variant_id === variantId
+          )
           if (item) {
             try {
               await sdk.store.cart.deleteLineItem(cart.id, item.id, headers)
