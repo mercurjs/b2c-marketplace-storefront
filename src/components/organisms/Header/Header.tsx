@@ -5,7 +5,6 @@ import { CartDropdown, MobileNavbar, Navbar } from "@/components/cells"
 import { HeartIcon, MessageIcon } from "@/icons"
 import { listCategories } from "@/lib/data/categories"
 import { PARENT_CATEGORIES } from "@/const"
-import { retrieveCart } from "@/lib/data/cart"
 import { UserDropdown } from "@/components/cells/UserDropdown/UserDropdown"
 import { retrieveCustomer } from "@/lib/data/customer"
 import { getUserWishlists } from "@/lib/data/wishlist"
@@ -18,7 +17,6 @@ import { MessageButton } from "@/components/molecules/MessageButton/MessageButto
 import { SellNowButton } from "@/components/cells/SellNowButton/SellNowButton"
 
 export const Header = async () => {
-  const cart = await retrieveCart().catch(() => null)
   const user = await retrieveCustomer()
   let wishlist: Wishlist[] = []
   if (user) {
@@ -75,7 +73,7 @@ export const Header = async () => {
             </LocalizedClientLink>
           )}
 
-          <CartDropdown cart={cart} />
+          <CartDropdown />
         </div>
       </div>
       <Navbar categories={categories} />
