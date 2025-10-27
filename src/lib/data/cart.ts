@@ -236,7 +236,7 @@ export async function setShippingMethod({
   }
 
   const res = await fetchQuery(`/store/carts/${cartId}/shipping-methods`, {
-    body: JSON.stringify({ option_id: shippingMethodId }),
+    body: { option_id: shippingMethodId },
     method: "POST",
     headers,
   })
