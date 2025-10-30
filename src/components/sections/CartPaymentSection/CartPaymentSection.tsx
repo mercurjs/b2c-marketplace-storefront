@@ -127,7 +127,7 @@ const CartPaymentSection = ({
           {!isOpen && paymentReady && <CheckCircleSolid />}
           Payment
         </Heading>
-        {!isOpen && (
+        {!isOpen && !!cart?.payment_collection?.payment_sessions?.length && (
           <Text>
             <Button onClick={handleEdit} variant="tonal">
               Edit
