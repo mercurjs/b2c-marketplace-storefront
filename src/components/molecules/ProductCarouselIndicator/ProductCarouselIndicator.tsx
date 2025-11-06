@@ -1,88 +1,92 @@
 "use client"
 import Image from "next/image"
 import { HttpTypes } from "@medusajs/types"
-import { EmblaCarouselType } from "embla-carousel"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback } from "react"
 import { cn } from "@/lib/utils"
-import { Indicator } from "@/components/atoms"
-import useEmblaCarousel from "embla-carousel-react"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  useCarousel,
+} from "@/components/cells"
 
-export const ProductCarouselIndicator = ({
-  slides = [],
-  embla: parentEmbla,
+function ThumbnailsCarousel({
+  slides,
 }: {
   slides: HttpTypes.StoreProduct["images"]
-  embla?: EmblaCarouselType
-}) => {
-  const [selectedIndex, setSelectedIndex] = useState(0)
-
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    axis: "y",
-    loop: true,
-    align: "start",
-  })
+}) {
+  const { selectedIndex, scrollTo, api: parentApi } = useCarousel()
 
   const changeSlideHandler = useCallback(
     (index: number) => {
-      if (!parentEmbla) return
-      parentEmbla.scrollTo(index)
-
-      if (!emblaApi) return
-      emblaApi.scrollTo(index)
+      if (!parentApi) return
+      scrollTo(index)
     },
-    [parentEmbla, emblaApi]
+    [parentApi, scrollTo]
   )
 
-  const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
-    setSelectedIndex(emblaApi.selectedScrollSnap())
-  }, [])
+  return (
+    <div className="embla relative">
+      <Carousel
+        opts={{
+          axis: "y",
+          loop: true,
+          align: "start",
+        }}
+        className="overflow-hidden rounded-xs"
+      >
+        <CarouselContent className="h-[350px] lg:h-[680px] flex lg:block">
+          {(slides || []).map((slide, index) => (
+            <CarouselItem
+              key={slide.id}
+              className="mb-3 rounded-sm cursor-pointer w-16 h-16 bg-primary hidden lg:block basis-auto"
+              onClick={() => changeSlideHandler(index)}
+            >
+              <Image
+                src={decodeURIComponent(slide.url)}
+                alt="Product carousel Indicator"
+                width={64}
+                height={64}
+                className={cn(
+                  "rounded-sm border-2 transition-color duration-300 hidden lg:block w-16 h-16 object-cover",
+                  selectedIndex === index ? "border-primary" : "border-tertiary"
+                )}
+              />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+    </div>
+  )
+}
 
-  useEffect(() => {
-    if (!parentEmbla) return
-
-    onSelect(parentEmbla)
-    parentEmbla.on("reInit", onSelect).on("select", onSelect)
-  }, [parentEmbla, onSelect])
+export const ProductCarouselIndicator = ({
+  slides = [],
+}: {
+  slides: HttpTypes.StoreProduct["images"]
+}) => {
+  const { selectedIndex } = useCarousel()
+  const totalSlides = slides?.length || 0
+  const progress =
+    totalSlides > 0 ? ((selectedIndex + 1) / totalSlides) * 100 : 0
 
   return (
-    <div className="embla__dots absolute lg:top-3 bottom-3 lg:bottom-auto left-3 w-[calc(100%-24px)] h-[2px] pointer-events-none">
-      <div className="lg:hidden pointer-events-auto">
-        <Indicator
-          step={selectedIndex + 1}
-          size="large"
-          maxStep={slides?.length || 0}
+    <div className="embla__dots absolute lg:top-3 bottom-3 lg:bottom-auto left-3 w-[calc(100%-24px)] h-[2px]">
+      {/* Mobile Progress Bar */}
+      <div className="lg:hidden w-full h-1 rounded-md bg-tertiary/10 relative">
+        <div
+          className="h-full rounded-sm absolute transition-all duration-300 bg-tertiary"
+          style={{ width: `${progress}%` }}
+          role="progressbar"
+          aria-valuenow={selectedIndex + 1}
+          aria-valuemin={1}
+          aria-valuemax={totalSlides}
+          aria-label={`Imagen ${selectedIndex + 1} de ${totalSlides}`}
         />
       </div>
 
-      <div className="embla relative hidden lg:block pointer-events-auto">
-        <div
-          className="embla__viewport overflow-hidden rounded-xs"
-          ref={emblaRef}
-        >
-          <div className="embla__container h-[350px] lg:h-[680px] flex lg:block">
-            {(slides || []).map((slide, index) => (
-              <div
-                key={slide.id}
-                className="mb-3 rounded-sm cursor-pointer w-16 h-16 bg-primary hidden lg:block"
-                onClick={() => changeSlideHandler(index)}
-              >
-                <Image
-                  src={decodeURIComponent(slide.url)}
-                  alt="Product carousel Indicator"
-                  width={64}
-                  height={64}
-                  className={cn(
-                    "rounded-sm border-2 transition-color duration-300 hidden lg:block w-16 h-16 object-cover",
-                    selectedIndex === index
-                      ? "border-primary"
-                      : "border-tertiary"
-                  )}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Desktop Thumbnails */}
+      <ThumbnailsCarousel slides={slides} />
     </div>
   )
 }
