@@ -1,3 +1,4 @@
+import { DoneIcon, ErrorIcon } from "@/icons";
 import { toast as sonnerToast } from "sonner"
 
 export const toast = {
@@ -15,14 +16,25 @@ export const toast = {
     title: string
   }) => {
     sonnerToast.success(title, {
-      className: "bg-green-100 text-green-900",
       description,
+      duration: 10000,
+      icon: <DoneIcon color="rgb(20, 83, 45)"/>,
+      classNames: {
+        icon: "self-start pt-2",
+        toast: "items-start gap-3",
+        title: "text-md text-primary",
+      },
     })
   },
   error: ({ description, title }: { description?: string; title: string }) => {
     sonnerToast.error(title, {
-      className: "bg-red-100 text-red-900",
       description,
+      icon: <ErrorIcon color="rgb(155, 34, 25)" />,
+      classNames: {
+        icon: "self-start pt-2",
+        toast: "items-start gap-3",
+        title: "text-md text-primary"
+      }
     })
   },
 }

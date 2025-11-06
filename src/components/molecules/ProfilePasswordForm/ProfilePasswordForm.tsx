@@ -1,9 +1,8 @@
 "use client"
 
-import { Button, Card } from "@/components/atoms"
+import { Button } from "@/components/atoms"
 import { LabeledInput } from "@/components/cells"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CheckCircle } from "@medusajs/icons"
 import {
   FieldError,
   FieldValues,
@@ -13,7 +12,7 @@ import {
   UseFormReturn,
 } from "react-hook-form"
 import { ProfilePasswordFormData, profilePasswordSchema } from "./schema"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { updateCustomerPassword } from "@/lib/data/customer"
 import { Heading, toast } from "@medusajs/ui"
 import LocalizedClientLink from "../LocalizedLink/LocalizedLink"
