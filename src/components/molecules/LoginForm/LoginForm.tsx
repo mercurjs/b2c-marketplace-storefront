@@ -77,10 +77,9 @@ const Form = () => {
               />
             </div>
 
-            {/* TODO: Add forgot password link when forgot password page is implemented */}
-            {/* <Link href="/user/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4">
+            <Link href="/user/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4">
               Forgot your password?
-            </Link> */}
+            </Link>
 
             <Button className="w-full uppercase mt-8" disabled={isSubmitting}>
               Log in
