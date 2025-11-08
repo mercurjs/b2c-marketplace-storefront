@@ -42,7 +42,7 @@ const Form = () => {
 
   const submit = async (data: FieldValues) => {
     const formData = new FormData()
-    formData.append("email", data.email)
+    formData.append("email", data.email.trim().toLowerCase())
     formData.append("password", data.password)
 
     const res = await login(formData)
