@@ -8,7 +8,6 @@ import {
 } from "react-hook-form"
 import { Button } from "@/components/atoms"
 import { zodResolver } from "@hookform/resolvers/zod"
-import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { LabeledInput } from "@/components/cells"
 import { loginFormSchema, LoginFormData } from "./schema"
 import { useState } from "react"
@@ -34,7 +33,7 @@ export const LoginForm = () => {
 }
 
 const Form = () => {
-  const [error, setError] = useState(false);
+  const [isAuthError, setIsAuthError] = useState(false);
   const {
     handleSubmit,
     register,
@@ -49,16 +48,23 @@ const Form = () => {
 
     const res = await login(formData)
     if (res) {
-      setError(true);
+      // Temporary solution. API returns 200 code in case of auth error. To change when API is updated.
+      const isCredentialsError = 
+        res.toLowerCase().includes("invalid email or password") ||
+        res.toLowerCase().includes("unauthorized") ||
+        res.toLowerCase().includes("incorrect") ||
+        res.toLowerCase().includes("credentials");
+      
+      setIsAuthError(isCredentialsError);
       toast.error({ title: res || "An error occurred. Please try again." })
       return
     }
-    setError(false);
+    setIsAuthError(false);
     router.push("/user")
   }
 
   const clearApiError = () => {
-    error && setError(false);
+    isAuthError && setIsAuthError(false);
   }
 
   return (
@@ -71,7 +77,7 @@ const Form = () => {
               <LabeledInput
                 label="E-mail"
                 placeholder="Your e-mail address"
-                error={(errors.email as FieldError) || (error ? { message: '' } as FieldError : undefined)}
+                error={(errors.email as FieldError) || (isAuthError ? { message: '' } as FieldError : undefined)}
                 {...register("email", {
                   onChange: clearApiError
                 })}
@@ -80,7 +86,7 @@ const Form = () => {
                 label="Password"
                 placeholder="Your password"
                 type="password"
-                error={(errors.password as FieldError) || (error ? { message: '' } as FieldError : undefined)}
+                error={(errors.password as FieldError) || (isAuthError ? { message: '' } as FieldError : undefined)}
                 {...register("password", {
                   onChange: clearApiError
                 })}
