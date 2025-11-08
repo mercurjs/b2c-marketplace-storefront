@@ -15,6 +15,7 @@ import { useState } from "react"
 import { login } from "@/lib/data/customer"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { toast } from "@/lib/helpers/toast"
 
 export const LoginForm = () => {
   const methods = useForm<LoginFormData>({
@@ -33,7 +34,7 @@ export const LoginForm = () => {
 }
 
 const Form = () => {
-  const [error, setError] = useState("")
+  const [error, setError] = useState(false);
   const {
     handleSubmit,
     register,
@@ -48,11 +49,16 @@ const Form = () => {
 
     const res = await login(formData)
     if (res) {
-      setError(res)
+      setError(true);
+      toast.error({ title: res || "An error occurred. Please try again." })
       return
     }
-    setError("")
+    setError(false);
     router.push("/user")
+  }
+
+  const clearApiError = () => {
+    error && setError(false);
   }
 
   return (
@@ -65,29 +71,32 @@ const Form = () => {
               <LabeledInput
                 label="E-mail"
                 placeholder="Your e-mail address"
-                error={errors.email as FieldError}
-                {...register("email")}
+                error={(errors.email as FieldError) || (error ? { message: '' } as FieldError : undefined)}
+                {...register("email", {
+                  onChange: clearApiError
+                })}
               />
               <LabeledInput
                 label="Password"
                 placeholder="Your password"
                 type="password"
-                error={errors.password as FieldError}
-                {...register("password")}
+                error={(errors.password as FieldError) || (error ? { message: '' } as FieldError : undefined)}
+                {...register("password", {
+                  onChange: clearApiError
+                })}
               />
             </div>
 
-            <Link href="/user/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4">
+            <Link
+              href="/user/forgot-password"
+              className="block text-right label-md uppercase text-action-on-secondary mt-4"
+            >
               Forgot your password?
             </Link>
 
             <Button className="w-full uppercase mt-8" disabled={isSubmitting}>
               Log in
             </Button>
-
-            {error && (
-              <p className="label-md text-negative my-4 text-center">{error}</p>
-            )}
           </form>
         </div>
 
