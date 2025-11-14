@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { CloseIcon } from "@/icons"
 import { useEffect, useState } from "react"
 import { EyeMini, EyeSlashMini } from "@medusajs/icons"
+import { IconButton } from "../IconButton/IconButton"
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
@@ -11,6 +12,8 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   clearable?: boolean
   error?: boolean
   changeValue?: (value: string) => void
+  onIconClick?: () => void
+  iconAriaLabel?: string
 }
 
 export function Input({
@@ -20,6 +23,8 @@ export function Input({
   className,
   error,
   changeValue,
+  onIconClick,
+  iconAriaLabel,
   ...props
 }: InputProps) {
   const [showPassword, setShowPassword] = useState(false)
@@ -47,10 +52,20 @@ export function Input({
   }
 
   return (
-    <label className="label-md">
-      {label}
+    <div className="flex flex-col">
+      <label className="label-md">{label}</label>
       <div className="relative mt-2">
-        {icon && (
+        {icon && onIconClick && (
+          <button
+            onClick={onIconClick}
+            className="flex items-center justify-center rounded-sm transition-all duration-300 ease-out button-transparent h-[32px] w-[32px] absolute top-[8px] left-[8px]"
+            aria-label={iconAriaLabel}
+          >
+            {icon}
+          </button>
+        )}
+
+        {icon && !onIconClick && (
           <span className="absolute top-0 left-[16px] h-full flex items-center">
             {icon}
           </span>
@@ -87,6 +102,6 @@ export function Input({
           </button>
         )}
       </div>
-    </label>
+    </div>
   )
 }
