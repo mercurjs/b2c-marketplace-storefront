@@ -129,19 +129,17 @@ const Form = () => {
         </form>
       </Container>
       <Container className="border max-w-xl mx-auto mt-8 p-4">
-        <h1 className="heading-md text-primary uppercase mb-8">
+        <h2 className="heading-md text-primary uppercase mb-8">
           Already have an account?
-        </h1>
-        <p className="text-center label-md">
-          <Link href="/user">
-            <Button
-              variant="tonal"
-              className="w-full flex justify-center mt-8 uppercase"
-            >
-              Log in
-            </Button>
-          </Link>
-        </p>
+        </h2>
+        <Link href="/user">
+          <Button
+            variant="tonal"
+            className="w-full flex justify-center mt-8 uppercase"
+          >
+            Log in
+          </Button>
+        </Link>
       </Container>
     </main>
   )
