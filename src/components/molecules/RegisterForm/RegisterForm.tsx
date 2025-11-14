@@ -15,6 +15,7 @@ import { useState } from "react"
 import { Container } from "@medusajs/ui"
 import Link from "next/link"
 import { PasswordValidator } from "@/components/cells/PasswordValidator/PasswordValidator"
+import { toast } from "@/lib/helpers/toast"
 
 export const RegisterForm = () => {
   const methods = useForm<RegisterFormData>({
@@ -43,8 +44,7 @@ const Form = () => {
     "8chars": false,
     symbolOrDigit: false,
   })
-  const [error, setError] = useState()
-  const {
+    const {
     handleSubmit,
     register,
     watch,
@@ -61,7 +61,9 @@ const Form = () => {
 
     const res = passwordError.isValid && (await signup(formData))
 
-    if (res && !res?.id) setError(res)
+    if (res && !res?.id) {
+      toast.error({ title: res})
+    }
   }
 
   return (
@@ -118,7 +120,6 @@ const Form = () => {
             />
           </div>
 
-          {error && <p className="label-md text-negative">{error}</p>}
           <Button
             className="w-full flex justify-center mt-8 uppercase"
             disabled={isSubmitting}
