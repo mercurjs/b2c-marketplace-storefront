@@ -13,6 +13,7 @@ import { ProductCarouselIndicator } from "./ProductCarouselIndicator/ProductCaro
 import { Modal } from "./Modal/Modal"
 import { ReportListingForm } from "./ReportListingForm/ReportListingForm"
 import { SellerInfo } from "./SellerInfo/SellerInfo"
+import { SellerInfoHeader } from "./SellerInfoHeader/SellerInfoHeader"
 import { TabsList } from "./TabsList/TabsList"
 import { TabsContent } from "./TabsContent/TabsContent"
 import { SellerScore } from "./SellerScore/SellerScore"
@@ -49,6 +50,7 @@ export {
   Modal,
   ReportListingForm,
   SellerInfo,
+  SellerInfoHeader,
   TabsList,
   TabsContent,
   SellerScore,

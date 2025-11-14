@@ -10,7 +10,7 @@ import { useState } from "react"
 export const SellerFooter = ({ seller }: { seller: SellerProps }) => {
   const [openModal, setOpenModal] = useState(false)
   return (
-    <div className="flex justify-between items-center flex-col lg:flex-row">
+    <div className="flex justify-between items-center flex-col lg:flex-row p-5">
       <div className="flex gap-2 lg:gap-4 items-center label-sm lg:label-md text-secondary mb-4 lg:mb-0 justify-between w-full lg:justify-start lg:w-auto">
         {/* {seller.verified && (
           <div className="flex items-center gap-2">
@@ -29,7 +29,7 @@ export const SellerFooter = ({ seller }: { seller: SellerProps }) => {
         className="uppercase"
         onClick={() => setOpenModal(true)}
       >
-        Report
+        Report Seller
       </Button>
       {openModal && (
         <Modal heading="Report seller" onClose={() => setOpenModal(false)}>
