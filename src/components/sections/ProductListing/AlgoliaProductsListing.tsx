@@ -3,10 +3,14 @@
 import { HttpTypes } from "@medusajs/types"
 import {
   AlgoliaProductSidebar,
-  ProductCard,
   ProductListingActiveFilters,
   ProductsPagination,
 } from "@/components/organisms"
+import {
+  ProductListingLoadingView,
+  ProductListingNoResultsView,
+  ProductListingProductsView,
+} from "@/components/molecules"
 import { client } from "@/lib/client"
 import { Configure, useHits } from "react-instantsearch"
 import { InstantSearchNext } from "react-instantsearch-nextjs"
@@ -14,7 +18,7 @@ import { useSearchParams } from "next/navigation"
 import { getFacedFilters } from "@/lib/helpers/get-faced-filters"
 import { PRODUCT_LIMIT } from "@/const"
 import { ProductListingSkeleton } from "@/components/organisms/ProductListingSkeleton/ProductListingSkeleton"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { listProducts } from "@/lib/data/products"
 import { getProductPrice } from "@/lib/helpers/get-product-price"
 
@@ -31,10 +35,11 @@ export const AlgoliaProductsListing = ({
   seller_handle?: string
   currency_code: string
 }) => {
-  const searchParamas = useSearchParams()
+  const searchParams = useSearchParams()
 
-  const facetFilters: string = getFacedFilters(searchParamas)
-  const query: string = searchParamas.get("query") || ""
+  const facetFilters: string = getFacedFilters(searchParams)
+  const query: string = searchParams.get("query") || ""
+  const page: number = +(searchParams.get("page") || 1)
 
   const filters = `${
     seller_handle
@@ -52,7 +57,12 @@ export const AlgoliaProductsListing = ({
 
   return (
     <InstantSearchNext searchClient={client} indexName="products">
-      <Configure query={query} filters={filters} />
+      <Configure
+        query={query}
+        filters={filters}
+        hitsPerPage={PRODUCT_LIMIT}
+        page={page - 1}
+      />
       <ProductsListing
         locale={locale}
         currency_code={currency_code}
@@ -74,13 +84,19 @@ const ProductsListing = ({
   const [apiProducts, setApiProducts] = useState<
     HttpTypes.StoreProduct[] | null
   >(null)
+  const [isLoadingProducts, setIsLoadingProducts] = useState(false)
   const { items, results } = useHits()
 
-  const searchParamas = useSearchParams()
+  const searchParams = useSearchParams()
+
+  const itemsKey = useMemo(
+    () => items.map((item) => item.objectID).join(","),
+    [items]
+  )
 
   async function handleSetProducts() {
     try {
-      setApiProducts(null)
+      setIsLoadingProducts(true)
       const { response } = await listProducts({
         countryCode: locale,
         queryParams: {
@@ -99,34 +115,40 @@ const ProductsListing = ({
       )
     } catch (error) {
       setApiProducts(null)
+    } finally {
+      setIsLoadingProducts(false)
     }
   }
 
   useEffect(() => {
-    handleSetProducts()
-  }, [items.length])
+    if (items.length > 0) {
+      handleSetProducts()
+    } else {
+      setApiProducts([])
+      setIsLoadingProducts(false)
+    }
+  }, [itemsKey])
 
   if (!results?.processingTimeMS) return <ProductListingSkeleton />
 
-  const page: number = +(searchParamas.get("page") || 1)
+  const isLoading = isLoadingProducts && items.length > 0
+
   const filteredProducts = items.filter((pr) =>
-    apiProducts?.some((p: any) => p.id === pr.objectID)
+    apiProducts?.some((p) => p.id === pr.objectID)
   )
 
-  const products = filteredProducts
-    .filter((pr) =>
-      apiProducts?.some(
-        (p: any) => p.id === pr.objectID && filterProductsByCurrencyCode(p)
-      )
+  const products = filteredProducts.filter((pr) =>
+    apiProducts?.some(
+      (p) => p.id === pr.objectID && filterProductsByCurrencyCode(p)
     )
-    .slice((page - 1) * PRODUCT_LIMIT, page * PRODUCT_LIMIT)
+  )
 
-  const count = filteredProducts?.length || 0
-  const pages = Math.ceil(count / PRODUCT_LIMIT) || 1
+  const count = results?.nbHits || 0
+  const pages = results?.nbPages || 1
 
   function filterProductsByCurrencyCode(product: HttpTypes.StoreProduct) {
-    const minPrice = searchParamas.get("min_price")
-    const maxPrice = searchParamas.get("max_price")
+    const minPrice = searchParams.get("min_price")
+    const maxPrice = searchParams.get("max_price")
 
     if ([minPrice, maxPrice].some((price) => typeof price === "string")) {
       const variantsWithCurrencyCode = product?.variants?.filter(
@@ -173,35 +195,23 @@ const ProductsListing = ({
         <div className="w-[280px] flex-shrink-0 hidden md:block">
           <AlgoliaProductSidebar />
         </div>
-        <div className="w-full">
-          {!items.length ? (
-            <div className="text-center w-full my-10">
-              <h2 className="uppercase text-primary heading-lg">no results</h2>
-              <p className="mt-4 text-lg">
-                Sorry, we can&apos;t find any results for your criteria
-              </p>
-            </div>
-          ) : (
-            <div className="w-full">
-              <ul className="flex flex-wrap gap-4">
-                {products.map(
-                  (hit) =>
-                    apiProducts?.find((p: any) => p.id === hit.objectID) && (
-                      <ProductCard
-                        api_product={apiProducts?.find(
-                          (p: any) => p.id === hit.objectID
-                        )}
-                        key={hit.objectID}
-                        product={hit}
-                      />
-                    )
-                )}
-              </ul>
-            </div>
+        <div className="w-full flex flex-col">
+          {isLoading && <ProductListingLoadingView />}
+
+          {!isLoading && !items.length && <ProductListingNoResultsView />}
+
+          {!isLoading && items.length > 0 && (
+            <ProductListingProductsView
+              products={products}
+              apiProducts={apiProducts}
+            />
           )}
+
+          <div className="mt-auto">
+            <ProductsPagination pages={pages} />
+          </div>
         </div>
       </div>
-      <ProductsPagination pages={pages} />
     </div>
   )
 }
