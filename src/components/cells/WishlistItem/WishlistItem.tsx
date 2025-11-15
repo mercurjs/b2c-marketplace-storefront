@@ -31,7 +31,7 @@ export const WishlistItem = ({
       )}
     >
       <div className="relative w-full h-full bg-primary aspect-square">
-        <div className="absolute right-3 top-3 z-10 cursor-pointer">
+        <div className="absolute right-3 top-3 z-[1] cursor-pointer">
           <WishlistButton
             productId={product.id}
             wishlist={wishlist}
