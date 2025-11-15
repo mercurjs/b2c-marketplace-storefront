@@ -1,4 +1,3 @@
-/** @type { import('@storybook/react-webpack5').StorybookConfig } */
 import type { StorybookConfig } from "@storybook/nextjs"
 
 const config: StorybookConfig = {
@@ -13,6 +12,6 @@ const config: StorybookConfig = {
     name: "@storybook/nextjs",
     options: {},
   },
-  staticDirs: ["..\\public"],
+  staticDirs: ["../public"],
 }
 export default config
