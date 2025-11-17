@@ -9,11 +9,9 @@ import { Button } from "@/components/atoms"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { LabeledInput } from "@/components/cells"
 import { forgotPasswordSchema, ForgotPasswordFormData } from "./schema"
-import { useState } from "react"
 import { sendResetPasswordEmail } from "@/lib/data/customer"
 import { toast } from "@/lib/helpers/toast"
 import Link from "next/link"
-import { FetchError } from "@medusajs/js-sdk"
 
 export const ForgotPasswordForm = () => {
   const methods = useForm<ForgotPasswordFormData>({
@@ -57,7 +55,7 @@ const Form = () => {
 
   return (
     <div className="max-w-xl w-full mx-auto mt-6 space-y-4 rounded-sm border p-4">
-      <h1 className="heading-md uppercase my-0 mb-2">Forgot your password?</h1>
+      <h1 className="heading-md uppercase my-0 mb-2 text-primary">Forgot your password?</h1>
       <p className="text-md">
         Enter the email you used to sign up and we’ll send you a password reset
         email.
