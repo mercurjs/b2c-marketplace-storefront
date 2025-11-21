@@ -31,7 +31,6 @@ export const ForgotPasswordForm = () => {
 }
 
 const Form = () => {
-  const [error, setError] = useState("")
   const {
     handleSubmit,
     register,
@@ -45,11 +44,10 @@ const Form = () => {
     const result = await sendResetPasswordEmail(data.email)
 
     if (!result.success) {
-      setError(result.error || "An error occurred. Please try again.")
+      toast.error({ title: result.error || "An error occurred. Please try again." })
       return
     }
 
-    setError("")
     reset({ email: "" })
 
     toast.success({
@@ -72,8 +70,6 @@ const Form = () => {
             error={errors.email as FieldError}
             {...register("email")}
           />
-          
-          {error && <p className="label-md text-negative">{error}</p>}
         </div>
 
         <div className="space-y-4 mt-8">
