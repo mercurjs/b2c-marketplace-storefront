@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/atoms"
 import { BinIcon } from "@/icons"
-import { removeShippingMethod } from "@/lib/data/cart"
+
 import { convertToLocale } from "@/lib/helpers/money"
 import { HttpTypes } from "@medusajs/types"
 import { Text } from "@medusajs/ui"
@@ -10,14 +10,12 @@ import { Text } from "@medusajs/ui"
 export const CartShippingMethodRow = ({
   method,
   currency_code,
+  onRemoveShippingMethod,
 }: {
   method: HttpTypes.StoreCartShippingMethod
   currency_code: string
+  onRemoveShippingMethod: (methodId: string) => void
 }) => {
-  const handleRemoveShippingMethod = async () => {
-    await removeShippingMethod(method.id)
-  }
-
   return (
     <div className="mb-4 border rounded-md p-4 flex items-center justify-between">
       <div>
@@ -35,7 +33,7 @@ export const CartShippingMethodRow = ({
         variant="tonal"
         size="small"
         className="p-2"
-        onClick={handleRemoveShippingMethod}
+        onClick={() => onRemoveShippingMethod(method.id)}
       >
         <BinIcon size={16} />
       </Button>

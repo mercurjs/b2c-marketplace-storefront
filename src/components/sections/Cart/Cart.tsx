@@ -1,12 +1,14 @@
+"use client"
+
 import { Button } from "@/components/atoms"
 import { CartEmpty, CartItems, CartSummary } from "@/components/organisms"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
-import { retrieveCart } from "@/lib/data/cart"
 import CartPromotionCode from "../CartReview/CartPromotionCode"
+import { useCartContext } from "@/components/providers"
 
-export const Cart = async () => {
-  const cart = await retrieveCart()
-
+export const Cart = () => {
+  const { cart } = useCartContext()
+  
   if (!cart || !cart.items?.length) {
     return <CartEmpty />
   }

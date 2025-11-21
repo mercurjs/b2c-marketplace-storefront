@@ -14,6 +14,7 @@ import { loginFormSchema, LoginFormData } from "./schema"
 import { useState } from "react"
 import { login } from "@/lib/data/customer"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export const LoginForm = () => {
   const methods = useForm<LoginFormData>({
@@ -56,36 +57,55 @@ const Form = () => {
 
   return (
     <main className="container">
-      <h1 className="heading-xl text-center uppercase my-6">
-        Log in to your account
-      </h1>
-      <form onSubmit={handleSubmit(submit)}>
-        <div className="w-96 max-w-full mx-auto space-y-4">
-          <LabeledInput
-            label="E-mail"
-            placeholder="Your e-mail address"
-            error={errors.email as FieldError}
-            {...register("email")}
-          />
-          <LabeledInput
-            label="Password"
-            placeholder="Your password"
-            type="password"
-            error={errors.password as FieldError}
-            {...register("password")}
-          />
-          {error && <p className="label-md text-negative">{error}</p>}
-          <Button className="w-full" disabled={isSubmitting}>
-            Log in
-          </Button>
-          <p className="text-center label-md">
-            Don&apos;t have an account yet?{" "}
-            <LocalizedClientLink href="/user/register" className="underline">
-              Sign up!
-            </LocalizedClientLink>
-          </p>
+      <div className="max-w-xl w-full mx-auto mt-6 space-y-4">
+        <div className="rounded-sm border p-4">
+          <h1 className="heading-md uppercase mb-8 text-primary">Log in</h1>
+          <form onSubmit={handleSubmit(submit)}>
+            <div className="space-y-4">
+              <LabeledInput
+                label="E-mail"
+                placeholder="Your e-mail address"
+                error={errors.email as FieldError}
+                {...register("email")}
+              />
+              <LabeledInput
+                label="Password"
+                placeholder="Your password"
+                type="password"
+                error={errors.password as FieldError}
+                {...register("password")}
+              />
+            </div>
+
+            {/* TODO: Add forgot password link when forgot password page is implemented */}
+            {/* <Link href="/user/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4">
+              Forgot your password?
+            </Link> */}
+
+            <Button className="w-full uppercase mt-8" disabled={isSubmitting}>
+              Log in
+            </Button>
+
+            {error && (
+              <p className="label-md text-negative my-4 text-center">{error}</p>
+            )}
+          </form>
         </div>
-      </form>
+
+        <div className="rounded-sm border p-4">
+          <h2 className="heading-md uppercase mb-4 text-primary">
+            Don&apos;t have an account yet?
+          </h2>
+          <Link href="/user/register">
+            <Button
+              variant="tonal"
+              className="w-full flex justify-center mt-8 uppercase"
+            >
+              Create account
+            </Button>
+          </Link>
+        </div>
+      </div>
     </main>
   )
 }

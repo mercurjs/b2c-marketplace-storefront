@@ -74,6 +74,7 @@ export const CartAddressSection = ({
         action={async (data) => {
           await formAction(data)
           router.replace(`${pathname}?step=delivery`)
+          router.refresh()
         }}
       >
         {isOpen ? (

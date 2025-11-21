@@ -3,6 +3,8 @@ import { Funnel_Display } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@medusajs/ui"
 import Head from "next/head"
+import { retrieveCart } from "@/lib/data/cart"
+import { Providers } from "./providers"
 
 const funnelDisplay = Funnel_Display({
   variable: "--font-funnel-sans",
@@ -41,6 +43,7 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>
 }>) {
   const { locale } = await params
+  const cart = await retrieveCart()
 
   const ALGOLIA_APP = process.env.NEXT_PUBLIC_ALGOLIA_ID
   const htmlLang = locale || "en"
@@ -117,7 +120,7 @@ export default async function RootLayout({
       <body
         className={`${funnelDisplay.className} antialiased bg-primary text-secondary relative`}
       >
-        {children}
+        <Providers cart={cart}>{children}</Providers>
         <Toaster position="top-right" />
       </body>
     </html>

@@ -10,16 +10,14 @@ import { filterValidCartItems } from "@/lib/helpers/filter-valid-cart-items"
 import { HttpTypes } from "@medusajs/types"
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
+import { useCartContext } from "@/components/providers"
 
 const getItemCount = (cart: HttpTypes.StoreCart | null) => {
   return cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0
 }
 
-export const CartDropdown = ({
-  cart,
-}: {
-  cart: HttpTypes.StoreCart | null
-}) => {
+export const CartDropdown = () => {
+  const { cart } = useCartContext()
   const [open, setOpen] = useState(false)
 
   const previousItemCount = usePrevious(getItemCount(cart))
@@ -96,7 +94,7 @@ export const CartDropdown = ({
                 <div className="overflow-y-scroll max-h-[360px] no-scrollbar">
                   {validItems.map((item) => (
                     <CartDropdownItem
-                      key={item.id}
+                      key={`${item.product_id}-${item.variant_id}`}
                       item={item}
                       currency_code={cart?.currency_code || "eur"}
                     />

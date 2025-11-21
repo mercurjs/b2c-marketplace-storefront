@@ -7,7 +7,7 @@ import { getReviews } from "@/lib/data/reviews"
 export default async function Page() {
   const user = await retrieveCustomer()
 
-  const { reviews } = await getReviews()
+  const reviewsRes = await getReviews()
   const orders = await listOrders()
 
   if (!user) return <LoginForm />
@@ -18,7 +18,8 @@ export default async function Page() {
         <UserNavigation />
         <ReviewsWritten
           orders={orders.filter((order) => order.reviews.length)}
-          reviews={reviews.filter(Boolean)}
+          reviews={reviewsRes.data?.reviews.filter(Boolean) ?? []}
+          isError={!reviewsRes.ok}
         />
       </div>
     </main>

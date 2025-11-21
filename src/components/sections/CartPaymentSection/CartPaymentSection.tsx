@@ -117,6 +117,9 @@ const CartPaymentSection = ({
     setError(null)
   }, [isOpen])
 
+  const isEditEnabled =
+    !isOpen && !!cart?.payment_collection?.payment_sessions?.length
+
   return (
     <div className="border p-4 rounded-sm bg-ui-bg-interactive">
       <div className="flex flex-row items-center justify-between mb-6">
@@ -127,7 +130,7 @@ const CartPaymentSection = ({
           {!isOpen && paymentReady && <CheckCircleSolid />}
           Payment
         </Heading>
-        {!isOpen && (
+        {isEditEnabled && (
           <Text>
             <Button onClick={handleEdit} variant="tonal">
               Edit

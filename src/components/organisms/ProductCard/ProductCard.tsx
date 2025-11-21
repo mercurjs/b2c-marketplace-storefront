@@ -4,16 +4,18 @@ import Image from "next/image"
 import { Button } from "@/components/atoms"
 import { HttpTypes } from "@medusajs/types"
 import { BaseHit, Hit } from "instantsearch.js"
-import clsx from "clsx"
+import { cn } from "@/lib/utils"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { getProductPrice } from "@/lib/helpers/get-product-price"
 
 export const ProductCard = ({
   product,
   api_product,
+  className,
 }: {
   product: Hit<HttpTypes.StoreProduct> | Partial<Hit<BaseHit>>
   api_product?: HttpTypes.StoreProduct | null
+  className?: string
 }) => {
   if (!api_product) {
     return null
@@ -27,8 +29,9 @@ export const ProductCard = ({
 
   return (
     <div
-      className={clsx(
-        "relative group border rounded-sm flex flex-col justify-between p-1 w-full lg:w-[calc(25%-1rem)] min-w-[250px]"
+      className={cn(
+        "relative group border rounded-sm flex flex-col justify-between p-1 w-full lg:w-[calc(25%-1rem)] min-w-[250px]",
+        className
       )}
     >
       <div className="relative w-full h-full bg-primary aspect-square">

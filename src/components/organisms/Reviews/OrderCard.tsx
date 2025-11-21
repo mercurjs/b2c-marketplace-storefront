@@ -52,12 +52,14 @@ export const OrderCard = ({
             </Button>
           </div>
         ) : (
-          <div className="h-full -mt-2">
+          <div className="h-full -mt-2 max-w-full">
             <p className="text-sm text-secondary">
               {format(order.reviews[0].created_at, "MMM dd, yyyy")}
             </p>
             <StarRating rate={order.reviews[0].rating} starSize={12} />
-            <p className="label-md mt-2">{order.reviews[0].customer_note}</p>
+            <p className="label-md mt-2 whitespace-pre-line break-words">
+              {order.reviews[0].customer_note}
+            </p>
           </div>
         )}
       </div>

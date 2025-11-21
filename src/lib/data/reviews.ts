@@ -1,6 +1,6 @@
 "use server"
 import { revalidatePath } from "next/cache"
-import { sdk } from "../config"
+import { fetchQuery } from "../config"
 import { getAuthHeaders } from "./cookies"
 import { HttpTypes } from "@medusajs/types"
 
@@ -27,13 +27,13 @@ const getReviews = async () => {
     ...(await getAuthHeaders()),
   }
 
-  const reviews = await sdk.client.fetch("/store/reviews", {
+  const res = await fetchQuery("/store/reviews", {
     headers,
-    query: { fields: "*seller,+customer.id,+order_id" },
     method: "GET",
+    query: { fields: "*seller,+customer.id,+order_id" },
   })
 
-  return reviews as { reviews: Review[] }
+  return res
 }
 
 const createReview = async (review: any) => {

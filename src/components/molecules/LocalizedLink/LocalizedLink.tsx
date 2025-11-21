@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useParams } from "next/navigation"
+import { useParams, usePathname } from "next/navigation"
 import React, { MouseEventHandler } from "react"
 
 /**
@@ -20,7 +20,10 @@ const LocalizedClientLink = ({
   passHref?: true
   [x: string]: any
 }) => {
-  const { locale } = useParams()
+  const params = useParams()
+  const pathname = usePathname()
+  
+  const locale = params?.locale || pathname?.split('/')[1] || 'en'
 
   return (
     <Link href={`/${locale}${href}`} {...props}>

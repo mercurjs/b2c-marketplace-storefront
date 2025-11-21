@@ -6,16 +6,19 @@ export const ProductAdditionalAttributes = ({
 }: {
   attributes: AdditionalAttributeProps[]
 }) => {
-  if (!attributes.length) return null
+
+  if (!attributes?.length) return null
+
+  const nonEmptyAttributes = attributes.filter((attribute) => !!attribute && attribute.id)
 
   return (
     <ProductPageAccordion heading="Additional attributes" defaultOpen={false}>
-      {attributes.map((attribute) => (
+      {nonEmptyAttributes.map((attribute) => (
         <div
           key={attribute.id}
           className="border rounded-sm grid grid-cols-2 text-center label-md"
         >
-          <div className="border-r py-3">{attribute.attribute.name}</div>
+          <div className="border-r py-3">{attribute.attribute?.name}</div>
           <div className="py-3">{attribute.value}</div>
         </div>
       ))}

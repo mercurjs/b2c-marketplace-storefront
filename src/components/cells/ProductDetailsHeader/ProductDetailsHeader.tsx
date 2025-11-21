@@ -5,13 +5,12 @@ import { HttpTypes } from "@medusajs/types"
 import { ProductVariants } from "@/components/molecules"
 import useGetAllSearchParams from "@/hooks/useGetAllSearchParams"
 import { getProductPrice } from "@/lib/helpers/get-product-price"
-import { useState } from "react"
-import { addToCart } from "@/lib/data/cart"
 import { Chat } from "@/components/organisms/Chat/Chat"
 import { SellerProps } from "@/types/seller"
 import { WishlistButton } from "../WishlistButton/WishlistButton"
 import { Wishlist } from "@/types/wishlist"
 import { toast } from "@/lib/helpers/toast"
+import { useCartContext } from "@/components/providers"
 
 const optionsAsKeymap = (
   variantOptions: HttpTypes.StoreProductVariant["options"]
@@ -40,7 +39,7 @@ export const ProductDetailsHeader = ({
   user: HttpTypes.StoreCustomer | null
   wishlist?: Wishlist[]
 }) => {
-  const [isAdding, setIsAdding] = useState(false)
+  const { addToCart, onAddToCart, cart, isAddingItem } = useCartContext()
   const { allSearchParams } = useGetAllSearchParams()
 
   const { cheapestVariant, cheapestPrice } = getProductPrice({
@@ -74,11 +73,38 @@ export const ProductDetailsHeader = ({
     variantId,
   })
 
+  const variantStock =
+    product.variants?.find(({ id }) => id === variantId)?.inventory_quantity ||
+    0
+
+  const variantHasPrice = !!product.variants?.find(({ id }) => id === variantId)
+    ?.calculated_price
+
+  const isVariantStockMaxLimitReached =
+    (cart?.items?.find((item) => item.variant_id === variantId)?.quantity ??
+      0) >= variantStock
+
   // add the selected variant to the cart
   const handleAddToCart = async () => {
-    if (!variantId || !hasAnyPrice) return null
+    if (!variantId || !hasAnyPrice || isVariantStockMaxLimitReached) return
 
-    setIsAdding(true)
+    const subtotal = +(variantPrice?.calculated_price_without_tax_number || 0)
+    const total = +(variantPrice?.calculated_price_number || 0)
+
+    const storeCartLineItem = {
+      thumbnail: product.thumbnail || "",
+      product_title: product.title,
+      quantity: 1,
+      subtotal,
+      total,
+      tax_total: total - subtotal,
+      variant_id: variantId,
+      product_id: product.id,
+      variant: product.variants?.find(({ id }) => id === variantId),
+    }
+
+    // Optimistic update
+    onAddToCart(storeCartLineItem, variantPrice?.currency_code || "eur")
 
     try {
       await addToCart({
@@ -91,19 +117,10 @@ export const ProductDetailsHeader = ({
         title: "Error adding to cart",
         description: "Some variant does not have the required inventory",
       })
-    } finally {
-      setIsAdding(false)
     }
   }
 
-  const variantStock =
-    product.variants?.find(({ id }) => id === variantId)?.inventory_quantity ||
-    0
-
-  const variantHasPrice = product.variants?.find(({ id }) => id === variantId)
-    ?.calculated_price
-    ? true
-    : false
+  const isAddToCartDisabled = !variantStock || !variantHasPrice || !hasAnyPrice || isVariantStockMaxLimitReached
 
   return (
     <div className="border rounded-sm p-5">
@@ -149,8 +166,8 @@ export const ProductDetailsHeader = ({
       {/* Add to Cart */}
       <Button
         onClick={handleAddToCart}
-        disabled={isAdding || !variantStock || !variantHasPrice || !hasAnyPrice}
-        loading={isAdding}
+        disabled={isAddToCartDisabled}
+        loading={isAddingItem}
         className="w-full uppercase mb-4 py-3 flex justify-center"
         size="large"
       >

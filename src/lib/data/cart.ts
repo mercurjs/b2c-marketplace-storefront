@@ -139,11 +139,11 @@ export async function addToCart({
         {},
         headers
       )
-      .then(async () => {
+      .catch(medusaError)
+      .finally(async () => {
         const cartCacheTag = await getCacheTag("carts")
         revalidateTag(cartCacheTag)
       })
-      .catch(medusaError)
   } else {
     await sdk.store.cart
       .createLineItem(
@@ -160,6 +160,10 @@ export async function addToCart({
         revalidateTag(cartCacheTag)
       })
       .catch(medusaError)
+      .finally(async () => {
+        const cartCacheTag = await getCacheTag("carts")
+        revalidateTag(cartCacheTag)
+      })
   }
 }
 
@@ -185,7 +189,7 @@ export async function updateLineItem({
   }
 
   const res = await fetchQuery(`/store/carts/${cartId}/line-items/${lineId}`, {
-    body: JSON.stringify({ quantity }),
+    body: { quantity },
     method: "POST",
     headers,
   })
@@ -231,13 +235,16 @@ export async function setShippingMethod({
     ...(await getAuthHeaders()),
   }
 
-  return sdk.store.cart
-    .addShippingMethod(cartId, { option_id: shippingMethodId }, {}, headers)
-    .then(async () => {
-      const cartCacheTag = await getCacheTag("carts")
-      revalidateTag(cartCacheTag)
-    })
-    .catch(medusaError)
+  const res = await fetchQuery(`/store/carts/${cartId}/shipping-methods`, {
+    body: { option_id: shippingMethodId },
+    method: "POST",
+    headers,
+  })
+
+  const cartCacheTag = await getCacheTag("carts")
+  revalidateTag(cartCacheTag)
+
+  return res
 }
 
 export async function initiatePaymentSession(
@@ -516,7 +523,9 @@ export async function updateRegionWithValidation(
 
         // Iterate over problematic variants and remove corresponding items
         for (const variantId of problematicVariantIds) {
-          const item = cart?.items?.find(item => item.variant_id === variantId)
+          const item = cart?.items?.find(
+            (item) => item.variant_id === variantId
+          )
           if (item) {
             try {
               await sdk.store.cart.deleteLineItem(cart.id, item.id, headers)

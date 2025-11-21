@@ -13,6 +13,7 @@ export interface AdditionalAttributeProps {
 export interface Product {
   id: number
   brand: string
+  handle: string
   title: string
   size: string
   price: number

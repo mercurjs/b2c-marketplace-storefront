@@ -18,6 +18,12 @@ export const getPricesForVariant = (variant: any) => {
         amount: variant.calculated_price.calculated_amount,
         currency_code: variant.calculated_price.currency_code,
       }),
+      calculated_price_without_tax: convertToLocale({
+        amount: variant.calculated_price.calculated_amount_without_tax,
+        currency_code: variant.calculated_price.currency_code,
+      }),
+      calculated_price_without_tax_number:
+        variant.calculated_price.calculated_amount_without_tax,
       original_price_number: variant.calculated_price.original_amount,
       original_price: convertToLocale({
         amount: variant.calculated_price.original_amount,
@@ -39,6 +45,12 @@ export const getPricesForVariant = (variant: any) => {
       amount: variant.calculated_price.calculated_amount_with_tax,
       currency_code: variant.calculated_price.currency_code,
     }),
+    calculated_price_without_tax: convertToLocale({
+      amount: variant.calculated_price.calculated_amount_without_tax,
+      currency_code: variant.calculated_price.currency_code,
+    }),
+    calculated_price_without_tax_number:
+      variant.calculated_price.calculated_amount_without_tax,
     original_price_number: variant.calculated_price.original_amount_with_tax,
     original_price: convertToLocale({
       amount: variant.calculated_price.original_amount_with_tax,

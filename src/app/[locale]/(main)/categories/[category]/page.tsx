@@ -94,7 +94,6 @@ async function Category({
   if (!category) {
     return notFound()
   }
-
   const currency_code = (await getRegion(locale))?.currency_code || "usd"
   const ua = (await headers()).get("user-agent") || ""
   const bot = isBot(ua)

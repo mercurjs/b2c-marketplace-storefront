@@ -1,7 +1,7 @@
 "use client"
 
 import ErrorMessage from "@/components/molecules/ErrorMessage/ErrorMessage"
-import { setShippingMethod } from "@/lib/data/cart"
+import { removeShippingMethod, setShippingMethod } from "@/lib/data/cart"
 import { calculatePriceForShippingOption } from "@/lib/data/fulfillment"
 import { convertToLocale } from "@/lib/helpers/money"
 import { CheckCircleSolid, ChevronUpDown, Loader } from "@medusajs/icons"
@@ -10,7 +10,6 @@ import { clx, Heading, Text } from "@medusajs/ui"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { Fragment, useEffect, useState } from "react"
 import { Button } from "@/components/atoms"
-import { Modal, SelectField } from "@/components/molecules"
 import { CartShippingMethodRow } from "./CartShippingMethodRow"
 import { Listbox, Transition } from "@headlessui/react"
 import clsx from "clsx"
@@ -44,7 +43,13 @@ type ShippingProps = {
   }
   availableShippingMethods:
     | (StoreCardShippingMethod &
-        { rules: any; seller_id: string; price_type: string; id: string }[])
+        {
+          rules: any
+          seller_id: string
+          price_type: string
+          id: string
+          amount?: number
+        }[])
     | null
 }
 
@@ -53,6 +58,8 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
   availableShippingMethods,
 }) => {
   const [isLoadingPrices, setIsLoadingPrices] = useState(false)
+  const [isRemovingShippingMethod, setIsRemovingShippingMethod] =
+    useState(false)
   const [calculatedPricesMap, setCalculatedPricesMap] = useState<
     Record<string, number>
   >({})
@@ -120,21 +127,34 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
   }
 
   const handleSetShippingMethod = async (id: string | null) => {
-    setIsLoadingPrices(true)
-    setError(null)
-
     if (!id) {
-      setIsLoadingPrices(false)
       return
     }
 
-    await setShippingMethod({ cartId: cart.id, shippingMethodId: id }).catch(
-      (err) => {
-        setError(err.message)
+    try {
+      setError(null)
+      setIsLoadingPrices(true)
+      const res = await setShippingMethod({
+        cartId: cart.id,
+        shippingMethodId: id,
+      })
+      if (!res.ok) {
+        return setError(res.error?.message)
       }
-    )
+    } catch (error: any) {
+      setError(
+        error?.message?.replace("Error setting up the request: ", "") ||
+          "An error occurred"
+      )
+    } finally {
+      setIsLoadingPrices(false)
+    }
+  }
 
-    setIsLoadingPrices(false)
+  const handleRemoveShippingMethod = async (methodId: string) => {
+    setIsRemovingShippingMethod(true)
+    await removeShippingMethod(methodId)
+    setIsRemovingShippingMethod(false)
   }
 
   useEffect(() => {
@@ -148,7 +168,16 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
       acc[sellerId] = []
     }
 
-    acc[sellerId]?.push(method)
+    const amount = Number(
+      method.price_type === "flat"
+        ? method.amount
+        : calculatedPricesMap[method.id]
+    )
+
+    if (!isNaN(amount)) {
+      acc[sellerId]?.push(method)
+    }
+
     return acc
   }, {})
 
@@ -161,6 +190,8 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
       missingShippingSellers.includes(item.product?.seller?.id!)
     )
     .map((item) => item.product?.seller?.name)
+
+  const isEditEnabled = !isOpen && !!cart?.shipping_methods?.length
 
   return (
     <div className="border p-4 rounded-sm bg-ui-bg-interactive">
@@ -201,7 +232,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
           )}
           Delivery
         </Heading>
-        {!isOpen && (
+        {isEditEnabled && (
           <Text>
             <Button onClick={handleEdit} variant="tonal">
               Edit
@@ -292,13 +323,14 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
                     </div>
                   )
                 })}
-                {cart && (cart.shipping_methods?.length ?? 0) > 0 && (
+                {!!cart?.shipping_methods?.length && (
                   <div className="flex flex-col">
                     {cart.shipping_methods?.map((method) => (
                       <CartShippingMethodRow
                         key={method.id}
                         method={method}
                         currency_code={cart.currency_code}
+                        onRemoveShippingMethod={handleRemoveShippingMethod}
                       />
                     ))}
                   </div>
@@ -314,7 +346,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
             <Button
               onClick={handleSubmit}
               variant="tonal"
-              disabled={!cart.shipping_methods?.[0]}
+              disabled={!cart.shipping_methods?.[0] || isRemovingShippingMethod}
               loading={isLoadingPrices}
             >
               Continue to payment
