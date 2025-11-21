@@ -59,7 +59,7 @@ const Form = () => {
 
   return (
     <div className="max-w-xl w-full mx-auto mt-6 space-y-4 rounded-sm border p-4">
-      <h1 className="heading-md uppercase my-0 mb-2">Forgot your password?</h1>
+      <h1 className="heading-md uppercase my-0 mb-2 text-primary">Forgot your password?</h1>
       <p className="text-md">
         Enter the email you used to sign up and we’ll send you a password reset
         email.
