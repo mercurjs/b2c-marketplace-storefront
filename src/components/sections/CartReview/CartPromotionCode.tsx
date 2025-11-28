@@ -39,7 +39,7 @@ export default function CartPromotionCode({
         level="h2"
         className="flex flex-row text-3xl-regular gap-x-2 items-baseline items-center"
       >
-        Promotion codes
+        Promotion code
       </Heading>
       <div>
         {cart?.promotions?.map((promo) => (
