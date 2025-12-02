@@ -1,5 +1,5 @@
 import { Button } from "@/components/atoms"
-import { Carousel } from "@/components/cells"
+import { Carousel, CarouselContent, CarouselItem } from "@/components/cells"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { listCategories } from "@/lib/data/categories"
 import { CategoryCard } from "../CategoryCard/CategoryCard"
@@ -20,11 +20,15 @@ export const EmptyCart = async () => {
           <Button className="w-full py-3 md:px-24 uppercase">Explore</Button>
         </LocalizedClientLink>
       </div>
-      <Carousel
-        items={categories?.map((category) => (
-          <CategoryCard key={category.id} category={category} />
-        ))}
-      />
+      <Carousel>
+        <CarouselContent>
+          {categories?.map((category) => (
+            <CarouselItem key={category.id}>
+              <CategoryCard category={category} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Carousel } from "@/components/cells"
+import { Carousel, CarouselContent, CarouselItem } from "@/components/cells"
 import { CategoryCard } from "@/components/organisms"
 
 export const categories: { id: number; name: string; handle: string }[] = [
@@ -35,11 +35,18 @@ export const HomeCategories = async ({ heading }: { heading: string }) => {
       <div className="mb-6">
         <h2 className="heading-lg text-primary uppercase">{heading}</h2>
       </div>
-      <Carousel
-        items={categories?.map((category) => (
-          <CategoryCard key={category.id} category={category} />
-        ))}
-      />
+      <Carousel opts={{ align: "start" }}>
+        <CarouselContent>
+          {categories?.map((category) => (
+            <CarouselItem
+              key={category.id}
+              className="basis-full md:basis-1/2 lg:basis-1/5"
+            >
+              <CategoryCard category={category} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     </section>
   )
 }

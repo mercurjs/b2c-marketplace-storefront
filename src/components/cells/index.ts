@@ -1,67 +1,46 @@
-import { Navbar } from "./Navbar/Navbar"
-import { CustomCarousel as Carousel } from "./Carousel/Carousel"
-import { Pagination } from "./Pagination/Pagination"
-import { ProductFilter } from "./ProductFilter/ProductFilter"
-import { BrandFilter } from "./BrandFilter/BrandFilter"
-import { PriceFilter } from "./PriceFilter/PriceFilter"
-import { SizeFilter } from "./SizeFilter/SizeFilter"
-import { ConditionFilter } from "./ConditionFilter/ConditionFilter"
-import { ColorFilter } from "./ColorFilter/ColorFilter"
-import { SellerRatingFilter } from "./SellerRatingFilter/SellerRatingFilter"
-import { ActiveFilterElement } from "./ActiveFilterElement/ActiveFilterElement"
-import { MobileNavbar } from "./MobileNavbar/MobileNavbar"
-import { ProductDetailsHeader } from "./ProductDetailsHeader/ProductDetailsHeader"
-import { ProductPageDetails } from "./ProductPageDetails/ProductPageDetails"
-import { ProductDetailsMeasurements } from "./ProductDetailsMeasurements/ProductDetailsMeasurements"
-import { ProductDetailsShipping } from "./ProductDetailsShipping/ProductDetailsShipping"
-import { ProductDetailsSeller } from "./ProductDetailsSeller/ProductDetailsSeller"
-import { ProductDetailsSellerReviews } from "./ProductDetailsSellerReviews/ProductDetailsSellerReviews"
-import { ProductDetailsFooter } from "./ProductDetailsFooter/ProductDetailsFooter"
-import { ProductCarousel } from "./ProductCarousel/ProductCarousel"
-import { SellerReviewTab } from "./SellerReviewTab/SellerReviewTab"
-import { CartItemsHeader } from "./CartItemsHeader/CartItemsHeader"
-import { CartItemsFooter } from "./CartItemsFooter/CartItemsFooter"
-import { CartItemsProducts } from "./CartItemsProducts/CartItemsProducts"
-import { HeadingCategories } from "./HeadingCategories/HeadingCategories"
-import { CartDropdown } from "./CartDropdown/CartDropdown"
-import { LabeledInput } from "./LabeledInput/LabeledInput"
-import { OrderAddresses } from "./OrderAddresses/OrderAddresses"
-import { OrderProductListItem } from "./OrderProductListItem/OrderProductListItem"
-import { OrderTimeline } from "./OrderTimeline/OrderTimeline"
-import { WishlistItem } from "./WishlistItem/WishlistItem"
-import { ProductAdditionalAttributes } from "./ProductAdditionalAttributes/ProductAdditionalAttributes"
-
+export { Navbar } from "./Navbar/Navbar"
 export {
-  Navbar,
   Carousel,
-  Pagination,
-  ProductFilter,
-  BrandFilter,
-  PriceFilter,
-  SizeFilter,
-  ConditionFilter,
-  ColorFilter,
-  SellerRatingFilter,
-  ActiveFilterElement,
-  MobileNavbar,
-  ProductDetailsHeader,
-  ProductPageDetails,
-  ProductDetailsMeasurements,
-  ProductDetailsShipping,
-  ProductDetailsSeller,
-  ProductDetailsSellerReviews,
-  ProductDetailsFooter,
-  ProductCarousel,
-  SellerReviewTab,
-  CartItemsHeader,
-  CartItemsFooter,
-  CartItemsProducts,
-  HeadingCategories,
-  CartDropdown,
-  LabeledInput,
-  OrderAddresses,
-  OrderProductListItem,
-  OrderTimeline,
-  WishlistItem,
-  ProductAdditionalAttributes,
-}
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  CarouselDots,
+  CarouselProgress,
+  CarouselThumbnails,
+  useCarousel,
+  type CarouselApi,
+  type CarouselOptions,
+  type CarouselPlugin,
+  type ThumbnailData,
+} from "./Carousel/Carousel"
+export { Pagination } from "./Pagination/Pagination"
+export { ProductFilter } from "./ProductFilter/ProductFilter"
+export { BrandFilter } from "./BrandFilter/BrandFilter"
+export { PriceFilter } from "./PriceFilter/PriceFilter"
+export { SizeFilter } from "./SizeFilter/SizeFilter"
+export { ConditionFilter } from "./ConditionFilter/ConditionFilter"
+export { ColorFilter } from "./ColorFilter/ColorFilter"
+export { SellerRatingFilter } from "./SellerRatingFilter/SellerRatingFilter"
+export { ActiveFilterElement } from "./ActiveFilterElement/ActiveFilterElement"
+export { MobileNavbar } from "./MobileNavbar/MobileNavbar"
+export { ProductDetailsHeader } from "./ProductDetailsHeader/ProductDetailsHeader"
+export { ProductPageDetails } from "./ProductPageDetails/ProductPageDetails"
+export { ProductDetailsMeasurements } from "./ProductDetailsMeasurements/ProductDetailsMeasurements"
+export { ProductDetailsShipping } from "./ProductDetailsShipping/ProductDetailsShipping"
+export { ProductDetailsSeller } from "./ProductDetailsSeller/ProductDetailsSeller"
+export { ProductDetailsSellerReviews } from "./ProductDetailsSellerReviews/ProductDetailsSellerReviews"
+export { ProductDetailsFooter } from "./ProductDetailsFooter/ProductDetailsFooter"
+export { ProductCarousel } from "./ProductCarousel/ProductCarousel"
+export { SellerReviewTab } from "./SellerReviewTab/SellerReviewTab"
+export { CartItemsHeader } from "./CartItemsHeader/CartItemsHeader"
+export { CartItemsFooter } from "./CartItemsFooter/CartItemsFooter"
+export { CartItemsProducts } from "./CartItemsProducts/CartItemsProducts"
+export { HeadingCategories } from "./HeadingCategories/HeadingCategories"
+export { CartDropdown } from "./CartDropdown/CartDropdown"
+export { LabeledInput } from "./LabeledInput/LabeledInput"
+export { OrderAddresses } from "./OrderAddresses/OrderAddresses"
+export { OrderProductListItem } from "./OrderProductListItem/OrderProductListItem"
+export { OrderTimeline } from "./OrderTimeline/OrderTimeline"
+export { WishlistItem } from "./WishlistItem/WishlistItem"
+export { ProductAdditionalAttributes } from "./ProductAdditionalAttributes/ProductAdditionalAttributes"

@@ -1,6 +1,6 @@
 import { Brand } from '@/types/brands';
 import { BrandCard } from '@/components/organisms';
-import { Carousel } from '@/components/cells';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/cells';
 
 const brands: Brand[] = [
   {
@@ -37,12 +37,18 @@ export function HomePopularBrandsSection() {
           POPULAR BRANDS
         </h2>
       </div>
-      <Carousel
-        variant='dark'
-        items={brands.map((brand) => (
-          <BrandCard key={brand.id} brand={brand} />
-        ))}
-      />
+      <Carousel>
+        <CarouselContent>
+          {brands.map((brand) => (
+            <CarouselItem
+              key={brand.id}
+              className='basis-full md:basis-1/2 lg:basis-1/4'
+            >
+              <BrandCard brand={brand} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     </section>
   );
 }
