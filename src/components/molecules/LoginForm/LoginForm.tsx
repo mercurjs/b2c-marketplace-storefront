@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { LabeledInput } from "@/components/cells"
 import { loginFormSchema, LoginFormData } from "./schema"
 import { useState } from "react"
-import { login } from "@/lib/data/customer"
+import { login, transferCard } from "@/lib/data/customer"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { toast } from "@/lib/helpers/toast"
@@ -46,24 +46,17 @@ const Form = () => {
     formData.append("email", data.email)
     formData.append("password", data.password)
 
-    const res = await login(formData)
-    if (res) {
-      // Temporary solution. API returns 200 code in case of auth error. To change when API is updated.
-      const isCredentialsError =
-        res.toLowerCase().includes("invalid email or password") ||
-        res.toLowerCase().includes("unauthorized") ||
-        res.toLowerCase().includes("incorrect") ||
-        res.toLowerCase().includes("credentials")
-
-      setIsAuthError(isCredentialsError)
-
-      const errorMessage = isCredentialsError ? "Incorrect email or password" : res
-
-      toast.error({ title: errorMessage || "An error occurred. Please try again." })
-      return
+    try {
+      await login(formData)
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "An error occurred. Please try again."
+      toast.error({ title: message })
     }
-    setIsAuthError(false)
     router.push("/user")
+    await transferCard()
   }
 
   const clearApiError = () => {

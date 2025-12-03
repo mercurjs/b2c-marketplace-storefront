@@ -84,7 +84,7 @@ export async function signup(formData: FormData) {
     const { customer: createdCustomer } = await sdk.store.customer.create(
       customerForm,
       {},
-      headers
+      headers,
     )
 
     const loginToken = await sdk.auth.login("customer", "emailpass", {
@@ -109,18 +109,15 @@ export async function login(formData: FormData) {
   const email = formData.get("email") as string
   const password = formData.get("password") as string
 
-  try {
-    await sdk.auth
+    return sdk.auth
       .login("customer", "emailpass", { email, password })
       .then(async (token) => {
         await setAuthToken(token as string)
         const customerCacheTag = await getCacheTag("customers")
         revalidateTag(customerCacheTag)
       })
-  } catch (error: any) {
-    return error.toString()
-  }
-
+}
+export async function transferCard() {
   try {
     await transferCart()
   } catch (error: any) {
@@ -191,7 +188,7 @@ export const addCustomerAddress = async (formData: FormData): Promise<any> => {
 }
 
 export const deleteCustomerAddress = async (
-  addressId: string
+  addressId: string,
 ): Promise<void> => {
   const headers = {
     ...(await getAuthHeaders()),
@@ -210,7 +207,7 @@ export const deleteCustomerAddress = async (
 }
 
 export const updateCustomerAddress = async (
-  formData: FormData
+  formData: FormData,
 ): Promise<any> => {
   const addressId = formData.get("addressId") as string
 
@@ -255,7 +252,7 @@ export const updateCustomerAddress = async (
 
 export const updateCustomerPassword = async (
   password: string,
-  token: string
+  token: string,
 ): Promise<any> => {
   const res = await fetch(
     `${process.env.MEDUSA_BACKEND_URL}/auth/customer/emailpass/update`,
@@ -266,7 +263,7 @@ export const updateCustomerPassword = async (
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ password }),
-    }
+    },
   )
     .then(async () => {
       await removeAuthToken()
