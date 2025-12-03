@@ -279,18 +279,23 @@ export async function applyPromotions(codes: string[]) {
     ...(await getAuthHeaders()),
   }
 
-  return sdk.store.cart
-    .update(cartId, { promo_codes: codes }, {}, headers)
-    .then(async ({ cart }) => {
+  // TODO: Update types for cart response when backend is updated
+  const response = await fetchQuery(`/store/carts/${cartId}/promotions`, {
+    body: { promo_codes: codes },
+    method: "POST",
+    headers,
+  })
+    .then(async (cart) => {
       const cartCacheTag = await getCacheTag("carts")
       revalidateTag(cartCacheTag)
-      // @ts-ignore
-      const applied = cart.promotions?.some((promotion: any) =>
+      const applied = cart?.data?.promotions?.some((promotion: any) =>
         codes.includes(promotion.code)
       )
       return applied
     })
     .catch(medusaError)
+
+    return response
 }
 
 export async function removeShippingMethod(shippingMethodId: string) {

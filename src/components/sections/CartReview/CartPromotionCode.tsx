@@ -33,12 +33,11 @@ export default function CartPromotionCode({
       setIsLoading(false)
     }
   }
-
   return (
     <div>
       <Heading
         level="h2"
-        className="flex flex-row text-3xl-regular gap-x-2 items-baseline items-center"
+        className="flex flex-row text-3xl-regular gap-x-2 items-center"
       >
         Promotion code
       </Heading>
