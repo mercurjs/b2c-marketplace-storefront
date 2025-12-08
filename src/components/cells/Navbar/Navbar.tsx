@@ -3,16 +3,25 @@ import { CategoryNavbar, NavbarSearch } from "@/components/molecules"
 
 export const Navbar = ({
   categories,
+  parentCategories,
 }: {
   categories: HttpTypes.StoreProductCategory[]
+  parentCategories: HttpTypes.StoreProductCategory[]
 }) => {
   return (
-    <div className="flex border py-4 justify-between px-6">
-      <div className="hidden md:flex items-center">
-        <CategoryNavbar categories={categories} />
+    <div className="flex flex-col lg:flex-row border py-4 justify-between px-4 md:px-5 gap-4 md:gap-0">
+      <div className="hidden lg:flex items-center justify-between w-full">
+        <CategoryNavbar
+          categories={categories}
+          parentCategories={parentCategories}
+        />
+        <div className="ml-auto max-w-[296px] w-full pl-4">
+          <NavbarSearch />
+        </div>
       </div>
-
-      <NavbarSearch />
+      <div className="lg:hidden max-w-[296px] w-full">
+        <NavbarSearch className="max-w-[296px]" />
+      </div>
     </div>
   )
 }

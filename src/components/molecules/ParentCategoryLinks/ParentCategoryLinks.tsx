@@ -2,20 +2,19 @@
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/atoms"
 import { useParams } from "next/navigation"
 import { useMemo } from "react"
 import { getActiveParentHandle } from "@/lib/helpers/category-utils"
 
-export const HeaderCategoryNavbar = ({
-  parentCategories,
-  categories,
-  onClose,
-}: {
+interface ParentCategoryLinksProps {
   parentCategories: HttpTypes.StoreProductCategory[]
   categories: HttpTypes.StoreProductCategory[]
-  onClose?: (state: boolean) => void
-}) => {
+}
+
+export const ParentCategoryLinks = ({
+  parentCategories,
+  categories,
+}: ParentCategoryLinksProps) => {
   const { category } = useParams<{ category?: string }>()
 
   const activeParentHandle = useMemo(
@@ -25,18 +24,18 @@ export const HeaderCategoryNavbar = ({
 
   return (
     <nav
-      className="flex items-center p-4 gap-2 overflow-x-auto scrollbar-hide"
+      className="hidden lg:flex items-center gap-4"
       aria-label="Parent categories"
     >
-      {parentCategories?.map(({ id, handle, name }) => {
+      {parentCategories.map(({ id, handle, name }) => {
         const isActive = handle === activeParentHandle
+
         return (
           <LocalizedClientLink
             key={id}
             href={`/categories/${handle}`}
-            onClick={() => (onClose ? onClose(false) : null)}
             className={cn(
-              "label-large uppercase text-primary hover:opacity-80 transition-opacity py-2 font-semibold px-8",
+              "label-large uppercase text-primary hover:opacity-80 transition-opacity pb-2 font-semibold",
               isActive && "border-b border-primary"
             )}
           >

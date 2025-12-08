@@ -33,6 +33,7 @@ import { ParcelAccordion } from "./ParcelAccordion/ParcelAccordion"
 import { AddressForm } from "./AddressForm/AddressForm"
 import { ReviewForm } from "./ReviewForm/ReviewForm"
 import { ProfileDetails } from "./ProfileDetails/ProfileDetails"
+import { ParentCategoryLinks } from "./ParentCategoryLinks/ParentCategoryLinks"
 import ProductListingLoadingView from "./ProductListingLoadingView/ProductListingLoadingView"
 import ProductListingNoResultsView from "./ProductListingNoResultsView/ProductListingNoResultsView"
 import ProductListingProductsView from "./ProductListingProductsView/ProductListingProductsView"
@@ -40,6 +41,7 @@ import ProductListingProductsView from "./ProductListingProductsView/ProductList
 export {
   PrimeCategoryNavbar,
   CategoryNavbar,
+  ParentCategoryLinks,
   SelectField,
   Accordion,
   FilterCheckboxOption,

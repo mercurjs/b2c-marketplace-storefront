@@ -27,6 +27,7 @@ export default function CartPromotionCode({
       }
       setPromotionCode("")
     } catch (err) {
+      toast.error({ title: "Error applying promo code" })
       console.log(err)
     } finally {
       setIsLoading(false)
@@ -39,7 +40,7 @@ export default function CartPromotionCode({
         level="h2"
         className="flex flex-row text-3xl-regular gap-x-2 items-baseline items-center"
       >
-        Promotion codes
+        Promotion code
       </Heading>
       <div>
         {cart?.promotions?.map((promo) => (

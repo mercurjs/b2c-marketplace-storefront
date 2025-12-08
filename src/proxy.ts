@@ -95,7 +95,7 @@ async function getCountryCode(
   }
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // Short-circuit static assets
   if (request.nextUrl.pathname.includes(".")) {
     return NextResponse.next()
