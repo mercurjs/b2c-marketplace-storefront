@@ -35,6 +35,10 @@ export async function retrieveCart(cartId?: string) {
   };
 
   const cartCacheTag = await getCacheOptions('carts');
+  const hasTags =
+    'tags' in cartCacheTag &&
+    Array.isArray((cartCacheTag as any).tags) &&
+    (cartCacheTag as any).tags.length > 0;
 
   return await sdk.client
     .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${id}`, {
@@ -49,7 +53,7 @@ export async function retrieveCart(cartId?: string) {
       next: {
         ...cartCacheTag
       },
-      cache: 'no-cache'
+      cache: hasTags ? 'force-cache' : 'no-cache'
     })
     .then(({ cart }) => cart)
     .catch(() => null);
