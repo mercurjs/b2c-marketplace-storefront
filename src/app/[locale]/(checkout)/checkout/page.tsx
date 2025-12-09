@@ -20,11 +20,13 @@ export const metadata: Metadata = {
 
 export default async function CheckoutPage({}) {
   return (
-    <Suspense
-      fallback={<div className="container flex items-center justify-center">Loading...</div>}
-    >
+    // <Suspense
+    //   fallback={<div className="container flex items-center justify-center">Loading...</div>}
+    // >
+    <div>
       <CheckoutPageContent />
-    </Suspense>
+    </div>
+    // </Suspense>
   );
 }
 

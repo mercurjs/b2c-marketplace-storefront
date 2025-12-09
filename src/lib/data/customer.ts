@@ -55,7 +55,7 @@ export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
     });
 
   const cacheTag = await getCacheTag('customers');
-  revalidateTag(cacheTag, 'max');
+  revalidateTag(cacheTag);
 
   return updateRes;
 };
@@ -95,7 +95,7 @@ export async function signup(formData: FormData) {
     await setAuthToken(loginToken as string);
 
     const customerCacheTag = await getCacheTag('customers');
-    revalidateTag(customerCacheTag, 'max');
+    revalidateTag(customerCacheTag);
 
     await transferCart();
 
@@ -113,7 +113,7 @@ export async function login(formData: FormData) {
     await sdk.auth.login('customer', 'emailpass', { email, password }).then(async token => {
       await setAuthToken(token as string);
       const customerCacheTag = await getCacheTag('customers');
-      revalidateTag(customerCacheTag, 'max');
+      revalidateTag(customerCacheTag);
     });
   } catch (error: any) {
     return error.toString();
@@ -132,12 +132,12 @@ export async function signout() {
   await removeAuthToken();
 
   const customerCacheTag = await getCacheTag('customers');
-  revalidateTag(customerCacheTag, 'max');
+  revalidateTag(customerCacheTag);
 
   await removeCartId();
 
   const cartCacheTag = await getCacheTag('carts');
-  revalidateTag(cartCacheTag, 'max');
+  revalidateTag(cartCacheTag);
   redirect(`/`);
 }
 
@@ -153,7 +153,7 @@ export async function transferCart() {
   await sdk.store.cart.transferCart(cartId, {}, headers);
 
   const cartCacheTag = await getCacheTag('carts');
-  revalidateTag(cartCacheTag, 'max');
+  revalidateTag(cartCacheTag);
 }
 
 export const addCustomerAddress = async (formData: FormData): Promise<any> => {
@@ -180,7 +180,7 @@ export const addCustomerAddress = async (formData: FormData): Promise<any> => {
     .createAddress(address, {}, headers)
     .then(async ({ customer }) => {
       const customerCacheTag = await getCacheTag('customers');
-      revalidateTag(customerCacheTag, 'max');
+      revalidateTag(customerCacheTag);
       return { success: true, error: null };
     })
     .catch(err => {
@@ -197,7 +197,7 @@ export const deleteCustomerAddress = async (addressId: string): Promise<void> =>
     .deleteAddress(addressId, headers)
     .then(async () => {
       const customerCacheTag = await getCacheTag('customers');
-      revalidateTag(customerCacheTag, 'max');
+      revalidateTag(customerCacheTag);
       return { success: true, error: null };
     })
     .catch(err => {
@@ -239,7 +239,7 @@ export const updateCustomerAddress = async (formData: FormData): Promise<any> =>
     .updateAddress(addressId, address, {}, headers)
     .then(async () => {
       const customerCacheTag = await getCacheTag('customers');
-      revalidateTag(customerCacheTag, 'max');
+      revalidateTag(customerCacheTag);
       return { success: true, error: null };
     })
     .catch(err => {
@@ -259,7 +259,7 @@ export const updateCustomerPassword = async (password: string, token: string): P
     .then(async () => {
       await removeAuthToken();
       const customerCacheTag = await getCacheTag('customers');
-      revalidateTag(customerCacheTag, 'max');
+      revalidateTag(customerCacheTag);
       return { success: true, error: null };
     })
     .catch((err: any) => {
