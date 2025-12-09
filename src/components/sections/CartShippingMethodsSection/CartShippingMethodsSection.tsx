@@ -126,6 +126,7 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
       );
     } finally {
       setIsLoadingPrices(false);
+      router.refresh();
     }
   };
 
@@ -133,6 +134,7 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
     startTransitionDeleteRow(async () => {
       await removeShippingMethod(methodId);
     });
+    router.refresh();
   };
 
   useEffect(() => {
