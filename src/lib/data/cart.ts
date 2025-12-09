@@ -34,12 +34,6 @@ export async function retrieveCart(cartId?: string) {
     ...(await getAuthHeaders())
   };
 
-  const cartCacheTag = await getCacheOptions('carts');
-  const hasTags =
-    'tags' in cartCacheTag &&
-    Array.isArray((cartCacheTag as any).tags) &&
-    (cartCacheTag as any).tags.length > 0;
-
   return await sdk.client
     .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${id}`, {
       method: 'GET',
@@ -50,10 +44,7 @@ export async function retrieveCart(cartId?: string) {
           ''
       },
       headers,
-      next: {
-        ...cartCacheTag
-      },
-      cache: hasTags ? 'force-cache' : 'no-cache'
+      cache: 'no-cache'
     })
     .then(({ cart }) => cart)
     .catch(() => null);
@@ -78,14 +69,14 @@ export async function getOrSetCart(countryCode: string) {
 
     await setCartId(cart.id);
 
-    const cartCacheTag = await getCacheTag("carts")
-    revalidateTag(cartCacheTag, "max")
+    const cartCacheTag = await getCacheTag('carts');
+    revalidateTag(cartCacheTag, 'max');
   }
 
   if (cart && cart?.region_id !== region.id) {
-    await sdk.store.cart.update(cart.id, { region_id: region.id }, {}, headers)
-    const cartCacheTag = await getCacheTag("carts")
-    revalidateTag(cartCacheTag, "max")
+    await sdk.store.cart.update(cart.id, { region_id: region.id }, {}, headers);
+    const cartCacheTag = await getCacheTag('carts');
+    revalidateTag(cartCacheTag, 'max');
   }
 
   return cart;
@@ -105,9 +96,9 @@ export async function updateCart(data: HttpTypes.StoreUpdateCart) {
   return await sdk.store.cart
     .update(cartId, data, {}, headers)
     .then(async ({ cart }) => {
-      const cartCacheTag = await getCacheTag("carts")
-      await revalidateTag(cartCacheTag, "max")
-      return cart
+      const cartCacheTag = await getCacheTag('carts');
+      await revalidateTag(cartCacheTag, 'max');
+      return cart;
     })
     .catch(medusaError);
 }
@@ -148,9 +139,9 @@ export async function addToCart({
       )
       .catch(medusaError)
       .finally(async () => {
-        const cartCacheTag = await getCacheTag("carts")
-        revalidateTag(cartCacheTag, "max")
-      })
+        const cartCacheTag = await getCacheTag('carts');
+        revalidateTag(cartCacheTag, 'max');
+      });
   } else {
     await sdk.store.cart
       .createLineItem(
@@ -163,14 +154,14 @@ export async function addToCart({
         headers
       )
       .then(async () => {
-        const cartCacheTag = await getCacheTag("carts")
-        revalidateTag(cartCacheTag, "max")
+        const cartCacheTag = await getCacheTag('carts');
+        revalidateTag(cartCacheTag, 'max');
       })
       .catch(medusaError)
       .finally(async () => {
-        const cartCacheTag = await getCacheTag("carts")
-        revalidateTag(cartCacheTag, "max")
-      })
+        const cartCacheTag = await getCacheTag('carts');
+        revalidateTag(cartCacheTag, 'max');
+      });
   }
 }
 
@@ -195,8 +186,8 @@ export async function updateLineItem({ lineId, quantity }: { lineId: string; qua
     headers
   });
 
-  const cartCacheTag = await getCacheTag("carts")
-  await revalidateTag(cartCacheTag, "max")
+  const cartCacheTag = await getCacheTag('carts');
+  await revalidateTag(cartCacheTag, 'max');
 
   return res;
 }
@@ -219,8 +210,8 @@ export async function deleteLineItem(lineId: string) {
   await sdk.store.cart
     .deleteLineItem(cartId, lineId, headers)
     .then(async () => {
-      const cartCacheTag = await getCacheTag("carts")
-      await revalidateTag(cartCacheTag, "max")
+      const cartCacheTag = await getCacheTag('carts');
+      await revalidateTag(cartCacheTag, 'max');
     })
     .catch(medusaError);
 }
@@ -239,12 +230,11 @@ export async function setShippingMethod({
   const res = await fetchQuery(`/store/carts/${cartId}/shipping-methods`, {
     body: { option_id: shippingMethodId },
     method: 'POST',
-    headers,
-    cache: 'no-cache'
+    headers
   });
 
-  const cartCacheTag = await getCacheTag("carts")
-        revalidateTag(cartCacheTag, "max")
+  const cartCacheTag = await getCacheTag('carts');
+  revalidateTag(cartCacheTag, 'max');
 
   return res;
 }
@@ -264,7 +254,7 @@ export async function initiatePaymentSession(
     .initiatePaymentSession(cart, data, {}, headers)
     .then(async resp => {
       const cartCacheTag = await getCacheTag('carts');
-      revalidateTag(cartCacheTag, "max")
+      revalidateTag(cartCacheTag, 'max');
       return resp;
     })
     .catch(medusaError);
@@ -284,8 +274,8 @@ export async function applyPromotions(codes: string[]) {
   return sdk.store.cart
     .update(cartId, { promo_codes: codes }, {}, headers)
     .then(async ({ cart }) => {
-      const cartCacheTag = await getCacheTag("carts")
-      revalidateTag(cartCacheTag, "max")
+      const cartCacheTag = await getCacheTag('carts');
+      revalidateTag(cartCacheTag, 'max');
       // @ts-ignore
       const applied = cart.promotions?.some((promotion: any) => codes.includes(promotion.code));
       return applied;
@@ -312,8 +302,8 @@ export async function removeShippingMethod(shippingMethodId: string) {
     headers
   })
     .then(async () => {
-      const cartCacheTag = await getCacheTag("carts")
-      revalidateTag(cartCacheTag, "max")
+      const cartCacheTag = await getCacheTag('carts');
+      revalidateTag(cartCacheTag, 'max');
     })
     .catch(medusaError);
 }
@@ -336,8 +326,8 @@ export async function deletePromotionCode(promoId: string) {
     headers
   })
     .then(async () => {
-      const cartCacheTag = await getCacheTag("carts")
-      revalidateTag(cartCacheTag, 'max')
+      const cartCacheTag = await getCacheTag('carts');
+      revalidateTag(cartCacheTag, 'max');
     })
     .catch(medusaError);
 }
@@ -415,9 +405,8 @@ export async function placeOrder(cartId?: string) {
     headers
   });
 
-
-  const cartCacheTag = await getCacheTag("carts")
-        revalidateTag(cartCacheTag, "max")
+  const cartCacheTag = await getCacheTag('carts');
+  revalidateTag(cartCacheTag, 'max');
 
   if (res?.data?.order_set) {
     revalidatePath('/user/reviews');
@@ -443,17 +432,16 @@ export async function updateRegion(countryCode: string, currentPath: string) {
   }
 
   if (cartId) {
-    await updateCart({ region_id: region.id })
-    const cartCacheTag = await getCacheTag("carts")
-    revalidateTag(cartCacheTag, "max")
+    await updateCart({ region_id: region.id });
+    const cartCacheTag = await getCacheTag('carts');
+    revalidateTag(cartCacheTag, 'max');
   }
 
+  const regionCacheTag = await getCacheTag('regions');
+  revalidateTag(regionCacheTag, 'max');
 
-  const regionCacheTag = await getCacheTag("regions")
-  revalidateTag(regionCacheTag, "max")
-
-  const productsCacheTag = await getCacheTag("products")
-  revalidateTag(productsCacheTag, "max")
+  const productsCacheTag = await getCacheTag('products');
+  revalidateTag(productsCacheTag, 'max');
 
   redirect(`/${countryCode}${currentPath}`);
 }
@@ -538,18 +526,15 @@ export async function updateRegionWithValidation(
     }
 
     // Revalidate caches
-
-    const cartCacheTag = await getCacheTag("carts")
-    revalidateTag(cartCacheTag, "max")
+    const cartCacheTag = await getCacheTag('carts');
+    revalidateTag(cartCacheTag, 'max');
   }
 
+  const regionCacheTag = await getCacheTag('regions');
+  revalidateTag(regionCacheTag, 'max');
 
-  const regionCacheTag = await getCacheTag("regions")
-  revalidateTag(regionCacheTag, "max")
-
-
-  const productsCacheTag = await getCacheTag("products")
-  revalidateTag(productsCacheTag, "max")
+  const productsCacheTag = await getCacheTag('products');
+  revalidateTag(productsCacheTag, 'max');
 
   return {
     removedItems,
