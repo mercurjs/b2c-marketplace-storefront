@@ -19,27 +19,33 @@ export default function CartPromotionCode({
 
   const handleApplyPromotionCode = async () => {
     if (!promotionCode || isLoading) return
-    
+
     setIsLoading(true)
     setHasError(false)
-    const result = await applyPromotions([promotionCode])
-    
-    if (result.success && result.applied) {
+    try {
+      const result = await applyPromotions([promotionCode])
+
+      if (!result.success) {
+        toast.error({
+          title: "Error",
+          description: result.error
+        })
+        setHasError(true)
+        return
+      }
+
+      if (!result.applied) {
+        toast.error({ title: "Promotion code not found" })
+        setHasError(true)
+        return
+      }
+
       toast.success({ title: "Promotion code applied" })
       setPromotionCode("")
       setHasError(false)
-    } else if (result.success && !result.applied) {
-      toast.error({ title: "Promotion code not found" })
-      setHasError(true)
-    } else if (!result.success) {
-      toast.error({ 
-        title: "Error", 
-        description: result.error 
-      })
-      setHasError(true)
+    } finally {
+      setIsLoading(false)
     }
-    
-    setIsLoading(false)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
