@@ -264,23 +264,34 @@ export async function applyPromotions(codes: string[]) {
   const cartId = await getCartId();
 
   if (!cartId) {
-    throw new Error('No existing cart found');
+    return { success: false, error: "No existing cart found" }
   }
 
   const headers = {
     ...(await getAuthHeaders())
   };
 
-  return sdk.store.cart
-    .update(cartId, { promo_codes: codes }, {}, headers)
-    .then(async ({ cart }) => {
-      const cartCacheTag = await getCacheTag('carts');
-      revalidateTag(cartCacheTag);
-      // @ts-ignore
-      const applied = cart.promotions?.some((promotion: any) => codes.includes(promotion.code));
-      return applied;
-    })
-    .catch(medusaError);
+  try {
+    const { cart } = await sdk.store.cart.update(
+      cartId,
+      { promo_codes: codes },
+      {},
+      headers
+    )
+    const cartCacheTag = await getCacheTag("carts")
+    revalidateTag(cartCacheTag)
+    // @ts-ignore
+    const applied = cart.promotions?.some((promotion: any) =>
+      codes.includes(promotion.code)
+    )
+    return { success: true, applied }
+  } catch (error: any) {
+    const errorMessage =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Failed to apply promotion code"
+    return { success: false, error: errorMessage }
+  }
 }
 
 export async function removeShippingMethod(shippingMethodId: string) {
