@@ -26,7 +26,7 @@ export default function CartPromotionCode({
       const result = await applyPromotions([promotionCode])
 
       if (!result.success) {
-        toast.error({
+        toast.info({
           title: "Error",
           description: result.error
         })
@@ -35,7 +35,7 @@ export default function CartPromotionCode({
       }
 
       if (!result.applied) {
-        toast.error({ title: "Promotion code not found" })
+        toast.info({ title: "Promotion code not found" })
         setHasError(true)
         return
       }
