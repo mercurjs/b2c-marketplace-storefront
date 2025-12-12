@@ -123,7 +123,7 @@ const Form = () => {
               />
             </div>
 
-            <Link href="/user/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4">
+            <Link href="/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4">
               Forgot your password?
             </Link>
 
