@@ -1,11 +1,11 @@
 export const Dropdown = ({
   children,
   show,
-  dataTestId,
+  "data-testid": dataTestId,
 }: {
   children: React.ReactNode;
   show: boolean;
-  dataTestId?: string;
+  "data-testid"?: string;
 }) => {
   if (!show) return null;
 

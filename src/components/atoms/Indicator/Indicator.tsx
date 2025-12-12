@@ -8,7 +8,7 @@ interface IndicatorProps {
   maxStep: number;
   className?: string;
   variant?: 'light' | 'dark';
-  dataTestId?: string;
+  "data-testid"?: string;
 }
 
 export function Indicator({
@@ -17,7 +17,7 @@ export function Indicator({
   step,
   maxStep,
   className,
-  dataTestId,
+  "data-testid": dataTestId,
 }: IndicatorProps) {
   const [wrapperWidth, setWrapperWidth] = useState(0);
 

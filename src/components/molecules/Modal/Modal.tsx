@@ -4,12 +4,12 @@ export const Modal = ({
   children,
   heading,
   onClose,
-  dataTestId,
+  "data-testid": dataTestId,
 }: {
   children: React.ReactNode
   heading: string
   onClose: () => void
-  dataTestId?: string
+  "data-testid"?: string
 }) => {
   return (
     <div

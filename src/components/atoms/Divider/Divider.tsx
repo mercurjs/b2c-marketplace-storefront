@@ -1,13 +1,11 @@
 import { cn } from "@/lib/utils"
 
 interface DividerProps {
-
   orientation?: 'horizontal' | 'vertical';
   square?: boolean;
   variant?: 'primary' | 'secondary';
   className?: string;
-  dataTestId?: string
-
+  "data-testid"?: string
 }
 
 export function Divider({
@@ -15,7 +13,7 @@ export function Divider({
   variant = "primary",
   square = false,
   className,
-  dataTestId,
+  "data-testid": dataTestId,
 }: DividerProps) {
   const baseClasses =
     variant === "primary"
