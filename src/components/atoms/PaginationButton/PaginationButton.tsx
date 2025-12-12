@@ -6,6 +6,7 @@ interface ButtonProps
   className?: string;
   isActive?: boolean;
   disabled?: boolean;
+  "data-testid"?: string;
 }
 
 export const PaginationButton = ({
@@ -13,6 +14,7 @@ export const PaginationButton = ({
   className = '',
   isActive = false,
   disabled = false,
+  "data-testid": dataTestId,
   ...props
 }: ButtonProps) => {
   return (
@@ -25,6 +27,7 @@ export const PaginationButton = ({
         className
       )}
       disabled={disabled}
+      data-testid={dataTestId ?? 'pagination-button'}
       {...props}
     >
       {children}

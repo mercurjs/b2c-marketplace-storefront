@@ -7,6 +7,7 @@ interface ChipProps {
   color?: boolean;
   onSelect?: () => void;
   className?: string;
+  "data-testid"?: string;
 }
 
 export function Chip({
@@ -16,6 +17,7 @@ export function Chip({
   color,
   onSelect,
   className,
+  "data-testid": dataTestId,
 }: ChipProps) {
   const baseClasses = 'chip-wrapper';
   const selectedClasses = selected ? 'border-primary' : '';
@@ -42,6 +44,7 @@ export function Chip({
       onClick={!disabled ? onSelect : undefined}
       role='button'
       tabIndex={disabled ? -1 : 0}
+      data-testid={dataTestId ?? 'chip'}
     >
       {color ? (
         <span

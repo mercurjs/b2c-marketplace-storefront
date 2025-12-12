@@ -8,9 +8,10 @@ import { usePathname } from "next/navigation"
 interface BreadcrumbsProps {
   items: { label: string; path: string }[]
   className?: string
+  "data-testid"?: string
 }
 
-export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
+export function Breadcrumbs({ items, className, "data-testid": dataTestId }: BreadcrumbsProps) {
   const pathname = usePathname()
 
   return (
@@ -28,6 +29,7 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
                   index > 0 && "ml-2",
                   isActive && "text-secondary"
                 )}
+                data-testid={dataTestId ? `${dataTestId}-link-${index}` : `breadcrumbs-link-${index}`}
               >
                 {label}
               </LocalizedClientLink>

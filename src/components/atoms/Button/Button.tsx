@@ -6,6 +6,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "filled" | "tonal" | "text" | "destructive"
   size?: "small" | "large"
   loading?: boolean
+  "data-testid"?: string
 }
 
 export function Button({
@@ -15,6 +16,7 @@ export function Button({
   loading = false,
   disabled = false,
   className,
+  "data-testid": dataTestId,
   ...props
 }: ButtonProps) {
   const baseClasses =
@@ -46,6 +48,7 @@ export function Button({
         baseClasses,
         className
       )}
+      data-testid={dataTestId ?? `button-${variant}-${size}`}
       {...props}
     >
       {loading ? <Spinner /> : children}

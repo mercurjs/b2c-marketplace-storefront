@@ -4,13 +4,18 @@ export const Modal = ({
   children,
   heading,
   onClose,
+  "data-testid": dataTestId,
 }: {
   children: React.ReactNode
   heading: string
   onClose: () => void
+  "data-testid"?: string
 }) => {
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex justify-center z-30">
+    <div
+      className="fixed top-0 left-0 w-full h-full flex justify-center z-30"
+      data-testid={dataTestId ?? 'modal'}
+    >
       <div
         className="bg-tertiary/60 w-full h-full absolute backdrop-blur-sm"
         onClick={onClose}
