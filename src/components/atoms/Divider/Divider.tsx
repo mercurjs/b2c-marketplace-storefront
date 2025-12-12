@@ -1,10 +1,13 @@
 import { cn } from "@/lib/utils"
 
 interface DividerProps {
-  orientation?: "horizontal" | "vertical"
-  square?: boolean
-  variant?: "primary" | "secondary"
-  className?: string
+
+  orientation?: 'horizontal' | 'vertical';
+  square?: boolean;
+  variant?: 'primary' | 'secondary';
+  className?: string;
+  dataTestId?: string
+
 }
 
 export function Divider({
@@ -12,6 +15,7 @@ export function Divider({
   variant = "primary",
   square = false,
   className,
+  dataTestId,
 }: DividerProps) {
   const baseClasses =
     variant === "primary"
@@ -27,8 +31,14 @@ export function Divider({
 
   return (
     <div
-      className={cn(baseClasses, orientationClasses, formClasses, className)}
       role="separator"
+      className={cn(
+        baseClasses,
+        orientationClasses,
+        formClasses,
+        className
+      )}
+      data-testid={dataTestId ?? 'divider'}
     />
   )
 }

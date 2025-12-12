@@ -6,6 +6,7 @@ interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   indeterminate?: boolean
   error?: boolean
   label?: string
+  dataTestId?: string
 }
 
 export function Checkbox({
@@ -14,6 +15,7 @@ export function Checkbox({
   error,
   className,
   checked,
+  dataTestId,
   ...props
 }: CheckboxProps) {
   return (
@@ -39,6 +41,7 @@ export function Checkbox({
             "w-[20px] h-[20px] opacity-0 cursor-pointer",
             props.disabled && "cursor-default"
           )}
+          data-testid={dataTestId ?? 'checkbox'}
           {...props}
         />
       </span>

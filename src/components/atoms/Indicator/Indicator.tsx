@@ -8,6 +8,7 @@ interface IndicatorProps {
   maxStep: number;
   className?: string;
   variant?: 'light' | 'dark';
+  dataTestId?: string;
 }
 
 export function Indicator({
@@ -16,6 +17,7 @@ export function Indicator({
   step,
   maxStep,
   className,
+  dataTestId,
 }: IndicatorProps) {
   const [wrapperWidth, setWrapperWidth] = useState(0);
 
@@ -60,6 +62,7 @@ export function Indicator({
         sizeClasses[size],
         className
       )}
+      data-testid={dataTestId ?? 'indicator'}
     >
       <div
         className={cn(
