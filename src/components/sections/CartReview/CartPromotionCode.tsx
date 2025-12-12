@@ -26,10 +26,7 @@ export default function CartPromotionCode({
       const result = await applyPromotions([promotionCode])
 
       if (!result.success) {
-        toast.info({
-          title: "Error",
-          description: result.error
-        })
+        toast.info({ title: result.error })
         setHasError(true)
         return
       }
