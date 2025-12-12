@@ -47,7 +47,7 @@ export function Avatar({
   return (
     <div
       className={cn(baseClasses, sizeClasses[size], className)}
-      data-testid={dataTestId}
+      data-testid={dataTestId ?? 'avatar'}
     >
       {initials || <ProfileIcon />}
     </div>
