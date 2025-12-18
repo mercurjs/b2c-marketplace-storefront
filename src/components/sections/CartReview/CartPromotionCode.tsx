@@ -15,22 +15,40 @@ export default function CartPromotionCode({
 }) {
   const [promotionCode, setPromotionCode] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [hasError, setHasError] = useState(false)
 
   const handleApplyPromotionCode = async () => {
+    if (!promotionCode || isLoading) return
+
     setIsLoading(true)
+    setHasError(false)
     try {
-      const res = await applyPromotions([promotionCode])
-      if (res) {
-        toast.success({ title: "Promotion code applied" })
-      } else {
-        toast.error({ title: "Promotion code not found" })
+      const result = await applyPromotions([promotionCode])
+
+      if (!result.success) {
+        toast.info({ title: result.error })
+        setHasError(true)
+        return
       }
+
+      if (!result.applied) {
+        toast.info({ title: "Promotion code not found" })
+        setHasError(true)
+        return
+      }
+
+      toast.success({ title: "Promotion code applied" })
       setPromotionCode("")
-    } catch (err) {
-      toast.error({ title: "Error applying promo code" })
-      console.log(err)
+      setHasError(false)
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      handleApplyPromotionCode()
     }
   }
 
@@ -55,7 +73,12 @@ export default function CartPromotionCode({
       <Input
         placeholder="Enter your promotion code"
         value={promotionCode}
-        onChange={(e) => setPromotionCode(e.target.value)}
+        onChange={(e) => {
+          setPromotionCode(e.target.value)
+          setHasError(false)
+        }}
+        onKeyDown={handleKeyDown}
+        error={hasError}
       />
       <div className="flex justify-end">
         <Button
