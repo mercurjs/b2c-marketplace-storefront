@@ -1,4 +1,4 @@
-import { ProductDetails, ProductGallery } from "@/components/organisms"
+import { ProductDetails, ProductGallery, ProductGalleryAI } from "@/components/organisms"
 import { listProducts } from "@/lib/data/products"
 import { HomeProductSection } from "../HomeProductSection/HomeProductSection"
 import NotFound from "@/app/not-found"
@@ -31,6 +31,9 @@ export const ProductDetailsPage = async ({
         <div className="md:w-1/2 md:px-2">
           <ProductDetails product={prod} locale={locale} />
         </div>
+      </div>
+      <div>
+        <ProductGalleryAI />
       </div>
       <div className="my-8">
         <HomeProductSection
