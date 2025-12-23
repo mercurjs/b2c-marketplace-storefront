@@ -36,7 +36,7 @@ export const CartItemsProducts = ({
               <div className="w-[100px] h-[132px] flex items-center justify-center">
                 {product.thumbnail ? (
                   <Image
-                    src={decodeURIComponent(product.thumbnail)}
+                    src={encodeURI(decodeURIComponent(product.thumbnail || ''))}
                     alt="Product thumbnail"
                     width={100}
                     height={132}

@@ -17,7 +17,7 @@ export const OrderCard = ({
           {order?.items?.[0]?.thumbnail ? (
             <Image
               alt="Seller photo"
-              src={order.items[0].thumbnail}
+              src={encodeURI(decodeURIComponent(order.items[0].thumbnail || ''))}
               className="border border-base-primary rounded-xs"
               width={64}
               height={64}

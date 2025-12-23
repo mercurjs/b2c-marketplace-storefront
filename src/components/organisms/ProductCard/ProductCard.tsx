@@ -45,7 +45,7 @@ export const ProductCard = ({
               <Image
                 priority
                 fetchPriority="high"
-                src={decodeURIComponent(product.thumbnail)}
+                src={encodeURI(decodeURIComponent(product.thumbnail || ''))}
                 alt={`${productName} image`}
                 width={100}
                 height={100}

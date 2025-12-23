@@ -10,6 +10,8 @@ import { sdk } from '../config';
 import { getAuthHeaders } from './cookies';
 import { getRegion, retrieveRegion } from './regions';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 export const listProducts = async ({
   pageParam = 1,
   queryParams,
@@ -89,16 +91,27 @@ export const listProducts = async ({
       cache: useCached ? 'force-cache' : 'no-cache'
     })
     .then(({ products: productsRaw, count }) => {
+      if (isDev) {
+        console.log(`🔍 Raw products from API: ${productsRaw.length}`);
+      }
+      
       const products = productsRaw.filter(product => product.seller?.store_status !== 'SUSPENDED');
+      if (isDev) {
+        console.log(`🔍 After seller status filter: ${products.length} (removed ${productsRaw.length - products.length} suspended)`);
+      }
 
       const nextPage = count > offset + limit ? pageParam + 1 : null;
 
       const response = products.filter(prod => {
         // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
         const reviews = prod.seller?.reviews.filter(item => !!item) ?? [];
+        const hasSeller = prod?.seller;
+        if (!hasSeller && isDev) {
+          console.log(`❌ Product filtered (no seller): ${prod.title} (${prod.id})`);
+        }
         return (
           // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
-          prod?.seller && {
+          hasSeller && {
             ...prod,
             seller: {
               // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
@@ -108,6 +121,10 @@ export const listProducts = async ({
           }
         );
       });
+      
+      if (isDev) {
+        console.log(`🔍 After seller check: ${response.length}`);
+      }
 
       return {
         response: {
@@ -177,9 +194,21 @@ export const listProductsWithSort = async ({
     ? products.filter(product => product.seller?.id === seller_id)
     : products;
 
-  const pricedProducts = filteredProducts.filter(prod =>
-    prod.variants?.some(variant => variant.calculated_price !== null)
-  );
+  if (isDev) {
+    console.log(`🔍 Products after seller filter: ${filteredProducts.length}/${products.length}`);
+  }
+
+  const pricedProducts = filteredProducts.filter(prod => {
+    const hasPrice = prod.variants?.some(variant => variant.calculated_price !== null);
+    if (!hasPrice && isDev) {
+      console.log(`❌ Product filtered (no calculated price): ${prod.title} (${prod.id})`);
+    }
+    return hasPrice;
+  });
+
+  if (isDev) {
+    console.log(`🔍 Products with valid prices: ${pricedProducts.length}/${filteredProducts.length}`);
+  }
 
   const sortedProducts = sortProducts(pricedProducts, sortBy);
 
