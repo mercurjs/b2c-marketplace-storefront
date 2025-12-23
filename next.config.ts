@@ -39,6 +39,15 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "s3.eu-central-1.amazonaws.com",
       },
+      {
+        protocol: "https",
+        hostname: "s3.ap-southeast-1.amazonaws.com",
+      },
+      // OR better: allow all S3 regions with a wildcard
+      {
+        protocol: "https",
+        hostname: "**.amazonaws.com",
+      },
     ],
   },
 }
