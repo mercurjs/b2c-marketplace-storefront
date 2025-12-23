@@ -23,7 +23,7 @@ export const Item = ({
       <div className="w-[100px] h-[132px] flex items-center justify-center">
         {item.thumbnail ? (
           <Image
-            src={decodeURIComponent(item.thumbnail)}
+            src={encodeURI(decodeURIComponent(item.thumbnail || ''))}
             alt="Product thumbnail"
             width={100}
             height={132}

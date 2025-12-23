@@ -22,7 +22,7 @@ export const OrderProductListItem = ({
           <div className="w-[66px] h-16 relative rounded-sm overflow-hidden flex items-center justify-center">
             {item.thumbnail ? (
               <Image
-                src={item.thumbnail}
+                src={encodeURI(decodeURIComponent(item.thumbnail || ''))}
                 alt={item.title}
                 width={66}
                 height={66}
