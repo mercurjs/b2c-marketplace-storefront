@@ -6,35 +6,35 @@ import { Style } from "@/types/styles"
 export const styles: Style[] = [
   {
     id: 1,
-    name: "LUXURY",
-    href: "/collections/luxury",
+    name: "Living Room",
+    href: "/collections/living_room",
   },
   {
     id: 2,
-    name: "VINTAGE",
-    href: "/collections/vintage",
+    name: "Bed Room",
+    href: "/collections/bed_room",
   },
   {
     id: 3,
-    name: "CASUAL",
-    href: "/collections/casual",
+    name: "Home Office",
+    href: "/collections/home_office",
   },
   {
     id: 4,
-    name: "STREETWEAR",
-    href: "/collections/streetwear",
+    name: "Kitchen",
+    href: "/collections/kitchen",
   },
   {
     id: 5,
-    name: "Y2K",
-    href: "/collections/y2k",
+    name: "Accessories",
+    href: "/collections/accessories",
   },
 ]
 
 export function ShopByStyleSection() {
   return (
     <section className="bg-primary container">
-      <h2 className="heading-lg text-primary mb-12">SHOP BY STYLE</h2>
+      <h2 className="heading-lg text-primary mb-12">SHOP BY COLLECTION</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
         <div className="py-[52px] px-[58px] h-full border rounded-sm">
           {styles.map((style) => (

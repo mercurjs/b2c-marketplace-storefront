@@ -9,14 +9,13 @@ export const BannerSection = () => {
         <div className="py-6 px-6 flex flex-col h-full justify-between border border-secondary rounded-sm">
           <div className="mb-8 lg:mb-48">
             <span className="text-sm inline-block px-4 py-1 border border-secondary rounded-sm">
-              #COLLECTION
+              #REGIONAL EVOLUTION
             </span>
             <h2 className="display-sm">
-              BOHO VIBES: WHERE COMFORT MEETS CREATIVITY
+              MARKETPLACE WHERE INTERIOR DESIGN MEETS ARIFICAL INTELLIGENCE
             </h2>
             <p className="text-lg text-tertiary max-w-lg">
-              Discover boho styles that inspire adventure and embrace the beauty
-              of the unconventional.
+              No physical load anymore. Place your furniture virtually in your room, even before buying it.
             </p>
           </div>
           <LocalizedClientLink href="/collections/boho">
