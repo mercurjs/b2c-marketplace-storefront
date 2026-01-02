@@ -11,7 +11,7 @@ export const styles: Style[] = [
   },
   {
     id: 2,
-    name: "Bedrom",
+    name: "Bedroom",
     href: "/collections/bedroom",
   },
   {

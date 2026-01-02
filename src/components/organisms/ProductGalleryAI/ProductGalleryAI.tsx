@@ -41,7 +41,7 @@ export const ProductGalleryAI = () => {
     });
 
     const result = await response.json();
-    
+
     if (!response.ok || result.status === "error") {
       throw new Error(result.message || "Failed to convert base64 to URL");
     }
@@ -52,15 +52,15 @@ export const ProductGalleryAI = () => {
   async function pollForResult(fetchUrl: string, maxAttempts = 60): Promise<string> {
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       setProgress(`Checking status... (attempt ${attempt + 1})`);
-      
+
       const response = await fetch(fetchUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-  key: "HKMjV22OGh3qjKOT6qM59rX9WEQwsrbikPIEbcV7xuhzb7IReIRZgWLl7BzO",
-}),
+          key: "HKMjV22OGh3qjKOT6qM59rX9WEQwsrbikPIEbcV7xuhzb7IReIRZgWLl7BzO",
+        }),
       });
 
       const result = await response.json();
@@ -182,8 +182,8 @@ export const ProductGalleryAI = () => {
         </div>
       )}
 
-      <button 
-        onClick={makeApiRequest} 
+      <button
+        onClick={makeApiRequest}
         disabled={isLoading || !preview}
         style={{ marginTop: 20, padding: "10px 20px", fontSize: 16 }}
       >
