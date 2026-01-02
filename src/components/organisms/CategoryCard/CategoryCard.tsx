@@ -14,7 +14,7 @@ export function CategoryCard({
       <div className="flex relative aspect-square overflow-hidden w-[200px]">
         <Image
           loading="lazy"
-          src={`/images/categories/${category.handle}.png`}
+          src={`/images/categories/${category.handle}.webp`}
           alt={`category - ${category.name}`}
           width={200}
           height={200}

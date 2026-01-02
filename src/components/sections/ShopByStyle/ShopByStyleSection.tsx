@@ -11,8 +11,8 @@ export const styles: Style[] = [
   },
   {
     id: 2,
-    name: "Bed Room",
-    href: "/collections/bed_room",
+    name: "Bedrom",
+    href: "/collections/bedroom",
   },
   {
     id: 3,
@@ -26,8 +26,8 @@ export const styles: Style[] = [
   },
   {
     id: 5,
-    name: "Accessories",
-    href: "/collections/accessories",
+    name: "Bathroom",
+    href: "/collections/bathroom",
   },
 ]
 

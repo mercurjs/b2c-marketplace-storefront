@@ -4,33 +4,33 @@ import { CategoryCard } from "@/components/organisms"
 export const categories: { id: number; name: string; handle: string }[] = [
   {
     id: 1,
-    name: "Seats",
-    handle: "seats",
+    name: "Sofas",
+    handle: "sofa",
   },
   {
     id: 2,
-    name: "Sofas",
-    handle: "sofas",
+    name: "Seats",
+    handle: "seat",
   },
   {
     id: 3,
     name: "Beds",
-    handle: "beds",
+    handle: "bed",
   },
   {
     id: 4,
-    name: "Tables",
-    handle: "tables",
+    name: "Wardrobes",
+    handle: "wardrobe",
   },
   {
     id: 5,
-    name: "Chairs",
-    handle: "chairs",
+    name: "Tables",
+    handle: "table",
   },
   {
     id: 6,
-    name: "Kitchen",
-    handle: "kitchen",
+    name: "Chairs",
+    handle: "chair",
   },
 ]
 

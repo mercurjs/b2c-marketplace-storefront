@@ -15,7 +15,7 @@ export const BannerSection = () => {
               MARKETPLACE WHERE INTERIOR DESIGN MEETS ARIFICAL INTELLIGENCE
             </h2>
             <p className="text-lg text-tertiary max-w-lg">
-              No physical load anymore. Place your furniture virtually in your room, even before buying it.
+              Less risk for buyers. Less transport for sellers. Place your furniture virtually in your room, to see if it fits indeed, before buying it.
             </p>
           </div>
           <LocalizedClientLink href="/collections/boho">
