@@ -1,50 +1,52 @@
-"use client"
-import {
-  FieldError,
-  FieldValues,
-  FormProvider,
-  useForm,
-  useFormContext,
-} from "react-hook-form"
-import { Button } from "@/components/atoms"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { LabeledInput } from "@/components/cells"
-import { loginFormSchema, LoginFormData } from "./schema"
-import { useState } from "react"
-import { login, transferCard } from "@/lib/data/customer"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { toast } from "@/lib/helpers/toast"
+'use client';
+
+import { useState } from 'react';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { FieldError, FieldValues, FormProvider, useForm, useFormContext } from 'react-hook-form';
+
+import { Button } from '@/components/atoms';
+import { Alert } from '@/components/atoms/Alert/Alert';
+import { LabeledInput } from '@/components/cells';
+import { login, transferCard } from '@/lib/data/customer';
+import { toast } from '@/lib/helpers/toast';
+
+import { LoginFormData, loginFormSchema } from './schema';
 
 export const LoginForm = () => {
   const methods = useForm<LoginFormData>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      email: "",
-      password: "",
-    },
-  })
+      email: '',
+      password: ''
+    }
+  });
 
   return (
     <FormProvider {...methods}>
       <Form />
     </FormProvider>
-  )
-}
+  );
+};
 
 const Form = () => {
-  const [isAuthError, setIsAuthError] = useState(false)
+  const [isAuthError, setIsAuthError] = useState(false);
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting },
-  } = useFormContext()
-  const router = useRouter()
+    formState: { errors, isSubmitting }
+  } = useFormContext();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const isSessionExpired = searchParams.get('sessionExpired') === 'true';
+  const isSessionRequired = searchParams.get('sessionRequired') === 'true';
 
   const submit = async (data: FieldValues) => {
-    const formData = new FormData()
-    formData.append("email", data.email)
-    formData.append("password", data.password)
+    const formData = new FormData();
+    formData.append('email', data.email);
+    formData.append('password', data.password);
 
     try {
       await login(formData)
@@ -60,12 +62,31 @@ const Form = () => {
   }
 
   const clearApiError = () => {
-    isAuthError && setIsAuthError(false)
-  }
+    isAuthError && setIsAuthError(false);
+  };
+
+  const getAuthMessage = () => {
+    if (isSessionExpired) {
+      return 'Your session has expired. Please log in to continue.';
+    }
+    if (isSessionRequired) {
+      return 'Please log in to continue.';
+    }
+    return null;
+  };
+
+  const authMessage = getAuthMessage();
 
   return (
     <main className="container">
-      <div className="max-w-xl w-full mx-auto mt-6 space-y-4">
+      <div className="mx-auto mt-6 w-full max-w-xl space-y-4">
+        {authMessage && (
+          <Alert
+            title={authMessage}
+            className="w-full"
+            icon
+          />
+        )}
         <div className="rounded-sm border p-4">
           <h1 className="heading-md uppercase mb-8 text-primary">Log in</h1>
           <form onSubmit={handleSubmit(submit)}>
@@ -95,12 +116,14 @@ const Form = () => {
               />
             </div>
 
-            {/* TODO: Add forgot password link when forgot password page is implemented */}
-            {/* <Link href="/user/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4">
+            <Link href="/user/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4">
               Forgot your password?
-            </Link> */}
+            </Link>
 
-            <Button className="w-full uppercase mt-8" disabled={isSubmitting}>
+            <Button
+              className="mt-8 w-full uppercase"
+              disabled={isSubmitting}
+            >
               Log in
             </Button>
           </form>
@@ -110,7 +133,7 @@ const Form = () => {
           <h2 className="heading-md uppercase mb-4 text-primary">
             Don&apos;t have an account yet?
           </h2>
-          <Link href="/user/register">
+          <Link href="/register">
             <Button
               variant="tonal"
               className="w-full flex justify-center mt-8 uppercase"
@@ -121,5 +144,5 @@ const Form = () => {
         </div>
       </div>
     </main>
-  )
-}
+  );
+};

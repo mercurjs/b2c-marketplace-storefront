@@ -20,13 +20,13 @@ export async function generateMetadata({
 }: {
   params: Promise<{ category: string; locale: string }>
 }): Promise<Metadata> {
-  const { category, locale } = await params
+  const { category: categoryHandle, locale } = await params
   const headersList = await headers()
   const host = headersList.get("host")
   const protocol = headersList.get("x-forwarded-proto") || "https"
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`
 
-  const cat = await getCategoryByHandle([category])
+  const cat = await getCategoryByHandle(categoryHandle)
   if (!cat) {
     return {}
   }
@@ -40,12 +40,12 @@ export async function generateMetadata({
       )
     ) as string[]
     languages = locales.reduce<Record<string, string>>((acc, code) => {
-      acc[toHreflang(code)] = `${baseUrl}/${code}/categories/${cat.handle}`
+      acc[toHreflang(code)] = `${baseUrl}/${code}/categories/${categoryHandle}`
       return acc
     }, {})
   } catch {
     languages = {
-      [toHreflang(locale)]: `${baseUrl}/${locale}/categories/${cat.handle}`,
+      [toHreflang(locale)]: `${baseUrl}/${locale}/categories/${categoryHandle}`,
     }
   }
 
@@ -53,7 +53,7 @@ export async function generateMetadata({
   const description = `${cat.name} Category - ${
     process.env.NEXT_PUBLIC_SITE_NAME || "Storefront"
   }`
-  const canonical = `${baseUrl}/${locale}/categories/${cat.handle}`
+  const canonical = `${baseUrl}/${locale}/categories/${categoryHandle}`
 
   return {
     title,
@@ -62,7 +62,7 @@ export async function generateMetadata({
       canonical,
       languages: {
         ...languages,
-        "x-default": `${baseUrl}/categories/${cat.handle}`,
+        "x-default": `${baseUrl}/categories/${categoryHandle}`,
       },
     },
     robots: { index: true, follow: true },
@@ -87,9 +87,9 @@ async function Category({
     locale: string
   }>
 }) {
-  const { category: handle, locale } = await params
+  const { category: categoryHandle, locale } = await params
 
-  const category = await getCategoryByHandle([handle])
+  const category = await getCategoryByHandle(categoryHandle)
 
   if (!category) {
     return notFound()
@@ -100,8 +100,8 @@ async function Category({
 
   const breadcrumbsItems = [
     {
-      path: category?.handle,
-      label: category?.name,
+      path: categoryHandle,
+      label: category.name,
     },
   ]
 
@@ -139,7 +139,7 @@ async function Category({
                 "@type": "ListItem",
                 position: 1,
                 name: category.name,
-                item: `${baseUrl}/${locale}/categories/${category.handle}`,
+                item: `${baseUrl}/${locale}/categories/${categoryHandle}`,
               },
             ],
           }),
@@ -164,7 +164,7 @@ async function Category({
 
       <Suspense fallback={<ProductListingSkeleton />}>
         {bot || !ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
-          <ProductListing category_id={category.id} showSidebar />
+          <ProductListing category_id={category.id} showSidebar locale={locale} />
         ) : (
           <AlgoliaProductsListing
             category_id={category.id}

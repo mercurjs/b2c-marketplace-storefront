@@ -21,7 +21,7 @@ export default async function Wishlist() {
   const count = wishlist?.[0]?.products?.length || 0
 
   if (!user) {
-    redirect("/user")
+    redirect("/login")
   }
 
   return (

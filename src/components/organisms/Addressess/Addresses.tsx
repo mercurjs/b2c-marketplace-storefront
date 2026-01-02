@@ -136,7 +136,7 @@ export const Addresses = ({
         <Modal
           heading={
             defaultValues?.addressId
-              ? `Edit adddress: ${defaultValues.addressName}`
+              ? `Edit address: ${defaultValues.addressName}`
               : "Add address"
           }
           onClose={() => setShowForm(false)}

@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss"
+import plugin from "tailwindcss/plugin"
 
 export default {
   darkMode: "class",
@@ -107,6 +108,7 @@ export default {
       },
       borderColor: {
         DEFAULT: "rgba(var(--border-primary))",
+        primary: "rgba(var(--border-primary))",
         secondary: "rgba(var(--border-secondary))",
         action: "rgba(var(--border-action))",
         negative: {
@@ -136,5 +138,18 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.scrollbar-hide': {
+          /* Firefox */
+          'scrollbar-width': 'none',
+          /* Safari and Chrome */
+          '&::-webkit-scrollbar': {
+            display: 'none'
+          }
+        }
+      })
+    })
+  ],
 } satisfies Config
