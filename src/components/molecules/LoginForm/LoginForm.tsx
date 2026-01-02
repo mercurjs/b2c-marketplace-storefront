@@ -5,7 +5,13 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { FieldError, FieldValues, FormProvider, useForm, useFormContext } from 'react-hook-form';
+import {
+  FormProvider,
+  useForm,
+  useFormContext,
+  type FieldError,
+  type FieldValues
+} from 'react-hook-form';
 
 import { Button } from '@/components/atoms';
 import { Alert } from '@/components/atoms/Alert/Alert';
@@ -13,7 +19,7 @@ import { LabeledInput } from '@/components/cells';
 import { login, transferCard } from '@/lib/data/customer';
 import { toast } from '@/lib/helpers/toast';
 
-import { LoginFormData, loginFormSchema } from './schema';
+import { loginFormSchema, type LoginFormData } from './schema';
 
 export const LoginForm = () => {
   const methods = useForm<LoginFormData>({
@@ -38,6 +44,7 @@ const Form = () => {
     register,
     formState: { errors, isSubmitting }
   } = useFormContext();
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const isSessionExpired = searchParams.get('sessionExpired') === 'true';
@@ -49,17 +56,17 @@ const Form = () => {
     formData.append('password', data.password);
 
     try {
-      await login(formData)
+      await login(formData);
+
+      router.push('/user');
+      await transferCard();
     } catch (err) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "An error occurred. Please try again."
-      toast.error({ title: message })
+      const message = err instanceof Error ? err.message : 'An error occurred. Please try again.';
+      toast.error({ title: message });
+
+      return;
     }
-    router.push("/user")
-    await transferCard()
-  }
+  };
 
   const clearApiError = () => {
     isAuthError && setIsAuthError(false);
@@ -88,7 +95,7 @@ const Form = () => {
           />
         )}
         <div className="rounded-sm border p-4">
-          <h1 className="heading-md uppercase mb-8 text-primary">Log in</h1>
+          <h1 className="heading-md mb-8 uppercase text-primary">Log in</h1>
           <form onSubmit={handleSubmit(submit)}>
             <div className="space-y-4">
               <LabeledInput
@@ -96,10 +103,10 @@ const Form = () => {
                 placeholder="Your e-mail address"
                 error={
                   (errors.email as FieldError) ||
-                  (isAuthError ? ({ message: "" } as FieldError) : undefined)
+                  (isAuthError ? ({ message: '' } as FieldError) : undefined)
                 }
-                {...register("email", {
-                  onChange: clearApiError,
+                {...register('email', {
+                  onChange: clearApiError
                 })}
               />
               <LabeledInput
@@ -108,15 +115,18 @@ const Form = () => {
                 type="password"
                 error={
                   (errors.password as FieldError) ||
-                  (isAuthError ? ({ message: "" } as FieldError) : undefined)
+                  (isAuthError ? ({ message: '' } as FieldError) : undefined)
                 }
-                {...register("password", {
-                  onChange: clearApiError,
+                {...register('password', {
+                  onChange: clearApiError
                 })}
               />
             </div>
 
-            <Link href="/user/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4">
+            <Link
+              href="/user/forgot-password"
+              className="label-md mt-4 block text-right uppercase text-action-on-secondary"
+            >
               Forgot your password?
             </Link>
 
@@ -130,13 +140,13 @@ const Form = () => {
         </div>
 
         <div className="rounded-sm border p-4">
-          <h2 className="heading-md uppercase mb-4 text-primary">
+          <h2 className="heading-md mb-4 uppercase text-primary">
             Don&apos;t have an account yet?
           </h2>
           <Link href="/register">
             <Button
               variant="tonal"
-              className="w-full flex justify-center mt-8 uppercase"
+              className="mt-8 flex w-full justify-center uppercase"
             >
               Create account
             </Button>
