@@ -40,7 +40,7 @@ export const ProductGalleryAI = ({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        key: "HKMjV22OGh3qjKOT6qM59rX9WEQwsrbikPIEbcV7xuhzb7IReIRZgWLl7BzO",
+        key: process.env.NEXT_PUBLIC_MODELSLAB_KEY,
         base64_string: base64String,
       }),
     });
@@ -64,7 +64,7 @@ export const ProductGalleryAI = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          key: "HKMjV22OGh3qjKOT6qM59rX9WEQwsrbikPIEbcV7xuhzb7IReIRZgWLl7BzO",
+          key: process.env.NEXT_PUBLIC_MODELSLAB_KEY,
         }),
       });
 
@@ -123,7 +123,7 @@ export const ProductGalleryAI = ({
         width: "1024",
         height: "1024",
         model_id: "Interior-Mixer",
-        key: "HKMjV22OGh3qjKOT6qM59rX9WEQwsrbikPIEbcV7xuhzb7IReIRZgWLl7BzO",
+        key: process.env.NEXT_PUBLIC_MODELSLAB_KEY,
       };
 
       setProgress("Submitting generation request...");
