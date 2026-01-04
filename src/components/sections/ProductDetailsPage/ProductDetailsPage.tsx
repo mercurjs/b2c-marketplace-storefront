@@ -33,7 +33,7 @@ export const ProductDetailsPage = async ({
         </div>
       </div>
       <div>
-        <ProductGalleryAI />
+        <ProductGalleryAI images={prod?.images || []} />
       </div>
       <div className="my-8">
         <HomeProductSection

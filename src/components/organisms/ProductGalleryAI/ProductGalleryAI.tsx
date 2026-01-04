@@ -1,8 +1,13 @@
 "use client";
 
+import { HttpTypes } from '@medusajs/types';
 import { useState } from "react";
 
-export const ProductGalleryAI = () => {
+export const ProductGalleryAI = ({
+  images,
+}: {
+  images: HttpTypes.StoreProduct['images'];
+}) => {
   const [file, setFile] = useState<File | undefined>();
   const [preview, setPreview] = useState<string | null>(null);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
@@ -102,11 +107,17 @@ export const ProductGalleryAI = () => {
 
     try {
       setProgress("Converting image to URL...");
-      const objectImageUrl = await convertBase64ToUrl(preview);
+      const initImageUrl = await convertBase64ToUrl(preview);
+      const objectImageUrl = images?.length
+        ? encodeURI(decodeURIComponent(images[0].url || ''))
+        : ''; // Fallback to empty string if no images
+
+      if (!objectImageUrl) {
+        throw new Error("No product image available for processing");
+      }
 
       const requestBody = {
-        init_image:
-          "https://assets.modelslab.com/generations/6840b690-116b-438c-b59c-0e433f19252d.jpg",
+        init_image: initImageUrl,
         object_image: objectImageUrl,
         prompt: "Add the furniture from object image as it is, without changing it's sizes, to the good position in room image",
         width: "1024",
