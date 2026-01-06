@@ -14,8 +14,8 @@ export const ProductGalleryAI = ({
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState<string>("");
   const [promptInput, setPromptInput] = useState<string>("Add the furniture from object image to the good position in room image");
-  const [widthInput, setWidthInput] = useState<number>(512);
-  const [heightInput, setHeightInput] = useState<number>(512);
+  const [widthInput, setWidthInput] = useState<number>(1024);
+  const [heightInput, setHeightInput] = useState<number>(1024);
 
   const endpointUrl = "https://modelslab.com/api/v6/interior/interior_mixer";
 
