@@ -13,6 +13,9 @@ export const ProductGalleryAI = ({
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState<string>("");
+  const [promptInput, setPromptInput] = useState<string>("Add the furniture from object image to the good position in room image");
+  const [widthInput, setWidthInput] = useState<number>(512);
+  const [heightInput, setHeightInput] = useState<number>(512);
 
   const endpointUrl = "https://modelslab.com/api/v6/interior/interior_mixer";
 
@@ -119,9 +122,9 @@ export const ProductGalleryAI = ({
       const requestBody = {
         init_image: initImageUrl,
         object_image: objectImageUrl,
-        prompt: "Add the furniture from object image as it is, without changing it's sizes, to the good position in room image",
-        width: "1024",
-        height: "1024",
+        prompt: promptInput,
+        width: widthInput,
+        height: heightInput,
         model_id: "Interior-Mixer",
         key: process.env.NEXT_PUBLIC_MODELSLAB_KEY,
       };
@@ -182,41 +185,85 @@ export const ProductGalleryAI = ({
     <div style={{ padding: 20 }}>
       <input type="file" name="file" onChange={getFile} accept="image/*" />
 
-      {preview && (
-        <div style={{ marginTop: 20 }}>
-          <h3>Selected Image:</h3>
-          <img
-            src={preview}
-            alt="Selected"
-            style={{ maxWidth: 400, border: "2px solid #ccc" }}
+      <div style={{ marginTop: 20, display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+        <label style={{ paddingTop: 8 }}>Prompt:</label>
+        <textarea
+          value={promptInput}
+          onChange={(e) => setPromptInput(e.target.value)}
+          placeholder="Describe the interior design you want..."
+          rows={2}
+          style={{ width: '25%', padding: 8 }}
+        />
+      </div>
+
+      <div style={{ marginTop: 15 }}>
+        <label style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
+          <input
+            type="range"
+            value={widthInput}
+            onChange={(e) => setWidthInput(Number(e.target.value))}
+            min={256}
+            max={1024}
+            step={64}
+            style={{ width: '25%'}}
           />
-        </div>
-      )}
-
-      <button
-        onClick={makeApiRequest}
-        disabled={isLoading || !preview}
-        style={{ marginTop: 20, padding: "10px 20px", fontSize: 16 }}
-      >
-        {isLoading ? "Processing..." : "Generate Interior"}
-      </button>
-
-      {progress && (
-        <p style={{ marginTop: 10, color: "#666", fontStyle: "italic" }}>
-          {progress}
-        </p>
-      )}
-
-      {generatedImage && (
-        <div style={{ marginTop: 20 }}>
-          <h3>Generated Result:</h3>
-          <img
-            src={generatedImage}
-            alt="Generated interior"
-            style={{ maxWidth: 600, border: "2px solid green" }}
+          <span style={{ marginLeft: 10 }}>Width: {widthInput}px</span>
+        </label>
+        <label style={{ display: 'flex', alignItems: 'center' }}>
+          <input
+            type="range"
+            value={heightInput}
+            onChange={(e) => setHeightInput(Number(e.target.value))}
+            min={256}
+            max={1024}
+            step={64}
+            style={{ width: '25%'}}
           />
+          <span style={{ marginLeft: 10 }}>Height: {heightInput}px</span>
+        </label>
+      </div>
+
+      <div style={{ display: 'flex' }}>
+        <div style={{ width: '50%' }}>
+          {preview && (
+            <div style={{ marginTop: 20 }}>
+              <h3>Selected Image:</h3>
+              <img
+                src={preview}
+                alt="Selected"
+                style={{ maxWidth: 400, border: "2px solid #ccc" }}
+              />
+            </div>
+          )}
+
+          <button
+            onClick={makeApiRequest}
+            disabled={isLoading || !preview}
+            style={{ marginTop: 20, padding: "10px 20px", fontSize: 16 }}
+          >
+            {isLoading ? "Processing..." : "Generate Interior"}
+          </button>
+
+          {progress && (
+            <p style={{ marginTop: 10, color: "#666", fontStyle: "italic" }}>
+              {progress}
+            </p>
+          )}
         </div>
-      )}
+
+        <div style={{ width: '50%' }}>
+          {generatedImage && (
+            <div style={{ marginTop: 20 }}>
+              <h3>Generated Result:</h3>
+              <img
+                src={generatedImage}
+                alt="Generated interior"
+                style={{ maxWidth: 600, border: "2px solid green" }}
+              />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
