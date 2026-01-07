@@ -52,13 +52,13 @@ export default async function UserPage({
   const processedOrders = orderSets.slice(offset, offset + LIMIT)
 
   return (
-    <main className="container">
+    <main className="container" data-testid="orders-page">
       <div className="grid grid-cols-1 md:grid-cols-4 mt-6 gap-5 md:gap-8">
         <UserNavigation />
-        <div className="md:col-span-3 space-y-8">
+        <div className="md:col-span-3 space-y-8" data-testid="orders-container">
           <h1 className="heading-md uppercase">Orders</h1>
           {isEmpty(orders) ? (
-            <div className="text-center">
+            <div className="text-center" data-testid="orders-empty-state">
               <h3 className="heading-lg text-primary uppercase">No orders</h3>
               <p className="text-lg text-secondary mt-2">
                 You haven&apos;t placed any order yet. Once you place an order,
@@ -67,7 +67,7 @@ export default async function UserPage({
             </div>
           ) : (
             <>
-              <div className="w-full max-w-full">
+              <div className="w-full max-w-full" data-testid="orders-list">
                 {processedOrders.map((orderSet) => (
                   <ParcelAccordion
                     key={orderSet.id}

@@ -56,28 +56,29 @@ const Form = () => {
   }
 
   return (
-    <div className="max-w-xl w-full mx-auto mt-6 space-y-4 rounded-sm border p-4">
+    <div className="max-w-xl w-full mx-auto mt-6 space-y-4 rounded-sm border p-4" data-testid="forgot-password-form-container">
       <h1 className="heading-md uppercase my-0 mb-2 text-primary">Forgot your password?</h1>
       <p className="text-md">
-        Enter the email you used to sign up and we’ll send you a password reset
+        Enter the email you used to sign up and we'll send you a password reset
         email.
       </p>
-      <form onSubmit={handleSubmit(submit)}>
+      <form onSubmit={handleSubmit(submit)} data-testid="forgot-password-form">
         <div className="space-y-4">
           <LabeledInput
             label="E-mail"
             placeholder="Your e-mail address"
             error={errors.email as FieldError}
+            data-testid="forgot-password-email-input"
             {...register("email")}
           />
         </div>
 
         <div className="space-y-4 mt-8">
-          <Button className="w-full uppercase" disabled={isSubmitting}>
+          <Button className="w-full uppercase" disabled={isSubmitting} data-testid="forgot-password-submit-button">
             Reset Password
           </Button>
 
-          <Link href="/user" className="flex">
+          <Link href="/user" className="flex" data-testid="forgot-password-back-to-login-link">
             <Button
               variant="tonal"
               className="w-full flex justify-center uppercase"
