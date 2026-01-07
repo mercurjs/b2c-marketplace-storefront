@@ -14,12 +14,12 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
   const pathname = usePathname()
 
   return (
-    <nav className={cn("flex", className)} aria-label="Breadcrumb">
+    <nav className={cn("flex", className)} aria-label="Breadcrumb" data-testid="breadcrumbs">
       <ol className="inline-flex items-center gap-2">
         {items.map(({ path, label }, index) => {
           const isActive = pathname === path
           return (
-            <li key={path} className="inline-flex items-center">
+            <li key={path} className="inline-flex items-center" data-testid={`breadcrumb-item-${index}`}>
               {index > 0 && <ForwardIcon size={16} />}
               <LocalizedClientLink
                 href={path}
@@ -28,6 +28,7 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
                   index > 0 && "ml-2",
                   isActive && "text-secondary"
                 )}
+                data-testid={`breadcrumb-link-${label.toLowerCase().replace(/\s+/g, '-')}`}
               >
                 {label}
               </LocalizedClientLink>
