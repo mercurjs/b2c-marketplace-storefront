@@ -14,8 +14,6 @@ export const ProductGalleryAI = ({
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState<string>("");
   const [promptInput, setPromptInput] = useState<string>("Add the furniture from object image to the good position in room image");
-  const [widthInput, setWidthInput] = useState<number>(1024);
-  const [heightInput, setHeightInput] = useState<number>(1024);
 
   const endpointUrl = "https://modelslab.com/api/v6/interior/interior_mixer";
 
@@ -123,8 +121,8 @@ export const ProductGalleryAI = ({
         init_image: initImageUrl,
         object_image: objectImageUrl,
         prompt: promptInput,
-        width: widthInput,
-        height: heightInput,
+        //width: not wanted,
+        //height: not wanted,
         model_id: "Interior-Mixer",
         key: process.env.NEXT_PUBLIC_MODELSLAB_KEY,
       };
@@ -182,83 +180,78 @@ export const ProductGalleryAI = ({
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <input type="file" name="file" onChange={getFile} accept="image/*" />
+    <div className="p-5">
+      <div id="roomImages" className="flex flex-col md:flex-row">
+        <div id="initRoomImage" className="w-1/2 md:w-full">
+          <div>
+            {preview && (
+              <div className="mt-5">
+                <h3>Selected Image:</h3>
+                <img
+                  src={preview}
+                  alt="Selected"
+                  className="max-w-[400px] border-2 border-gray-300"
+                />
+              </div>
+            )}
 
-      <div style={{ marginTop: 20, display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-        <label style={{ paddingTop: 8 }}>Prompt:</label>
-        <textarea
-          value={promptInput}
-          onChange={(e) => setPromptInput(e.target.value)}
-          placeholder="Describe the interior design you want..."
-          rows={2}
-          style={{ width: '25%', padding: 8 }}
-        />
-      </div>
+            <div className="mt-5">
+              <input 
+                id="browseFile" 
+                type="file" 
+                name="file" 
+                onChange={getFile} 
+                accept="image/*" 
+                className="hidden"
+              />
+              <label 
+                htmlFor="browseFile"
+                className="inline-block px-6 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-semibold rounded-lg cursor-pointer shadow-md hover:shadow-lg hover:from-indigo-600 hover:to-blue-600 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-indigo-300"
+              >
+                📁 Choose Initial Room Image
+              </label>
+              {file && (
+                <span className="ml-3 text-sm text-gray-600">
+                  {file.name}
+                </span>
+              )}
+            </div>
 
-      <div style={{ marginTop: 15 }}>
-        <label style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}>
-          <input
-            type="range"
-            value={widthInput}
-            onChange={(e) => setWidthInput(Number(e.target.value))}
-            min={256}
-            max={1024}
-            step={64}
-            style={{ width: '25%'}}
-          />
-          <span style={{ marginLeft: 10 }}>Width: {widthInput}px</span>
-        </label>
-        <label style={{ display: 'flex', alignItems: 'center' }}>
-          <input
-            type="range"
-            value={heightInput}
-            onChange={(e) => setHeightInput(Number(e.target.value))}
-            min={256}
-            max={1024}
-            step={64}
-            style={{ width: '25%'}}
-          />
-          <span style={{ marginLeft: 10 }}>Height: {heightInput}px</span>
-        </label>
-      </div>
-
-      <div style={{ display: 'flex' }}>
-        <div style={{ width: '50%' }}>
-          {preview && (
-            <div style={{ marginTop: 20 }}>
-              <h3>Selected Image:</h3>
-              <img
-                src={preview}
-                alt="Selected"
-                style={{ maxWidth: 400, border: "2px solid #ccc" }}
+            <div id="prompt" className="mt-5 flex items-start gap-2.5">
+              <label className="pt-2">Prompt:</label>
+              <textarea
+                className="w-full md:w-1/2"
+                value={promptInput}
+                onChange={(e) => setPromptInput(e.target.value)}
+                placeholder="Describe the interior design you want..."
+                rows={2}
               />
             </div>
-          )}
 
-          <button
-            onClick={makeApiRequest}
-            disabled={isLoading || !preview}
-            style={{ marginTop: 20, padding: "10px 20px", fontSize: 16 }}
-          >
-            {isLoading ? "Processing..." : "Generate Interior"}
-          </button>
+            <button id="buttonGenerate"
+              onClick={makeApiRequest}
+              disabled={isLoading || !preview}
+              className="mt-5 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-300"
+            >
+              {isLoading ? "Processing..." : "Generate New Interior Image"}
+            </button>
 
-          {progress && (
-            <p style={{ marginTop: 10, color: "#666", fontStyle: "italic" }}>
-              {progress}
-            </p>
-          )}
+            {progress && (
+              <p className="mt-2.5 text-gray-600 italic">
+                {progress}
+              </p>
+            )}
+          </div>
         </div>
 
-        <div style={{ width: '50%' }}>
+        <div id="newRoomImage" className="w-1/2 md:w-full">
           {generatedImage && (
-            <div style={{ marginTop: 20 }}>
+            <div className="mt-5">
               <h3>Generated Result:</h3>
               <img
                 src={generatedImage}
                 alt="Generated interior"
-                style={{ maxWidth: 600, border: "2px solid green" }}
+                className="max-w-[600px] border-2 border-green-500"
               />
             </div>
           )}
