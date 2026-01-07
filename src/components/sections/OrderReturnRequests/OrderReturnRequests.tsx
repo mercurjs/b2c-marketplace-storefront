@@ -26,7 +26,7 @@ export const OrderReturnRequests = ({
 
   if (isEmpty(processedReturns)) {
     return (
-      <div className="mt-8">
+      <div className="mt-8" data-testid="order-return-requests-empty-state">
         <Heading level="h2" className="uppercase text-center heading-lg">
           No returns
         </Heading>

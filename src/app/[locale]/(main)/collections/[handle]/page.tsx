@@ -39,7 +39,7 @@ const SingleCollectionsPage = async ({
 
       <h1 className="heading-xl uppercase">{collection.title}</h1>
 
-      <Suspense fallback={<ProductListingSkeleton />}>
+      <Suspense fallback={<div data-testid="collection-page-loading"><ProductListingSkeleton /></div>}>
         {bot || !ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
           <ProductListing collection_id={collection.id} showSidebar />
         ) : (

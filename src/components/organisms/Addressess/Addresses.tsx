@@ -66,7 +66,7 @@ export const Addresses = ({
       >
         <h1 className="heading-md uppercase">Addresses</h1>
         {isEmpty(user.addresses) ? (
-          <div className="text-center">
+          <div className="text-center" data-testid="addresses-empty-state">
             <h3 className="heading-lg text-primary uppercase">
               No saved shipping addresses
             </h3>

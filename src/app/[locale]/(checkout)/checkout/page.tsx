@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 export default async function CheckoutPage({}) {
   return (
     <Suspense
-      fallback={<div className="container flex items-center justify-center">Loading...</div>}
+      fallback={<div className="container flex items-center justify-center" data-testid="checkout-page-loading">Loading...</div>}
     >
       <CheckoutPageContent />
     </Suspense>

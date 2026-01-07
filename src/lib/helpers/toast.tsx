@@ -6,6 +6,7 @@ export const toast = {
     sonnerToast.info(title, {
       className: "bg-blue-100 text-blue-900",
       description,
+      "data-testid": "toast-info",
     })
   },
   success: ({
@@ -24,6 +25,7 @@ export const toast = {
         toast: "items-start gap-3",
         title: "text-md text-primary",
       },
+      "data-testid": "toast-success",
     })
   },
   error: ({ description, title }: { description?: string; title: string }) => {
@@ -34,7 +36,8 @@ export const toast = {
         icon: "self-start pt-2",
         toast: "items-start gap-3",
         title: "text-md text-primary"
-      }
+      },
+      "data-testid": "toast-error",
     })
   },
 }
