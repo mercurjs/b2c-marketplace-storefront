@@ -1,87 +1,99 @@
-"use client"
-import {
-  FieldError,
-  FormProvider,
-  useForm,
-  useFormContext,
-} from "react-hook-form"
-import { Button } from "@/components/atoms"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { LabeledInput } from "@/components/cells"
-import { forgotPasswordSchema, ForgotPasswordFormData } from "./schema"
-import { useState } from "react"
-import { sendResetPasswordEmail } from "@/lib/data/customer"
-import { toast } from "@/lib/helpers/toast"
-import Link from "next/link"
-import { FetchError } from "@medusajs/js-sdk"
+'use client';
+
+import { useState } from 'react';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FetchError } from '@medusajs/js-sdk';
+import Link from 'next/link';
+import { FieldError, FormProvider, useForm, useFormContext } from 'react-hook-form';
+
+import { Button } from '@/components/atoms';
+import { LabeledInput } from '@/components/cells';
+import { sendResetPasswordEmail } from '@/lib/data/customer';
+import { toast } from '@/lib/helpers/toast';
+
+import { ForgotPasswordFormData, forgotPasswordSchema } from './schema';
 
 export const ForgotPasswordForm = () => {
   const methods = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
-      email: "",
-    },
-  })
+      email: ''
+    }
+  });
 
   return (
     <FormProvider {...methods}>
       <Form />
     </FormProvider>
-  )
-}
+  );
+};
 
 const Form = () => {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-    reset,
-  } = useFormContext<ForgotPasswordFormData>()
+    reset
+  } = useFormContext<ForgotPasswordFormData>();
 
   const submit = async (data: ForgotPasswordFormData) => {
-    if (!data.email) return
+    if (!data.email) return;
 
-    const result = await sendResetPasswordEmail(data.email)
+    const result = await sendResetPasswordEmail(data.email);
 
     if (!result.success) {
-      toast.error({ title: result.error || "An error occurred. Please try again." })
-      return
+      toast.error({ title: result.error || 'An error occurred. Please try again.' });
+      return;
     }
 
-    reset({ email: "" })
+    reset({ email: '' });
 
     toast.success({
-      title: `A password reset has been requested for ${data.email}. Check your inbox and spam folder. Remember, the link is only active for one hour.`,
-    })
-  }
+      title: `A password reset has been requested for ${data.email}. Check your inbox and spam folder. Remember, the link is only active for one hour.`
+    });
+  };
 
   return (
-    <div className="max-w-xl w-full mx-auto mt-6 space-y-4 rounded-sm border p-4" data-testid="forgot-password-form-container">
-      <h1 className="heading-md uppercase my-0 mb-2 text-primary">Forgot your password?</h1>
+    <div
+      className="mx-auto mt-6 w-full max-w-xl space-y-4 rounded-sm border p-4"
+      data-testid="forgot-password-form-container"
+    >
+      <h1 className="heading-md my-0 mb-2 uppercase text-primary">Forgot your password?</h1>
       <p className="text-md">
-        Enter the email you used to sign up and we'll send you a password reset
-        email.
+        Enter the email you used to sign up and we&#39;ll send you a password reset email. email.
       </p>
-      <form onSubmit={handleSubmit(submit)} data-testid="forgot-password-form">
+      <form
+        onSubmit={handleSubmit(submit)}
+        data-testid="forgot-password-form"
+      >
         <div className="space-y-4">
           <LabeledInput
             label="E-mail"
             placeholder="Your e-mail address"
             error={errors.email as FieldError}
             data-testid="forgot-password-email-input"
-            {...register("email")}
+            {...register('email')}
           />
         </div>
 
-        <div className="space-y-4 mt-8">
-          <Button className="w-full uppercase" disabled={isSubmitting} data-testid="forgot-password-submit-button">
+        <div className="mt-8 space-y-4">
+          <Button
+            className="w-full uppercase"
+            disabled={isSubmitting}
+            data-testid="forgot-password-submit-button"
+          >
             Reset Password
           </Button>
 
-          <Link href="/user" className="flex" data-testid="forgot-password-back-to-login-link">
+          <Link
+            href="/user"
+            className="flex"
+            data-testid="forgot-password-back-to-login-link"
+          >
             <Button
               variant="tonal"
-              className="w-full flex justify-center uppercase"
+              className="flex w-full justify-center uppercase"
             >
               Back to log in
             </Button>
@@ -89,5 +101,5 @@ const Form = () => {
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
