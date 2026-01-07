@@ -14,7 +14,7 @@ export const CartItems = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
   if (!Object.keys(groupedItems).length) return <EmptyCart />
 
   return Object.keys(groupedItems).map((key) => (
-    <div key={key} className="mb-4">
+    <div key={key} className="mb-4" data-testid={`cart-items-seller-${key}`}>
       <CartItemsHeader seller={groupedItems[key]?.seller} />
       <CartItemsProducts
         products={groupedItems[key].items || []}

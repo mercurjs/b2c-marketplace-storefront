@@ -53,18 +53,19 @@ export default function CartPromotionCode({
   }
 
   return (
-    <div>
+    <div data-testid="cart-promo-code">
       <Heading
         level="h2"
         className="flex flex-row text-3xl-regular gap-x-2 items-baseline items-center"
       >
         Promotion code
       </Heading>
-      <div>
+      <div data-testid="cart-promo-code-applied-list">
         {cart?.promotions?.map((promo) => (
           <div
             key={promo.id}
             className="mb-4 flex flex-row gap-x-2 items-center"
+            data-testid={`cart-promo-code-applied-${promo.code}`}
           >
             <Label className="text-md">{promo.code}</Label>
           </div>
@@ -79,6 +80,7 @@ export default function CartPromotionCode({
         }}
         onKeyDown={handleKeyDown}
         error={hasError}
+        data-testid="cart-promo-code-input"
       />
       <div className="flex justify-end">
         <Button
@@ -87,6 +89,7 @@ export default function CartPromotionCode({
           disabled={isLoading || !promotionCode}
           loading={isLoading}
           variant="tonal"
+          data-testid="cart-promo-code-apply-button"
         >
           Use promotion code
         </Button>

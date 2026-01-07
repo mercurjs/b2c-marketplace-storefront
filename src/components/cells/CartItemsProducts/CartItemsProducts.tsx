@@ -31,9 +31,9 @@ export const CartItemsProducts = ({
         })
 
         return (
-          <div key={product.id} className="border rounded-sm p-1 flex gap-2">
+          <div key={product.id} className="border rounded-sm p-1 flex gap-2" data-testid={`cart-item-${product.id}`}>
             <LocalizedClientLink href={`/products/${product.product_handle}`}>
-              <div className="w-[100px] h-[132px] flex items-center justify-center">
+              <div className="w-[100px] h-[132px] flex items-center justify-center" data-testid="cart-item-image">
                 {product.thumbnail ? (
                   <Image
                     src={decodeURIComponent(product.thumbnail)}
@@ -60,7 +60,7 @@ export const CartItemsProducts = ({
                   href={`/products/${product.product_handle}`}
                 >
                   <div className="w-[100px] md:w-[200px] lg:w-[280px] mb-4 lg:mb-0">
-                    <h3 className="heading-xs uppercase truncate">
+                    <h3 className="heading-xs uppercase truncate" data-testid="cart-item-title">
                       {product.product_title}
                       {product.subtitle && ` - ${product.subtitle}`}
                     </h3>
@@ -73,7 +73,7 @@ export const CartItemsProducts = ({
                 )}
               </div>
               <div className="lg:flex justify-between -mt-4 lg:mt-0">
-                <div className="label-md text-secondary">
+                <div className="label-md text-secondary" data-testid="cart-item-details">
                   {options?.map(({ option, id, value }) => (
                     <p key={id}>
                       {option?.title}:{" "}
@@ -93,7 +93,7 @@ export const CartItemsProducts = ({
                   )}
                 </div>
                 <div className="lg:text-right flex lg:block items-center gap-2 mt-4 lg:mt-0">
-                  <p className="label-lg">{total}</p>
+                  <p className="label-lg" data-testid="cart-item-price">{total}</p>
                 </div>
               </div>
             </div>

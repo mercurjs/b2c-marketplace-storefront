@@ -121,7 +121,7 @@ const CartPaymentSection = ({
     !isOpen && !!cart?.payment_collection?.payment_sessions?.length
 
   return (
-    <div className="border p-4 rounded-sm bg-ui-bg-interactive">
+    <div className="border p-4 rounded-sm bg-ui-bg-interactive" data-testid="checkout-step-payment">
       <div className="flex flex-row items-center justify-between mb-6">
         <Heading
           level="h2"
@@ -132,7 +132,7 @@ const CartPaymentSection = ({
         </Heading>
         {isEditEnabled && (
           <Text>
-            <Button onClick={handleEdit} variant="tonal">
+            <Button onClick={handleEdit} variant="tonal" data-testid="checkout-payment-edit-button">
               Edit
             </Button>
           </Text>

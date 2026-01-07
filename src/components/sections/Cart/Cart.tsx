@@ -15,15 +15,15 @@ export const Cart = () => {
 
   return (
     <>
-      <div className="col-span-12 lg:col-span-6">
+      <div className="col-span-12 lg:col-span-6" data-testid="cart-items-container">
         <CartItems cart={cart} />
       </div>
       <div className="lg:col-span-2"></div>
       <div className="col-span-12 lg:col-span-4">
-        <div className="w-full mb-6 border rounded-sm p-4">
+        <div className="w-full mb-6 border rounded-sm p-4" data-testid="cart-promo-code-container">
           <CartPromotionCode cart={cart} />
         </div>
-        <div className="border rounded-sm p-4 h-fit">
+        <div className="border rounded-sm p-4 h-fit" data-testid="cart-summary-container">
           <CartSummary
             item_total={cart?.item_subtotal || 0}
             shipping_total={cart?.shipping_subtotal || 0}
@@ -33,7 +33,7 @@ export const Cart = () => {
             discount_total={cart?.discount_subtotal || 0}
           />
           <LocalizedClientLink href="/checkout?step=address">
-            <Button className="w-full py-3 flex justify-center items-center">
+            <Button className="w-full py-3 flex justify-center items-center" data-testid="cart-go-to-checkout-button">
               Go to checkout
             </Button>
           </LocalizedClientLink>
