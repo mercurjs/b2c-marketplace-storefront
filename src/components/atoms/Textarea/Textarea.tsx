@@ -7,6 +7,7 @@ interface TextAreaProps
   icon?: React.ReactNode;
   clearable?: boolean;
   error?: boolean;
+  "data-testid"?: string;
 }
 
 export function Textarea({
@@ -14,6 +15,7 @@ export function Textarea({
   clearable,
   className,
   error,
+  "data-testid": dataTestId,
   ...props
 }: TextAreaProps) {
   let paddingY = '';
@@ -29,7 +31,7 @@ export function Textarea({
   return (
     <div className='relative w-full'>
       {icon && (
-        <span className='absolute top-[16px] left-[16px]'>
+        <span className='absolute top-[16px] left-[16px]' data-testid={dataTestId ? `${dataTestId}-icon` : 'textarea-icon'}>
           {icon}
         </span>
       )}
@@ -44,6 +46,7 @@ export function Textarea({
         )}
         value={props.value}
         onChange={(e) => changeHandler(e)}
+        data-testid={dataTestId ?? 'textarea'}
         {...props}
       />
     </div>

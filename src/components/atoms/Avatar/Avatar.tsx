@@ -8,6 +8,7 @@ interface AvatarProps {
   initials?: string
   size?: "small" | "large"
   className?: string
+  "data-testid"?: string
 }
 
 export function Avatar({
@@ -16,6 +17,7 @@ export function Avatar({
   initials,
   size = "small",
   className,
+  "data-testid": dataTestId,
 }: AvatarProps) {
   const baseClasses =
     "inline-flex items-center justify-center rounded-sm text-primary font-medium border"
@@ -37,12 +39,16 @@ export function Avatar({
           "object-cover",
           className
         )}
+      data-testid={dataTestId ?? 'avatar'}
       />
     )
   }
 
   return (
-    <div className={cn(baseClasses, sizeClasses[size], className)}>
+    <div
+      className={cn(baseClasses, sizeClasses[size], className)}
+      data-testid={dataTestId ?? 'avatar'}
+    >
       {initials || <ProfileIcon />}
     </div>
   )

@@ -8,6 +8,7 @@ interface IconButtonProps
   variant?: 'filled' | 'tonal' | 'icon';
   size?: 'small' | 'large';
   loading?: boolean;
+  "data-testid"?: string;
 }
 
 export function IconButton({
@@ -16,6 +17,7 @@ export function IconButton({
   size = 'small',
   loading = false,
   className,
+  "data-testid": dataTestId,
   ...props
 }: IconButtonProps) {
   const variantClasses = {
@@ -37,6 +39,7 @@ export function IconButton({
         'flex items-center justify-center rounded-sm transition-all duration-300 ease-out',
         className
       )}
+      data-testid={dataTestId ?? 'icon-button'}
       {...props}
     >
       {loading ? <LoaderIcon /> : icon}
