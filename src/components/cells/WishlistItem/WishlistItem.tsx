@@ -6,23 +6,25 @@ import { Wishlist } from "@/types/wishlist"
 import { convertToLocale } from "@/lib/helpers/money"
 import { Button } from "@/components/atoms"
 import clsx from "clsx"
+import { getProductPrice } from "@/lib/helpers/get-product-price"
 
 export const WishlistItem = ({
   product,
   wishlist,
-  user,
+  user
 }: {
   product: HttpTypes.StoreProduct & {
-    calculated_amount: number
-    currency_code: string
-  }
-  wishlist: Wishlist[]
-  user?: HttpTypes.StoreCustomer | null
+    calculated_amount: number;
+    currency_code: string;
+  };
+  wishlist: Wishlist;
+  user?: HttpTypes.StoreCustomer | null;
 }) => {
+  const { cheapestPrice } = getProductPrice({ product });
   const price = convertToLocale({
-    amount: product.calculated_amount,
-    currency_code: product.currency_code,
-  })
+    amount: cheapestPrice?.calculated_price_number,
+    currency_code: cheapestPrice?.currency_code
+  });
 
   return (
     <div
