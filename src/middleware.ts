@@ -1,7 +1,6 @@
 import { HttpTypes } from '@medusajs/types';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { PROTECTED_ROUTES } from './lib/constants';
 import { isTokenExpired } from './lib/helpers/token';
 
 const BACKEND_URL = process.env.MEDUSA_BACKEND_URL;
@@ -122,11 +121,14 @@ export async function middleware(request: NextRequest) {
   const urlSegment = pathname.split('/')[1];
   const looksLikeLocale = /^[a-z]{2}$/i.test(urlSegment || '');
 
-  const pathnameWithoutLocale = looksLikeLocale ? pathname.replace(/^\/[^/]+/, '') : pathname;
+  const pathnameWithoutLocale = looksLikeLocale ? pathname.replace(/^\/[^/]+/, '') || '/' : pathname;
 
-  const isProtectedRoute = PROTECTED_ROUTES.some(route => pathnameWithoutLocale.startsWith(route));
+  // Define routes that don't require authentication
+  const publicRoutes = ['/login', '/register', '/reset-password'];
+  const isPublicRoute = publicRoutes.some(route => pathnameWithoutLocale.startsWith(route));
 
-  if (isProtectedRoute) {
+  // Protect all routes except public ones
+  if (!isPublicRoute) {
     const jwtCookie = request.cookies.get('_medusa_jwt');
     const token = jwtCookie?.value;
 
@@ -141,11 +143,6 @@ export async function middleware(request: NextRequest) {
     if (token && isTokenExpired(token)) {
       return makeAuthRedirect(request, locale, 'sessionExpired');
     }
-  }
-
-  // Fast path: URL already has a locale segment and cache cookie exists
-  if (looksLikeLocale && cacheIdCookie) {
-    return NextResponse.next();
   }
 
   let response = NextResponse.next();
