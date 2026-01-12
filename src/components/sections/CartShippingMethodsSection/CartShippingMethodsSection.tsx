@@ -164,8 +164,8 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
   };
   const isEditEnabled = !isOpen && !!cart?.shipping_methods?.length;
 
-  const filteredGroupedBySellerId = Object.keys(groupedBySellerId).filter(
-    key => groupedBySellerId[key]?.[0]?.seller_name
+  const filteredGroupedBySellerId = Object.keys(groupedBySellerId || {}).filter(
+    key => groupedBySellerId?.[key]?.[0]?.seller_name
   );
 
   return (
