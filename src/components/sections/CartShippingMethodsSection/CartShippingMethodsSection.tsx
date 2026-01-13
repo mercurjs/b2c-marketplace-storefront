@@ -1,232 +1,189 @@
-"use client"
+'use client';
 
-import ErrorMessage from "@/components/molecules/ErrorMessage/ErrorMessage"
-import { setShippingMethod } from "@/lib/data/cart"
-import { calculatePriceForShippingOption } from "@/lib/data/fulfillment"
-import { convertToLocale } from "@/lib/helpers/money"
-import { CheckCircleSolid, ChevronUpDown, Loader } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
-import { clx, Heading, Text } from "@medusajs/ui"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { Fragment, useEffect, useState } from "react"
-import { Button } from "@/components/atoms"
-import { CartShippingMethodRow } from "./CartShippingMethodRow"
-import { Listbox, Transition } from "@headlessui/react"
-import clsx from "clsx"
+import { Fragment, useEffect, useState, useTransition, type FC } from 'react';
+
+import { Listbox, Transition } from '@headlessui/react';
+import { CheckCircleSolid, ChevronUpDown, Loader } from '@medusajs/icons';
+import type { HttpTypes } from '@medusajs/types';
+import { clx, Heading, Text } from '@medusajs/ui';
+import clsx from 'clsx';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
+import { Button } from '@/components/atoms';
+import ErrorMessage from '@/components/molecules/ErrorMessage/ErrorMessage';
+import { removeShippingMethod, setShippingMethod } from '@/lib/data/cart';
+import { calculatePriceForShippingOption } from '@/lib/data/fulfillment';
+import { convertToLocale } from '@/lib/helpers/money';
+
+import { CartShippingMethodRow } from './CartShippingMethodRow';
 
 // Extended cart item product type to include seller
 type ExtendedStoreProduct = HttpTypes.StoreProduct & {
   seller?: {
-    id: string
-    name: string
-  }
-}
+    id: string;
+    name: string;
+  };
+};
 
 // Cart item type definition
 type CartItem = {
-  product?: ExtendedStoreProduct
+  product?: ExtendedStoreProduct;
   // Include other cart item properties as needed
-}
+};
 
 export type StoreCardShippingMethod = HttpTypes.StoreCartShippingOption & {
-  seller_id?: string
+  seller_id?: string;
   service_zone?: {
     fulfillment_set: {
-      type: string
-    }
-  }
-}
+      type: string;
+    };
+  };
+};
 
 type ShippingProps = {
-  cart: Omit<HttpTypes.StoreCart, "items"> & {
-    items?: CartItem[]
-  }
+  cart: Omit<HttpTypes.StoreCart, 'items'> & {
+    items?: CartItem[];
+  };
   availableShippingMethods:
     | (StoreCardShippingMethod &
         {
-          rules: any
-          seller_id: string
-          price_type: string
-          id: string
-          amount?: number
+          rules: any;
+          seller_id: string;
+          price_type: string;
+          id: string;
+          amount?: number;
         }[])
-    | null
-}
+    | null;
+};
 
-const CartShippingMethodsSection: React.FC<ShippingProps> = ({
-  cart,
-  availableShippingMethods,
-}) => {
-  const [isLoadingPrices, setIsLoadingPrices] = useState(false)
-  const [calculatedPricesMap, setCalculatedPricesMap] = useState<
-    Record<string, number>
-  >({})
-  const [error, setError] = useState<string | null>(null)
-  const [missingModal, setMissingModal] = useState(false)
-  const [missingShippingSellers, setMissingShippingSellers] = useState<
-    string[]
-  >([])
+const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShippingMethods }) => {
+  const [isLoadingPrices, setIsLoadingPrices] = useState(false);
+  const [calculatedPricesMap, setCalculatedPricesMap] = useState<Record<string, number>>({});
+  const [error, setError] = useState<string | null>(null);
+  const [isPendingDeleteRow, startTransitionDeleteRow] = useTransition();
 
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const isOpen = searchParams.get("step") === "delivery"
+  const isOpen = searchParams.get('step') === 'delivery';
 
   const _shippingMethods = availableShippingMethods?.filter(
-    (sm) =>
-      sm.rules?.find((rule: any) => rule.attribute === "is_return")?.value !==
-      "true"
-  )
+    sm => sm.rules?.find((rule: any) => rule.attribute === 'is_return')?.value !== 'true'
+  );
 
   useEffect(() => {
-    const set = new Set<string>()
-    cart.items?.forEach((item) => {
+    const set = new Set<string>();
+    cart.items?.forEach(item => {
       if (item?.product?.seller?.id) {
-        set.add(item.product.seller.id)
+        set.add(item.product.seller.id);
       }
-    })
-
-    const sellerMethods = _shippingMethods?.map(({ seller_id }) => seller_id)
-
-    const missingSellerIds = [...set].filter(
-      (sellerId) => !sellerMethods?.includes(sellerId)
-    )
-
-    setMissingShippingSellers(Array.from(missingSellerIds))
-
-    if (missingSellerIds.length > 0 && !cart.shipping_methods?.length) {
-      setMissingModal(true)
-    }
-  }, [cart])
+    });
+  }, [cart]);
 
   useEffect(() => {
     if (_shippingMethods?.length) {
       const promises = _shippingMethods
-        .filter((sm) => sm.price_type === "calculated")
-        .map((sm) => calculatePriceForShippingOption(sm.id, cart.id))
+        .filter(sm => sm.price_type === 'calculated')
+        .map(sm => calculatePriceForShippingOption(sm.id, cart.id));
 
       if (promises.length) {
-        Promise.allSettled(promises).then((res) => {
-          const pricesMap: Record<string, number> = {}
+        Promise.allSettled(promises).then(res => {
+          const pricesMap: Record<string, number> = {};
           res
-            .filter((r) => r.status === "fulfilled")
-            .forEach((p) => (pricesMap[p.value?.id || ""] = p.value?.amount!))
+            .filter(r => r.status === 'fulfilled')
+            .forEach(p => (pricesMap[p.value?.id || ''] = p.value?.amount!));
 
-          setCalculatedPricesMap(pricesMap)
-          setIsLoadingPrices(false)
-        })
+          setCalculatedPricesMap(pricesMap);
+          setIsLoadingPrices(false);
+        });
       }
     }
-  }, [availableShippingMethods])
+  }, [availableShippingMethods, _shippingMethods, cart.id]);
 
   const handleSubmit = () => {
-    router.push(pathname + "?step=payment", { scroll: false })
-  }
+    router.push(pathname + '?step=payment', { scroll: false });
+  };
 
   const handleSetShippingMethod = async (id: string | null) => {
     if (!id) {
-      return
+      return;
     }
 
     try {
-      setError(null)
-      setIsLoadingPrices(true)
+      setError(null);
+      setIsLoadingPrices(true);
       const res = await setShippingMethod({
         cartId: cart.id,
-        shippingMethodId: id,
-      })
+        shippingMethodId: id
+      });
       if (!res.ok) {
-        return setError(res.error?.message)
+        return setError(res.error?.message);
       }
     } catch (error: any) {
       setError(
-        error?.message?.replace("Error setting up the request: ", "") ||
-          "An error occurred"
-      )
+        error?.message?.replace('Error setting up the request: ', '') || 'An error occurred'
+      );
     } finally {
-      setIsLoadingPrices(false)
+      setIsLoadingPrices(false);
+      router.refresh();
     }
-  }
+  };
+
+  const handleRemoveShippingMethod = (methodId: string) => {
+    startTransitionDeleteRow(async () => {
+      await removeShippingMethod(methodId);
+    });
+    router.refresh();
+  };
 
   useEffect(() => {
-    setError(null)
-  }, [isOpen])
+    setError(null);
+  }, [isOpen]);
 
   const groupedBySellerId = _shippingMethods?.reduce((acc: any, method) => {
-    const sellerId = method.seller_id!
+    const sellerId = method.seller_id!;
 
     if (!acc[sellerId]) {
-      acc[sellerId] = []
+      acc[sellerId] = [];
     }
 
     const amount = Number(
-      method.price_type === "flat"
-        ? method.amount
-        : calculatedPricesMap[method.id]
-    )
+      method.price_type === 'flat' ? method.amount : calculatedPricesMap[method.id]
+    );
 
     if (!isNaN(amount)) {
-      acc[sellerId]?.push(method)
+      acc[sellerId]?.push(method);
     }
 
-    return acc
-  }, {})
+    return acc;
+  }, {});
 
   const handleEdit = () => {
-    router.replace(pathname + "?step=delivery")
-  }
+    router.replace(pathname + '?step=delivery');
+  };
+  const isEditEnabled = !isOpen && !!cart?.shipping_methods?.length;
 
-  const missingSellers = cart.items
-    ?.filter((item) =>
-      missingShippingSellers.includes(item.product?.seller?.id!)
-    )
-    .map((item) => item.product?.seller?.name)
-
-  const isEditEnabled = !isOpen && !!cart?.shipping_methods?.length
+  const filteredGroupedBySellerId = Object.keys(groupedBySellerId || {}).filter(
+    key => groupedBySellerId?.[key]?.[0]?.seller_name
+  );
 
   return (
-    <div className="border p-4 rounded-sm bg-ui-bg-interactive">
-      {/* {missingModal && (
-        <Modal
-          heading="Missing seller shipping option"
-          onClose={() => router.push(`/${pathname.split("/")[1]}/cart`)}
-        >
-          <div className="p-4">
-            <h2 className="heading-sm">
-              Some of the sellers in your cart do not have shipping options.
-            </h2>
-
-            <p className="text-md mt-3">
-              Please remove the{" "}
-              <span className="font-bold">
-                {missingSellers?.map(
-                  (seller, index) =>
-                    `${seller}${
-                      index === missingSellers.length - 1 ? " " : ", "
-                    }`
-                )}
-              </span>{" "}
-              items or contact{" "}
-              {missingSellers && missingSellers?.length > 1 ? "them" : "him"} to
-              get the shipping options.
-            </p>
-          </div>
-        </Modal>
-      )} */}
-      <div className="flex flex-row items-center justify-between mb-6">
+    <div className="bg-ui-bg-interactive rounded-sm border p-4">
+      <div className="mb-6 flex flex-row items-center justify-between">
         <Heading
           level="h2"
-          className="flex flex-row text-3xl-regular gap-x-2 items-baseline items-center"
+          className="text-3xl-regular flex flex-row items-baseline gap-x-2"
         >
-          {!isOpen && (cart.shipping_methods?.length ?? 0) > 0 && (
-            <CheckCircleSolid />
-          )}
+          {!isOpen && (cart.shipping_methods?.length ?? 0) > 0 && <CheckCircleSolid />}
           Delivery
         </Heading>
         {isEditEnabled && (
           <Text>
-            <Button onClick={handleEdit} variant="tonal">
+            <Button
+              onClick={handleEdit}
+              variant="tonal"
+            >
               Edit
             </Button>
           </Text>
@@ -236,92 +193,92 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
         <>
           <div className="grid">
             <div data-testid="delivery-options-container">
-              <div className="pb-8 md:pt-0 pt-2">
-                {Object.keys(groupedBySellerId).map((key) => {
-                  return (
-                    <div key={key} className="mb-4">
-                      <Heading level="h3" className="mb-2">
-                        {groupedBySellerId[key][0].seller_name}
-                      </Heading>
-                      <Listbox
-                        value={cart.shipping_methods?.[0]?.id}
-                        onChange={(value) => {
-                          handleSetShippingMethod(value)
-                        }}
+              <div className="pb-8 pt-2 md:pt-0">
+                {filteredGroupedBySellerId.length === 0
+                  ? 'No shipping options available'
+                  : filteredGroupedBySellerId.map(key => (
+                      <div
+                        key={key}
+                        className="mb-4"
                       >
-                        <div className="relative">
-                          <Listbox.Button
-                            className={clsx(
-                              "relative w-full flex justify-between items-center px-4 h-12 bg-component-secondary text-left  cursor-default focus:outline-none border rounded-lg focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-gray-300 focus-visible:ring-offset-2 focus-visible:border-gray-300 text-base-regular"
-                            )}
-                          >
-                            {({ open }) => (
-                              <>
-                                <span className="block truncate">
-                                  Choose delivery option
-                                </span>
-                                <ChevronUpDown
-                                  className={clx(
-                                    "transition-rotate duration-200",
-                                    {
-                                      "transform rotate-180": open,
-                                    }
-                                  )}
-                                />
-                              </>
-                            )}
-                          </Listbox.Button>
-                          <Transition
-                            as={Fragment}
-                            leave="transition ease-in duration-100"
-                            leaveFrom="opacity-100"
-                            leaveTo="opacity-0"
-                          >
-                            <Listbox.Options
-                              className="absolute z-20 w-full overflow-auto text-small-regular bg-white border rounded-lg border-top-0 max-h-60 focus:outline-none sm:text-sm"
-                              data-testid="shipping-address-options"
+                        <Heading
+                          level="h3"
+                          className="mb-2"
+                        >
+                          {groupedBySellerId[key][0].seller_name}
+                        </Heading>
+                        <Listbox
+                          value={cart.shipping_methods?.[0]?.id}
+                          onChange={value => {
+                            handleSetShippingMethod(value);
+                          }}
+                        >
+                          <div className="relative">
+                            <Listbox.Button
+                              className={clsx(
+                                'text-base-regular relative flex h-12 w-full cursor-default items-center justify-between rounded-lg border bg-component-secondary px-4 text-left focus:outline-none focus-visible:border-gray-300 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300'
+                              )}
                             >
-                              {groupedBySellerId[key].map((option: any) => {
-                                return (
+                              {({ open }) => (
+                                <>
+                                  <span className="block truncate">Choose delivery option</span>
+                                  <ChevronUpDown
+                                    className={clx('transition-rotate duration-200', {
+                                      'rotate-180 transform': open
+                                    })}
+                                  />
+                                </>
+                              )}
+                            </Listbox.Button>
+                            <Transition
+                              as={Fragment}
+                              leave="transition ease-in duration-100"
+                              leaveFrom="opacity-100"
+                              leaveTo="opacity-0"
+                            >
+                              <Listbox.Options
+                                className="text-small-regular border-top-0 absolute z-20 max-h-60 w-full overflow-auto rounded-lg border bg-white focus:outline-none sm:text-sm"
+                                data-testid="shipping-address-options"
+                              >
+                                {groupedBySellerId[key].map((option: any) => (
                                   <Listbox.Option
-                                    className="cursor-pointer select-none relative pl-6 pr-10 hover:bg-gray-50 py-4 border-b"
+                                    className="relative cursor-pointer select-none border-b py-4 pl-6 pr-10 hover:bg-gray-50"
                                     value={option.id}
                                     key={option.id}
                                   >
                                     {option.name}
-                                    {" - "}
-                                    {option.price_type === "flat" ? (
+                                    {' - '}
+                                    {option.price_type === 'flat' ? (
                                       convertToLocale({
                                         amount: option.amount!,
-                                        currency_code: cart?.currency_code,
+                                        currency_code: cart?.currency_code
                                       })
                                     ) : calculatedPricesMap[option.id] ? (
                                       convertToLocale({
                                         amount: calculatedPricesMap[option.id],
-                                        currency_code: cart?.currency_code,
+                                        currency_code: cart?.currency_code
                                       })
                                     ) : isLoadingPrices ? (
                                       <Loader />
                                     ) : (
-                                      "-"
+                                      '-'
                                     )}
                                   </Listbox.Option>
-                                )
-                              })}
-                            </Listbox.Options>
-                          </Transition>
-                        </div>
-                      </Listbox>
-                    </div>
-                  )
-                })}
-                {cart && (cart.shipping_methods?.length ?? 0) > 0 && (
+                                ))}
+                              </Listbox.Options>
+                            </Transition>
+                          </div>
+                        </Listbox>
+                      </div>
+                    ))}
+                {!!cart?.shipping_methods?.length && (
                   <div className="flex flex-col">
-                    {cart.shipping_methods?.map((method) => (
+                    {cart.shipping_methods?.map(method => (
                       <CartShippingMethodRow
                         key={method.id}
                         method={method}
                         currency_code={cart.currency_code}
+                        onRemoveShippingMethod={handleRemoveShippingMethod}
                       />
                     ))}
                   </div>
@@ -337,7 +294,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
             <Button
               onClick={handleSubmit}
               variant="tonal"
-              disabled={!cart.shipping_methods?.[0]}
+              disabled={!cart.shipping_methods?.[0] || isPendingDeleteRow}
               loading={isLoadingPrices}
             >
               Continue to payment
@@ -349,16 +306,17 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
           <div className="text-small-regular">
             {cart && (cart.shipping_methods?.length ?? 0) > 0 && (
               <div className="flex flex-col">
-                {cart.shipping_methods?.map((method) => (
-                  <div key={method.id} className="mb-4 border rounded-md p-4">
-                    <Text className="txt-medium-plus text-ui-fg-base mb-1">
-                      Method
-                    </Text>
+                {cart.shipping_methods?.map(method => (
+                  <div
+                    key={method.id}
+                    className="mb-4 rounded-md border p-4"
+                  >
+                    <Text className="txt-medium-plus text-ui-fg-base mb-1">Method</Text>
                     <Text className="txt-medium text-ui-fg-subtle">
-                      {method.name}{" "}
+                      {method.name}{' '}
                       {convertToLocale({
                         amount: method.amount!,
-                        currency_code: cart?.currency_code,
+                        currency_code: cart?.currency_code
                       })}
                     </Text>
                   </div>
@@ -369,7 +327,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default CartShippingMethodsSection
+export default CartShippingMethodsSection;

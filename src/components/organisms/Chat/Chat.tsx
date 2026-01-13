@@ -18,6 +18,8 @@ export const Chat = ({
   product,
   subject,
   order_id,
+  variant = "tonal",
+  buttonSize = "small",
 }: {
   user: HttpTypes.StoreCustomer | null
   seller: SellerProps
@@ -26,6 +28,8 @@ export const Chat = ({
   product?: HttpTypes.StoreProduct
   subject?: string
   order_id?: string
+  variant?: "tonal" | "filled"
+  buttonSize?: "small" | "large"
 }) => {
   const [modal, setModal] = useState(false)
 
@@ -36,9 +40,10 @@ export const Chat = ({
   return (
     <>
       <Button
-        variant="tonal"
+        variant={variant}
         onClick={() => setModal(true)}
         className={buttonClassNames}
+        size={buttonSize}
       >
         {icon ? <MessageIcon size={20} /> : "Write to seller"}
       </Button>

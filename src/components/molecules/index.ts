@@ -13,6 +13,7 @@ import { ProductCarouselIndicator } from "./ProductCarouselIndicator/ProductCaro
 import { Modal } from "./Modal/Modal"
 import { ReportListingForm } from "./ReportListingForm/ReportListingForm"
 import { SellerInfo } from "./SellerInfo/SellerInfo"
+import { SellerInfoHeader } from "./SellerInfoHeader/SellerInfoHeader"
 import { TabsList } from "./TabsList/TabsList"
 import { TabsContent } from "./TabsContent/TabsContent"
 import { SellerScore } from "./SellerScore/SellerScore"
@@ -32,10 +33,15 @@ import { ParcelAccordion } from "./ParcelAccordion/ParcelAccordion"
 import { AddressForm } from "./AddressForm/AddressForm"
 import { ReviewForm } from "./ReviewForm/ReviewForm"
 import { ProfileDetails } from "./ProfileDetails/ProfileDetails"
+import { ParentCategoryLinks } from "./ParentCategoryLinks/ParentCategoryLinks"
+import ProductListingLoadingView from "./ProductListingLoadingView/ProductListingLoadingView"
+import ProductListingNoResultsView from "./ProductListingNoResultsView/ProductListingNoResultsView"
+import ProductListingProductsView from "./ProductListingProductsView/ProductListingProductsView"
 
 export {
   PrimeCategoryNavbar,
   CategoryNavbar,
+  ParentCategoryLinks,
   SelectField,
   Accordion,
   FilterCheckboxOption,
@@ -49,6 +55,7 @@ export {
   Modal,
   ReportListingForm,
   SellerInfo,
+  SellerInfoHeader,
   TabsList,
   TabsContent,
   SellerScore,
@@ -68,4 +75,7 @@ export {
   AddressForm,
   ReviewForm,
   ProfileDetails,
+  ProductListingLoadingView,
+  ProductListingNoResultsView,
+  ProductListingProductsView,
 }

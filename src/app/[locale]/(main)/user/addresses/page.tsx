@@ -9,7 +9,7 @@ export default async function Page() {
   const regions = await listRegions()
 
   if (!user) {
-    redirect("/user")
+    redirect("/login")
   }
 
   return (

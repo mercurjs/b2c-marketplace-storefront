@@ -1,7 +1,13 @@
-import { PropsWithChildren, useEffect, useState } from "react"
+import { PropsWithChildren, useCallback, useEffect, useState } from "react"
 
 import { CartContext } from "./context"
 import { Cart, StoreCartLineItemOptimisticUpdate } from "@/types/cart"
+import { 
+  addToCart as apiAddToCart,
+  deleteLineItem as apiDeleteLineItem,
+  updateLineItem as apiUpdateLineItem,
+  retrieveCart 
+} from "@/lib/data/cart"
 
 interface CartProviderProps extends PropsWithChildren {
   cart: Cart | null
@@ -9,10 +15,25 @@ interface CartProviderProps extends PropsWithChildren {
 
 export function CartProvider({ cart, children }: CartProviderProps) {
   const [cartState, setCartState] = useState(cart)
+  const [isUpdating, setIsUpdating] = useState(false)
+  const [isAddingItem, setIsAddingItem] = useState(false)
+  const [isUpdatingItem, setIsUpdatingItem] = useState(false)
+  const [isRemovingItem, setIsRemovingItem] = useState(false)
 
   useEffect(() => {
     setCartState(cart)
   }, [cart])
+
+  const refreshCart = useCallback(async () => {
+    try {
+      const cartData = await retrieveCart()
+      setCartState(cartData)
+      return cartData
+    } catch (error) {
+      console.error("Error fetching cart:", error)
+      return null
+    }
+  }, [])
 
   function handleAddToCart(
     newItem: StoreCartLineItemOptimisticUpdate,
@@ -32,7 +53,7 @@ export function CartProvider({ cart, children }: CartProviderProps) {
 
           const newQuantity = currentItem.quantity + (newItem?.quantity || 0)
           return {
-            ...newItem,
+            ...currentItem,
             quantity: newQuantity,
             subtotal: newQuantity * (newItem?.subtotal || 0),
             total: newQuantity * (newItem?.total || 0),
@@ -72,6 +93,87 @@ export function CartProvider({ cart, children }: CartProviderProps) {
     })
   }
 
+  const updateCartItem = async (lineId: string, quantity: number) => {
+    if (!cartState?.items) return
+
+    setIsUpdatingItem(true)
+    setIsUpdating(true)
+
+    const optimisticCart = {
+      ...cartState,
+      items: cartState.items.map((item) => 
+        item.id === lineId ? { ...item, quantity } : item
+      )
+    }
+
+    setCartState(optimisticCart)
+
+    try {
+      await apiUpdateLineItem({ lineId, quantity })
+      await refreshCart()
+    } catch (error) {
+      console.error("Error updating item quantity:", error)
+      await refreshCart()
+    } finally {
+      setIsUpdatingItem(false)
+      setIsUpdating(false)
+    }
+  }
+
+  const addToCart = async ({
+    variantId,
+    quantity,
+    countryCode,
+  }: {
+    variantId: string
+    quantity: number
+    countryCode: string
+  }) => {
+    setIsAddingItem(true)
+    setIsUpdating(true)
+
+    try {
+      await apiAddToCart({
+        variantId,
+        quantity,
+        countryCode,
+      })
+      await refreshCart()
+    } catch (error) {
+      console.error("Error adding product to cart:", error)
+      await refreshCart()
+      throw error
+    } finally {
+      setIsAddingItem(false)
+      setIsUpdating(false)
+    }
+  }
+
+  const removeCartItem = async (lineId: string) => {
+    if (!cartState?.items) return
+
+    setIsRemovingItem(true)
+    setIsUpdating(true)
+
+    const optimisticCart = {
+      ...cartState,
+      items: cartState.items.filter((item) => item.id !== lineId)
+    }
+
+    setCartState(optimisticCart)
+
+    try {
+      await apiDeleteLineItem(lineId)
+      await refreshCart()
+    } catch (error) {
+      console.error("Error removing item from cart:", error)
+      await refreshCart()
+    } finally {
+      setIsRemovingItem(false)
+      setIsUpdating(false)
+    }
+  }
+
   function getItemsSummaryValues(items: StoreCartLineItemOptimisticUpdate[]) {
     return items.reduce(
       (acc, item) => ({
@@ -88,6 +190,14 @@ export function CartProvider({ cart, children }: CartProviderProps) {
       value={{
         cart: cartState,
         onAddToCart: handleAddToCart,
+        addToCart,
+        removeCartItem,
+        updateCartItem,
+        refreshCart,
+        isUpdating,
+        isAddingItem,
+        isUpdatingItem,
+        isRemovingItem,
       }}
     >
       {children}

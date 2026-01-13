@@ -8,6 +8,18 @@ interface CartContextInterface {
     item: StoreCartLineItemOptimisticUpdate,
     currency_code: string
   ) => void
+  addToCart: (params: {
+    variantId: string
+    quantity: number
+    countryCode: string
+  }) => Promise<void>
+  removeCartItem: (lineId: string) => Promise<void>
+  updateCartItem: (lineId: string, quantity: number) => Promise<void>
+  refreshCart: () => Promise<Cart | null>
+  isUpdating: boolean
+  isAddingItem: boolean
+  isUpdatingItem: boolean
+  isRemovingItem: boolean
 }
 
 export const CartContext = createContext<CartContextInterface | null>(null)

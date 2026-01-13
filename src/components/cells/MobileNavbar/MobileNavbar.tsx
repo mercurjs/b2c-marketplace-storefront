@@ -6,42 +6,62 @@ import {
   HeaderCategoryNavbar,
 } from '@/components/molecules';
 import { CloseIcon, HamburgerMenuIcon } from '@/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { IconButton } from '@/components/atoms';
+import { MobileCategoryNavbar } from './components';
 
 export const MobileNavbar = ({
-  childrenCategories,
+  categories,
   parentCategories,
 }: {
-  childrenCategories: HttpTypes.StoreProductCategory[];
+  categories: HttpTypes.StoreProductCategory[];
   parentCategories: HttpTypes.StoreProductCategory[];
 }) => {
-  const [openMenu, setOpenMenu] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const closeMenuHandler = () => {
-    setOpenMenu(false);
+    setIsOpen(false);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
 
   return (
     <div className='lg:hidden'>
-      <div onClick={() => setOpenMenu(true)}>
+      <div onClick={() => setIsOpen(true)}>
         <HamburgerMenuIcon />
       </div>
-      {openMenu && (
-        <div className='fixed w-full h-full bg-primary p-2 top-0 left-0 z-20'>
-          <div className='flex justify-end'>
-            <div onClick={() => closeMenuHandler()}>
-              <CloseIcon size={20} />
-            </div>
+      {isOpen && (
+        <div className='fixed w-full h-full bg-primary top-0 left-0 z-20'>
+          <div className='flex justify-between items-center border-b p-4'>
+            <h2 className='heading-md uppercase text-primary'>Menu</h2>
+            <IconButton
+              icon={<CloseIcon size={20} />}
+              onClick={() => closeMenuHandler()}
+              variant='icon'
+              size='small'
+            />
           </div>
-          <div className='border mt-4 rounded-sm'>
+          <div className=''>
             <HeaderCategoryNavbar
               onClose={closeMenuHandler}
-              categories={parentCategories}
+              categories={categories}
+              parentCategories={parentCategories}
             />
-            <div className='border-t pt-2'>
-              <CategoryNavbar
+            <div className='p-4'>
+              <MobileCategoryNavbar
                 onClose={closeMenuHandler}
-                categories={childrenCategories}
+                categories={categories}
+                parentCategories={parentCategories}
               />
             </div>
           </div>

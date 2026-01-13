@@ -11,6 +11,9 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   clearable?: boolean
   error?: boolean
   changeValue?: (value: string) => void
+  onIconClick?: () => void
+  iconAriaLabel?: string
+  "data-testid"?: string
 }
 
 export function Input({
@@ -20,6 +23,9 @@ export function Input({
   className,
   error,
   changeValue,
+  onIconClick,
+  iconAriaLabel,
+  "data-testid": dataTestId,
   ...props
 }: InputProps) {
   const [showPassword, setShowPassword] = useState(false)
@@ -47,11 +53,22 @@ export function Input({
   }
 
   return (
-    <label className="label-md">
-      {label}
+    <div className="flex flex-col">
+      <label className="label-md">{label}</label>
       <div className="relative mt-2">
-        {icon && (
-          <span className="absolute top-0 left-[16px] h-full flex items-center">
+        {icon && onIconClick && (
+          <button
+            onClick={onIconClick}
+            className="flex items-center justify-center rounded-sm transition-all duration-300 ease-out button-transparent h-[32px] w-[32px] absolute top-[8px] left-[8px]"
+            aria-label={iconAriaLabel}
+            data-testid={dataTestId ? `${dataTestId}-icon-button` : 'input-icon-button'}
+          >
+            {icon}
+          </button>
+        )}
+
+        {icon && !onIconClick && (
+          <span className="absolute top-0 left-[16px] h-full flex items-center" data-testid={dataTestId ? `${dataTestId}-icon` : 'input-icon'}>
             {icon}
           </span>
         )}
@@ -68,11 +85,13 @@ export function Input({
           onChange={(e) => changeHandler(e.target.value)}
           {...props}
           type={props.type === "password" ? inputType : props.type}
+          data-testid={dataTestId}
         />
         {clearable && props.value && (
           <span
             className="absolute h-full flex items-center top-0 right-[16px] cursor-pointer"
             onClick={clearHandler}
+            data-testid={dataTestId ? `${dataTestId}-clear-button` : 'input-clear-button'}
           >
             <CloseIcon />
           </span>
@@ -82,11 +101,12 @@ export function Input({
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="text-ui-fg-subtle px-4 focus:outline-none transition-all duration-150 outline-none focus:text-ui-fg-base absolute right-0 top-4"
+            data-testid={dataTestId ? `${dataTestId}-password-button` : 'input-password-button'}
           >
             {showPassword ? <EyeMini /> : <EyeSlashMini />}
           </button>
         )}
       </div>
-    </label>
+    </div>
   )
 }

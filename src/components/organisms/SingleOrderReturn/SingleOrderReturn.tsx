@@ -148,7 +148,7 @@ export const SingleOrderReturn = ({
                       <p className="label-md !font-semibold text-primary">
                         {item.product_title}
                       </p>
-                      <p className="label-md text-secondary">{item.title}</p>
+                      <p className="label-md text-secondary">{item.subtitle}</p>
                     </div>
                   </div>
                   <div className="flex justify-between w-1/2">

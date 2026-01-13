@@ -44,6 +44,28 @@ const ShippingAddress = ({
     [customer?.addresses]
   )
 
+  // Create a stable reference that only changes when address data actually changes
+  const addressSnapshot = useMemo(
+    () =>
+      JSON.stringify({
+        shipping_address: cart?.shipping_address,
+        email: cart?.email || customer?.email,
+      }),
+    [
+      cart?.shipping_address?.first_name,
+      cart?.shipping_address?.last_name,
+      cart?.shipping_address?.address_1,
+      cart?.shipping_address?.company,
+      cart?.shipping_address?.postal_code,
+      cart?.shipping_address?.city,
+      cart?.shipping_address?.country_code,
+      cart?.shipping_address?.province,
+      cart?.shipping_address?.phone,
+      cart?.email,
+      customer?.email,
+    ]
+  )
+
   const setFormAddress = (
     address?: HttpTypes.StoreCartAddress,
     email?: string
@@ -70,15 +92,14 @@ const ShippingAddress = ({
   }
 
   useEffect(() => {
-    // Ensure cart is not null and has a shipping_address before setting form data
-    if (cart && cart.shipping_address) {
-      setFormAddress(cart?.shipping_address, cart?.email)
+    if (cart?.shipping_address) {
+      setFormAddress(cart.shipping_address, cart.email)
     }
 
     if (cart && !cart.email && customer?.email) {
       setFormAddress(undefined, customer.email)
     }
-  }, [cart]) // Add cart as a dependency
+  }, [addressSnapshot])
 
   const handleChange = (
     e: React.ChangeEvent<
