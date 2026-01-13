@@ -18,7 +18,7 @@ export default async function AuthLayout({
 
   return (
     <>
-      <Header />
+      <Header locale={locale} />
       {children}
       <Footer />
     </>
