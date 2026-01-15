@@ -1,5 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import { BaseHit, Hit } from "instantsearch.js"
+import { BaseHit, Hit } from "@/types/search"
 import { ProductCard } from "@/components/organisms"
 
 interface Props {

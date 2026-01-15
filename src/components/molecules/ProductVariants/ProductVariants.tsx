@@ -4,7 +4,6 @@ import { HttpTypes } from "@medusajs/types"
 
 import { Chip } from "@/components/atoms"
 import useUpdateSearchParams from "@/hooks/useUpdateSearchParams"
-import { BaseHit, Hit } from "instantsearch.js"
 
 export const ProductVariants = ({
   product,
@@ -34,7 +33,7 @@ export const ProductVariants = ({
                 ({
                   id,
                   value,
-                }: Partial<Hit<HttpTypes.StoreProductOptionValue>>) => (
+                }: Partial<HttpTypes.StoreProductOptionValue>) => (
                   <Chip
                     key={id}
                     selected={selectedVariant[title.toLowerCase()] === value}
