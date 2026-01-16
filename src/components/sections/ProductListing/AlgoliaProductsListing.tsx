@@ -119,7 +119,7 @@ const ProductsListing = ({
     fetchProducts()
   }, [locale, filters, query, page, currency_code])
 
-  const productHits: Hit<BaseHit>[] = useMemo(
+  const productHits: Hit[] = useMemo(
     () =>
       products.map((product, index) => ({
         objectID: product.id,
@@ -127,7 +127,7 @@ const ProductsListing = ({
         handle: product.handle,
         thumbnail: product.thumbnail,
         __position: index + 1,
-      })) as unknown as Hit<BaseHit>[],
+      })) as unknown as Hit[],
     [products]
   )
 

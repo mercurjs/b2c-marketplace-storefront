@@ -162,12 +162,16 @@ function PriceFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
     setMax(searchParams.get("max_price") || "")
   }, [searchParams])
 
-  const updateMinPriceHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const updateMinPriceHandler = (
+    e: React.FormEvent<HTMLFormElement> | React.FocusEvent<HTMLInputElement>
+  ) => {
     e.preventDefault()
     updateSearchParams("min_price", min)
   }
 
-  const updateMaxPriceHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const updateMaxPriceHandler = (
+    e: React.FormEvent<HTMLFormElement> | React.FocusEvent<HTMLInputElement>
+  ) => {
     e.preventDefault()
     updateSearchParams("max_price", max)
   }
@@ -181,9 +185,7 @@ function PriceFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
             value={min}
             onBlur={(e) => {
               setTimeout(() => {
-                updateMinPriceHandler(
-                  e as unknown as React.FormEvent<HTMLFormElement>
-                )
+                updateMinPriceHandler(e)
               }, 500)
             }}
             type="number"
@@ -197,9 +199,7 @@ function PriceFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
             onChange={(e) => setMax(e.target.value)}
             onBlur={(e) => {
               setTimeout(() => {
-                updateMaxPriceHandler(
-                  e as unknown as React.FormEvent<HTMLFormElement>
-                )
+                updateMaxPriceHandler(e)
               }, 500)
             }}
             value={max}

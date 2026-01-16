@@ -1,6 +1,7 @@
 export interface BaseHit {
-  objectID: string
-  [key: string]: any
+  title?: string
+  handle?: string
+  thumbnail?: string | null
 }
 
 export type Hit<T = BaseHit> = T & {
