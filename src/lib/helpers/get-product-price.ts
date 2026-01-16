@@ -69,7 +69,7 @@ export function getProductPrice({
   product,
   variantId,
 }: {
-  product: Hit<HttpTypes.StoreProduct> | Partial<Hit<BaseHit>>
+  product: Hit<HttpTypes.StoreProduct> | Partial<Hit<BaseHit>> | HttpTypes.StoreProduct
   variantId?: string
 }) {
   if (!product || !product.id) {
