@@ -1,8 +1,4 @@
-export interface BaseHit {
-  title?: string
-  handle?: string
-  thumbnail?: string | null
-}
+export type BaseHit = Record<string, unknown>
 
 export type Hit<T = BaseHit> = T & {
   objectID: string
