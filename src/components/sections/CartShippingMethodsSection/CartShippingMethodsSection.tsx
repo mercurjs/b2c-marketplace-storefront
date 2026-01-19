@@ -1,11 +1,10 @@
 'use client';
 
-import { Fragment, useEffect, useState, useTransition, type FC } from 'react';
+import { useEffect, useState, useTransition, type FC } from 'react';
 
-import { Listbox, Transition } from '@headlessui/react';
-import { CheckCircleSolid, ChevronUpDown, Loader } from '@medusajs/icons';
+import { CheckCircleSolid, Loader } from '@medusajs/icons';
 import type { HttpTypes } from '@medusajs/types';
-import { clx, Heading, Text } from '@medusajs/ui';
+import { Heading, Text } from '@medusajs/ui';
 import clsx from 'clsx';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
@@ -56,9 +55,29 @@ type ShippingProps = {
     | null;
 };
 
+type EasyPostRate = {
+  id: string;
+  service: string;
+  rate: string;
+  currency: string;
+  delivery_days?: number;
+  est_delivery_days?: number;
+  delivery_date_guaranteed?: boolean;
+};
+
+type ShippingOptionWithRates = {
+  id: string;
+  shipment_id?: string;
+  rates?: EasyPostRate[];
+};
+
 const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShippingMethods }) => {
   const [isLoadingPrices, setIsLoadingPrices] = useState(false);
   const [calculatedPricesMap, setCalculatedPricesMap] = useState<Record<string, number>>({});
+  const [shippingOptionsWithRates, setShippingOptionsWithRates] = useState<
+    Record<string, ShippingOptionWithRates>
+  >({});
+  const [selectedRates, setSelectedRates] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
   const [isPendingDeleteRow, startTransitionDeleteRow] = useTransition();
 
@@ -83,6 +102,7 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
 
   useEffect(() => {
     if (_shippingMethods?.length) {
+      setIsLoadingPrices(true);
       const promises = _shippingMethods
         .filter(sm => sm.price_type === 'calculated')
         .map(sm => calculatePriceForShippingOption(sm.id, cart.id));
@@ -90,13 +110,45 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
       if (promises.length) {
         Promise.allSettled(promises).then(res => {
           const pricesMap: Record<string, number> = {};
+          const ratesMap: Record<string, ShippingOptionWithRates> = {};
+
           res
-            .filter(r => r.status === 'fulfilled')
-            .forEach(p => (pricesMap[p.value?.id || ''] = p.value?.amount!));
+            .filter((r): r is PromiseFulfilledResult<any> => r.status === 'fulfilled' && !!r.value)
+            .forEach(p => {
+              const option = p.value;
+              if (!option?.id) return;
+              
+              pricesMap[option.id] = option.amount!;
+
+              // Check if this is an EasyPost option with rates
+              if (option.calculated_price?.rates && option.calculated_price.rates.length > 0) {
+                ratesMap[option.id] = {
+                  id: option.id,
+                  shipment_id: option.calculated_price.shipment_id,
+                  rates: option.calculated_price.rates as EasyPostRate[]
+                };
+
+                // Auto-select the cheapest rate if none selected
+                setSelectedRates((prev: Record<string, string>) => {
+                  if (prev[option.id]) return prev; // Don't override if already selected
+                  
+                  const cheapestRate = option.calculated_price.rates.sort(
+                    (a: EasyPostRate, b: EasyPostRate) => parseFloat(a.rate) - parseFloat(b.rate)
+                  )[0];
+                  return {
+                    ...prev,
+                    [option.id]: cheapestRate.id
+                  };
+                });
+              }
+            });
 
           setCalculatedPricesMap(pricesMap);
+          setShippingOptionsWithRates(ratesMap);
           setIsLoadingPrices(false);
         });
+      } else {
+        setIsLoadingPrices(false);
       }
     }
   }, [availableShippingMethods, _shippingMethods, cart.id]);
@@ -105,7 +157,7 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
     router.push(pathname + '?step=payment', { scroll: false });
   };
 
-  const handleSetShippingMethod = async (id: string | null) => {
+  const handleSetShippingMethod = async (id: string | null, rateId?: string) => {
     if (!id) {
       return;
     }
@@ -113,9 +165,21 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
     try {
       setError(null);
       setIsLoadingPrices(true);
+
+      // Get shipment_id and rate_id if this is an EasyPost option
+      const optionWithRates = shippingOptionsWithRates[id];
+      const data =
+        optionWithRates && optionWithRates.shipment_id
+          ? {
+              shipment_id: optionWithRates.shipment_id,
+              rate_id: rateId || selectedRates[id] || optionWithRates.rates?.[0]?.id
+            }
+          : undefined;
+
       const res = await setShippingMethod({
         cartId: cart.id,
-        shippingMethodId: id
+        shippingMethodId: id,
+        data
       });
       if (!res.ok) {
         return setError(res.error?.message);
@@ -207,68 +271,121 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
                         >
                           {groupedBySellerId[key][0].seller_name}
                         </Heading>
-                        <Listbox
-                          value={cart.shipping_methods?.[0]?.id}
-                          onChange={value => {
-                            handleSetShippingMethod(value);
-                          }}
-                        >
-                          <div className="relative">
-                            <Listbox.Button
-                              className={clsx(
-                                'text-base-regular relative flex h-12 w-full cursor-default items-center justify-between rounded-lg border bg-component-secondary px-4 text-left focus:outline-none focus-visible:border-gray-300 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300'
-                              )}
-                            >
-                              {({ open }) => (
-                                <>
-                                  <span className="block truncate">Choose delivery option</span>
-                                  <ChevronUpDown
-                                    className={clx('transition-rotate duration-200', {
-                                      'rotate-180 transform': open
-                                    })}
-                                  />
-                                </>
-                              )}
-                            </Listbox.Button>
-                            <Transition
-                              as={Fragment}
-                              leave="transition ease-in duration-100"
-                              leaveFrom="opacity-100"
-                              leaveTo="opacity-0"
-                            >
-                              <Listbox.Options
-                                className="text-small-regular border-top-0 absolute z-20 max-h-60 w-full overflow-auto rounded-lg border bg-white focus:outline-none sm:text-sm"
-                                data-testid="shipping-address-options"
+                        <div className="space-y-2">
+                          {groupedBySellerId[key].map((option: any) => {
+                            const optionWithRates = shippingOptionsWithRates[option.id];
+                            const hasRates = optionWithRates?.rates && optionWithRates.rates.length > 0;
+                            const isSelected = cart.shipping_methods?.some((sm: any) => sm.shipping_option_id === option.id);
+                            return (
+                              <div
+                                key={option.id}
+                                className={clsx(
+                                  'rounded-lg border p-4',
+                                  isSelected ? 'border-ui-border-interactive bg-ui-bg-interactive' : 'bg-component-secondary'
+                                )}
                               >
-                                {groupedBySellerId[key].map((option: any) => (
-                                  <Listbox.Option
-                                    className="relative cursor-pointer select-none border-b py-4 pl-6 pr-10 hover:bg-gray-50"
-                                    value={option.id}
-                                    key={option.id}
-                                  >
-                                    {option.name}
-                                    {' - '}
+                                <div className="flex items-center justify-between mb-2">
+                                  <div className="flex items-center gap-2">
+                                    <input
+                                      type="radio"
+                                      name={`shipping-${key}`}
+                                      id={`option-${option.id}`}
+                                      checked={isSelected}
+                                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        e.preventDefault();
+                                        void handleSetShippingMethod(option.id);
+                                      }}
+                                      className="cursor-pointer"
+                                    />
+                                    <label
+                                      htmlFor={`option-${option.id}`}
+                                      className="cursor-pointer font-medium"
+                                    >
+                                      {option.name}
+                                    </label>
+                                  </div>
+                                  <div className="text-right">
                                     {option.price_type === 'flat' ? (
-                                      convertToLocale({
-                                        amount: option.amount!,
-                                        currency_code: cart?.currency_code
-                                      })
+                                      <Text className="txt-medium">
+                                        {convertToLocale({
+                                          amount: option.amount!,
+                                          currency_code: cart?.currency_code
+                                        })}
+                                      </Text>
                                     ) : calculatedPricesMap[option.id] ? (
-                                      convertToLocale({
-                                        amount: calculatedPricesMap[option.id],
-                                        currency_code: cart?.currency_code
-                                      })
+                                      <Text className="txt-medium">
+                                        {convertToLocale({
+                                          amount: calculatedPricesMap[option.id],
+                                          currency_code: cart?.currency_code
+                                        })}
+                                      </Text>
                                     ) : isLoadingPrices ? (
                                       <Loader />
                                     ) : (
-                                      '-'
+                                      <Text className="txt-medium">-</Text>
                                     )}
-                                  </Listbox.Option>
-                                ))}
-                              </Listbox.Options>
-                            </Transition>
-                          </div>
-                        </Listbox>
+                                  </div>
+                                </div>
+
+                                {hasRates && isSelected && (
+                                  <div className="mt-4 pt-4 border-t">
+                                    <Text className="txt-small text-ui-fg-subtle mb-3 block">
+                                      Select delivery service:
+                                    </Text>
+                                    <div className="space-y-2">
+                                      {optionWithRates.rates!.map((rate: EasyPostRate) => (
+                                        <label
+                                          key={rate.id}
+                                          className={clsx(
+                                            'flex items-center justify-between p-3 rounded border cursor-pointer hover:bg-ui-bg-subtle-hover',
+                                            selectedRates[option.id] === rate.id
+                                              ? 'border-ui-border-interactive bg-ui-bg-interactive'
+                                              : 'border-ui-border-base'
+                                          )}
+                                        >
+                                          <div className="flex items-center gap-3">
+                                            <input
+                                              type="radio"
+                                              name={`rate-${option.id}`}
+                                              value={rate.id}
+                                              checked={selectedRates[option.id] === rate.id}
+                                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                setSelectedRates((prev: Record<string, string>) => ({
+                                                  ...prev,
+                                                  [option.id]: e.target.value
+                                                }));
+                                                void handleSetShippingMethod(option.id, e.target.value);
+                                              }}
+                                              className="cursor-pointer"
+                                            />
+                                            <div>
+                                              <Text className="txt-medium font-medium">
+                                                {rate.service}
+                                              </Text>
+                                              {rate.est_delivery_days && (
+                                                <Text className="txt-small text-ui-fg-subtle">
+                                                  {rate.est_delivery_days} day
+                                                  {rate.est_delivery_days !== 1 ? 's' : ''} delivery
+                                                  {rate.delivery_date_guaranteed && ' (guaranteed)'}
+                                                </Text>
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Text className="txt-medium font-medium">
+                                            {convertToLocale({
+                                              amount: parseFloat(rate.rate),
+                                              currency_code: rate.currency || cart?.currency_code
+                                            })}
+                                          </Text>
+                                        </label>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     ))}
                 {!!cart?.shipping_methods?.length && (
