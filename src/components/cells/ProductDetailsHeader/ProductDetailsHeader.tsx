@@ -37,7 +37,7 @@ export const ProductDetailsHeader = ({
   product: HttpTypes.StoreProduct & { seller?: SellerProps }
   locale: string
   user: HttpTypes.StoreCustomer | null
-  wishlist?: Wishlist[]
+  wishlist?: Wishlist
 }) => {
   const { addToCart, onAddToCart, cart, isAddingItem } = useCartContext()
   const { allSearchParams } = useGetAllSearchParams()

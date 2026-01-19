@@ -15,19 +15,20 @@ import { getUserWishlists } from "@/lib/data/wishlist"
 import { retrieveCustomer } from "@/lib/data/customer"
 import { ParentCategoryLinks } from "@/components/molecules/ParentCategoryLinks/ParentCategoryLinks"
 
-export const Header = async () => {
+export const Header = async ({ locale } : {
+  locale: string
+}) => {
   const user = await retrieveCustomer().catch(() => null)
   const isLoggedIn = Boolean(user)
-  let wishlist: Wishlist[] = []
-  
+
+  let wishlist: Wishlist = {products: []}
   if (user) {
-    const response = await getUserWishlists()
-    wishlist = response.wishlists
+    wishlist = await getUserWishlists({countryCode: locale})
   }
-  
+
   const regions = await listRegions()
 
-  const wishlistCount = wishlist?.[0]?.products.length || 0
+  const wishlistCount = wishlist?.products.length || 0
 
   const { categories, parentCategories } = (await listCategories({ query: { include_ancestors_tree: true } })) as {
     categories: HttpTypes.StoreProductCategory[]
@@ -41,7 +42,7 @@ export const Header = async () => {
             parentCategories={parentCategories}
             categories={categories}
           />
-          <ParentCategoryLinks 
+          <ParentCategoryLinks
             parentCategories={parentCategories}
             categories={categories}
           />

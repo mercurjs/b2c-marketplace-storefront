@@ -1,6 +1,6 @@
 {
   "name": "b2c-storefront",
-  "version": "0.1.0",
+  "version": "1.5.1",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -40,9 +40,9 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
     "@chromatic-com/storybook": "^3.2.3",
     "@eslint/eslintrc": "^3",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
     "@storybook/addon-essentials": "^8.4.7",
     "@storybook/addon-interactions": "^8.4.7",
     "@storybook/addon-onboarding": "^8.4.7",
