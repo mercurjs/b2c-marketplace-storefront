@@ -108,12 +108,32 @@ export async function login(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
-  return sdk.auth.login('customer', 'emailpass', { email, password }).then(async token => {
+  try {
+    const token = await sdk.auth.login('customer', 'emailpass', { email, password });
     await setAuthToken(token as string);
     const customerCacheTag = await getCacheTag('customers');
     revalidateTag(customerCacheTag);
-  });
+  } catch (error: unknown) {
+    const err = error as { status?: number; response?: { status?: number } };
+    const status = err.status || err.response?.status;
+
+    switch (status) {
+      case 401:
+        throw new Error('Invalid email or password. Please try again.');
+      case 404:
+        throw new Error('Account not found. Please check your email address.');
+      case 429:
+        throw new Error('Too many login attempts. Please try again later.');
+      case 500:
+      case 502:
+      case 503:
+        throw new Error('Server error. Please try again later.');
+      default:
+        throw new Error('Unable to log in. Please try again.');
+    }
+  }
 }
+
 export async function transferCard() {
   try {
     await transferCart();
