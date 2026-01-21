@@ -5,7 +5,6 @@ import { HttpTypes } from '@medusajs/types';
 import { SellerProps } from '@/types/seller';
 
 import { sdk } from '../config';
-import medusaError from '../helpers/medusa-error';
 import { getAuthHeaders, getCacheOptions } from './cookies';
 
 export const retrieveOrderSet = async (id: string) => {
@@ -20,7 +19,7 @@ export const retrieveOrderSet = async (id: string) => {
       cache: 'no-cache'
     })
     .then(({ order_set }) => order_set)
-    .catch(err => medusaError(err));
+    .catch(() => null);
 };
 
 export const retrieveOrder = async (id: string) => {
@@ -44,7 +43,7 @@ export const retrieveOrder = async (id: string) => {
       cache: 'force-cache'
     })
     .then(({ order }) => order)
-    .catch(err => medusaError(err));
+    .catch(() => null);
 };
 
 export const createReturnRequest = async (data: any) => {
@@ -60,7 +59,7 @@ export const createReturnRequest = async (data: any) => {
     body: JSON.stringify(data)
   })
     .then(async res => await res.json())
-    .catch(err => medusaError(err));
+    .catch(() => ({ success: false, error: 'Failed to create return request' }));
 
   return response;
 };
@@ -78,7 +77,7 @@ export const getReturns = async () => {
       query: { fields: '*line_items.reason_id' }
     })
     .then(res => res)
-    .catch(err => medusaError(err));
+    .catch(() => ({ order_return_requests: [] }));
 };
 
 export const retriveReturnMethods = async (order_id: string) => {
@@ -96,11 +95,16 @@ export const retriveReturnMethods = async (order_id: string) => {
     .catch(() => []);
 };
 
+type OrderWithDetails = HttpTypes.StoreOrder & {
+  seller: { id: string; name: string; reviews?: any[] };
+  reviews: any[];
+};
+
 export const listOrders = async (
   limit: number = 10,
   offset: number = 0,
   filters?: Record<string, any>
-) => {
+): Promise<OrderWithDetails[]> => {
   const headers = {
     ...(await getAuthHeaders())
   };
@@ -111,12 +115,7 @@ export const listOrders = async (
 
   return sdk.client
     .fetch<{
-      orders: Array<
-        HttpTypes.StoreOrder & {
-          seller: { id: string; name: string; reviews?: any[] };
-          reviews: any[];
-        }
-      >;
+      orders: OrderWithDetails[];
     }>(`/store/orders`, {
       method: 'GET',
       query: {
@@ -132,7 +131,7 @@ export const listOrders = async (
       cache: 'no-cache'
     })
     .then(({ orders }) => orders)
-    .catch(err => medusaError(err));
+    .catch(() => [] as OrderWithDetails[]);
 };
 
 export const createTransferRequest = async (
@@ -198,5 +197,5 @@ export const retrieveReturnReasons = async () => {
       cache: 'force-cache'
     })
     .then(({ return_reasons }) => return_reasons)
-    .catch(err => medusaError(err));
+    .catch(() => []);
 };
