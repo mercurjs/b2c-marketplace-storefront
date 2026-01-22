@@ -75,18 +75,19 @@ const Form = () => {
   }
 
   return (
-    <main className="container">
-      <Container className="border max-w-xl mx-auto mt-8 p-4">
+    <main className="container" data-testid="register-page">
+      <Container className="border max-w-xl mx-auto mt-8 p-4" data-testid="register-form-container">
         <h1 className="heading-md text-primary uppercase mb-8">
           Create account
         </h1>
-        <form onSubmit={handleSubmit(submit)}>
+        <form onSubmit={handleSubmit(submit)} data-testid="register-form">
           <div className="flex flex-col md:flex-row gap-4 mb-4">
             <LabeledInput
               className="md:w-1/2"
               label="First name"
               placeholder="Your first name"
               error={errors.firstName as FieldError}
+              data-testid="register-first-name-input"
               {...register("firstName")}
             />
             <LabeledInput
@@ -94,6 +95,7 @@ const Form = () => {
               label="Last name"
               placeholder="Your last name"
               error={errors.lastName as FieldError}
+              data-testid="register-last-name-input"
               {...register("lastName")}
             />
           </div>
@@ -103,6 +105,7 @@ const Form = () => {
               label="E-mail"
               placeholder="Your e-mail address"
               error={errors.email as FieldError}
+              data-testid="register-email-input"
               {...register("email")}
             />
             <LabeledInput
@@ -110,6 +113,7 @@ const Form = () => {
               label="Phone"
               placeholder="Your phone number"
               error={errors.phone as FieldError}
+              data-testid="register-phone-input"
               {...register("phone")}
             />
           </div>
@@ -120,6 +124,7 @@ const Form = () => {
               placeholder="Your password"
               type="password"
               error={errors.password as FieldError}
+              data-testid="register-password-input"
               {...register("password")}
             />
             <PasswordValidator
@@ -132,6 +137,7 @@ const Form = () => {
             className="w-full flex justify-center mt-8 uppercase"
             disabled={isSubmitting}
             loading={isSubmitting}
+            data-testid="register-submit-button"
           >
             Create account
           </Button>
@@ -141,7 +147,7 @@ const Form = () => {
         <h2 className="heading-md text-primary uppercase mb-8">
           Already have an account?
         </h2>
-        <Link href="/login">
+        <Link href="/login" data-testid="register-login-link">
           <Button
             variant="tonal"
             className="w-full flex justify-center mt-8 uppercase"

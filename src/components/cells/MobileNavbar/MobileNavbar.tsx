@@ -1,18 +1,18 @@
 'use client';
 
-import { HttpTypes } from '@medusajs/types';
-import {
-  CategoryNavbar,
-  HeaderCategoryNavbar,
-} from '@/components/molecules';
-import { CloseIcon, HamburgerMenuIcon } from '@/icons';
 import { useEffect, useState } from 'react';
+
+import { HttpTypes } from '@medusajs/types';
+
 import { IconButton } from '@/components/atoms';
+import { HeaderCategoryNavbar } from '@/components/molecules';
+import { CloseIcon, HamburgerMenuIcon } from '@/icons';
+
 import { MobileCategoryNavbar } from './components';
 
 export const MobileNavbar = ({
   categories,
-  parentCategories,
+  parentCategories
 }: {
   categories: HttpTypes.StoreProductCategory[];
   parentCategories: HttpTypes.StoreProductCategory[];
@@ -25,39 +25,52 @@ export const MobileNavbar = ({
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = ''
+      document.body.style.overflow = '';
     }
 
     return () => {
-      document.body.style.overflow = ''
-    }
-  }, [isOpen])
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   return (
-    <div className='lg:hidden'>
-      <div onClick={() => setIsOpen(true)}>
+    <div
+      className="lg:hidden"
+      data-testid="mobile-navbar"
+    >
+      <div
+        onClick={() => setIsOpen(true)}
+        data-testid="mobile-menu-toggle"
+      >
         <HamburgerMenuIcon />
       </div>
       {isOpen && (
-        <div className='fixed w-full h-full bg-primary top-0 left-0 z-20'>
-          <div className='flex justify-between items-center border-b p-4'>
-            <h2 className='heading-md uppercase text-primary'>Menu</h2>
+        <div
+          className="fixed left-0 top-0 z-20 h-full w-full bg-primary"
+          data-testid="mobile-menu-drawer"
+        >
+          <div
+            className="flex items-center justify-between border-b p-4"
+            data-testid="mobile-menu-header"
+          >
+            <h2 className="heading-md uppercase text-primary">Menu</h2>
             <IconButton
               icon={<CloseIcon size={20} />}
               onClick={() => closeMenuHandler()}
-              variant='icon'
-              size='small'
+              variant="icon"
+              size="small"
+              data-testid="mobile-menu-close-button"
             />
           </div>
-          <div className=''>
+          <div className="">
             <HeaderCategoryNavbar
               onClose={closeMenuHandler}
               categories={categories}
               parentCategories={parentCategories}
             />
-            <div className='p-4'>
+            <div className="p-4">
               <MobileCategoryNavbar
                 onClose={closeMenuHandler}
                 categories={categories}

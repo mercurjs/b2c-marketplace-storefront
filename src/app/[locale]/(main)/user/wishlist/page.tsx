@@ -9,16 +9,18 @@ import { getUserWishlists } from "@/lib/data/wishlist"
 import { HttpTypes } from "@medusajs/types"
 import { UserNavigation } from "@/components/molecules"
 
-export default async function Wishlist() {
+export default async function Wishlist({ params } : {
+  params: Promise<{ locale: string }>
+}) {
   const user = await retrieveCustomer()
+  const { locale } = await params
 
-  let wishlist: WishlistType[] = []
+  let wishlist: WishlistType = {products: []}
   if (user) {
-    const response = await getUserWishlists()
-    wishlist = response.wishlists
+    wishlist = await getUserWishlists({countryCode: locale})
   }
 
-  const count = wishlist?.[0]?.products?.length || 0
+  const count = wishlist?.products?.length || 0
 
   if (!user) {
     redirect("/login")
@@ -29,7 +31,7 @@ export default async function Wishlist() {
       <div className="grid grid-cols-1 md:grid-cols-4 mt-6 gap-5 md:gap-8">
         <UserNavigation />
         <div className="md:col-span-3 space-y-8">
-          {isEmpty(wishlist?.[0]?.products) ? (
+          {isEmpty(wishlist?.products) ? (
             <div className="w-96 mx-auto flex flex-col items-center justify-center">
               <h2 className="heading-lg text-primary uppercase mb-2">
                 Wishlist
@@ -48,7 +50,7 @@ export default async function Wishlist() {
                 <p>{count} listings</p>
               </div>
               <div className="flex flex-wrap max-md:justify-center gap-4">
-                {wishlist?.[0].products?.map((product) => (
+                {wishlist?.products?.map((product) => (
                   <WishlistItem
                     key={product.id}
                     product={

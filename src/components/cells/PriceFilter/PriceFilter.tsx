@@ -38,8 +38,8 @@ export const PriceFilter = () => {
   }
 
   return (
-    <Accordion heading="Price">
-      <div className="flex gap-2 mb-4">
+    <Accordion heading="Price" data-testid="filter-price">
+      <div className="flex gap-2 mb-4" data-testid="filter-price-inputs">
         <form method="POST" onSubmit={updateMinPriceHandler}>
           <Input
             placeholder="Min"
@@ -48,6 +48,7 @@ export const PriceFilter = () => {
             value={min}
             type="number"
             className="no-arrows-number-input"
+            data-testid="filter-price-min"
           />
           <input type="submit" className="hidden" />
         </form>
@@ -59,6 +60,7 @@ export const PriceFilter = () => {
             type="number"
             className="no-arrows-number-input"
             value={max}
+            data-testid="filter-price-max"
           />
           <input type="submit" className="hidden" />
         </form>

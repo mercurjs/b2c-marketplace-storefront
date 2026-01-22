@@ -24,7 +24,7 @@ export default async function RootLayout({
   if (!APP_ID || !user)
     return (
       <>
-        <Header />
+        <Header locale={locale} />
         {children}
         <Footer />
       </>
@@ -33,7 +33,7 @@ export default async function RootLayout({
   return (
     <>
       <Session appId={APP_ID} userId={user.id}>
-        <Header />
+        <Header locale={locale} />
         {children}
         <Footer />
       </Session>

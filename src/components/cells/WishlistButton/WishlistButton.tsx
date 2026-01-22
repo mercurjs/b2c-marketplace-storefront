@@ -16,16 +16,16 @@ export const WishlistButton = ({
   user
 }: {
   productId: string;
-  wishlist?: Wishlist[];
+  wishlist?: Wishlist;
   user?: HttpTypes.StoreCustomer | null;
 }) => {
   const [isWishlistAdding, setIsWishlistAdding] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(
-    wishlist?.[0]?.products?.some(item => item.id === productId)
+    wishlist?.products?.some(item => item.id === productId)
   );
 
   useEffect(() => {
-    setIsWishlisted(wishlist?.[0]?.products?.some(item => item.id === productId));
+    setIsWishlisted(wishlist?.products?.some(item => item.id === productId));
   }, [wishlist, productId]);
 
   if (!user) {
@@ -54,7 +54,6 @@ export const WishlistButton = ({
       setIsWishlistAdding(true);
 
       await removeWishlistItem({
-        wishlist_id: wishlist?.[0].id!,
         product_id: productId
       });
     } catch (error) {
