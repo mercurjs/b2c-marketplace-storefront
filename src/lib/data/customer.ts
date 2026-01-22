@@ -1,6 +1,5 @@
 'use server';
 
-
 import { HttpTypes } from '@medusajs/types';
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -13,33 +12,34 @@ import {
   getCartId,
   removeAuthToken,
   removeCartId,
-  setAuthToken,
-} from "./cookies"
+  setAuthToken
+} from './cookies';
 
 export const retrieveCustomer = async (): Promise<HttpTypes.StoreCustomer | null> => {
-  const authHeaders = await getAuthHeaders()
-  if (!authHeaders) return null
+  const authHeaders = await getAuthHeaders();
+  if (!authHeaders) return null;
 
   const headers = {
-      ...authHeaders,
-  }
+    ...authHeaders
+  };
 
   const next = {
-    ...(await getCacheOptions("customers")),
-  }
+    ...(await getCacheOptions('customers'))
+  };
 
-  return await sdk.client.fetch<{ customer: HttpTypes.StoreCustomer }>(`/store/customers/me`, {
-      method: "GET",
+  return await sdk.client
+    .fetch<{ customer: HttpTypes.StoreCustomer }>(`/store/customers/me`, {
+      method: 'GET',
       query: {
-        fields: "*orders",
+        fields: '*orders'
       },
       headers,
       next,
-      cache: "force-cache"
+      cache: 'force-cache'
     })
     .then(({ customer }) => customer ?? null)
-    .catch(() => null)
-}
+    .catch(() => null);
+};
 
 export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
   const headers = {
@@ -109,15 +109,32 @@ export async function login(formData: FormData) {
   const password = formData.get('password') as string;
 
   try {
-    await sdk.auth.login('customer', 'emailpass', { email, password }).then(async token => {
-      await setAuthToken(token as string);
-      const customerCacheTag = await getCacheTag('customers');
-      revalidateTag(customerCacheTag);
-    });
-  } catch (error: any) {
-    return error.toString();
-  }
+    const token = await sdk.auth.login('customer', 'emailpass', { email, password });
+    await setAuthToken(token as string);
+    const customerCacheTag = await getCacheTag('customers');
+    revalidateTag(customerCacheTag);
+  } catch (error: unknown) {
+    const err = error as { status?: number; response?: { status?: number } };
+    const status = err.status || err.response?.status;
 
+    switch (status) {
+      case 401:
+        throw new Error('Invalid email or password. Please try again.');
+      case 404:
+        throw new Error('Account not found. Please check your email address.');
+      case 429:
+        throw new Error('Too many login attempts. Please try again later.');
+      case 500:
+      case 502:
+      case 503:
+        throw new Error('Server error. Please try again later.');
+      default:
+        throw new Error('Unable to log in. Please try again.');
+    }
+  }
+}
+
+export async function transferCard() {
   try {
     await transferCart();
   } catch (error: any) {

@@ -5,15 +5,21 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { FieldError, FieldValues, FormProvider, useForm, useFormContext } from 'react-hook-form';
+import {
+  FormProvider,
+  useForm,
+  useFormContext,
+  type FieldError,
+  type FieldValues
+} from 'react-hook-form';
 
 import { Button } from '@/components/atoms';
 import { Alert } from '@/components/atoms/Alert/Alert';
 import { LabeledInput } from '@/components/cells';
-import { login } from '@/lib/data/customer';
+import { login, transferCard } from '@/lib/data/customer';
 import { toast } from '@/lib/helpers/toast';
 
-import { LoginFormData, loginFormSchema } from './schema';
+import { loginFormSchema, type LoginFormData } from './schema';
 
 export const LoginForm = () => {
   const methods = useForm<LoginFormData>({
@@ -38,6 +44,7 @@ const Form = () => {
     register,
     formState: { errors, isSubmitting }
   } = useFormContext();
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const isSessionExpired = searchParams.get('sessionExpired') === 'true';
@@ -48,24 +55,17 @@ const Form = () => {
     formData.append('email', data.email);
     formData.append('password', data.password);
 
-    const res = await login(formData);
-    if (res) {
-      // Temporary solution. API returns 200 code in case of auth error. To change when API is updated.
-      const isCredentialsError =
-        res.toLowerCase().includes('invalid email or password') ||
-        res.toLowerCase().includes('unauthorized') ||
-        res.toLowerCase().includes('incorrect') ||
-        res.toLowerCase().includes('credentials');
+    try {
+      await login(formData);
 
-      setIsAuthError(isCredentialsError);
+      router.push('/user');
+      await transferCard();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'An error occurred. Please try again.';
+      toast.error({ title: message });
 
-      const errorMessage = isCredentialsError ? 'Incorrect email or password' : res;
-
-      toast.error({ title: errorMessage || 'An error occurred. Please try again.' });
       return;
     }
-    setIsAuthError(false);
-    router.push('/user');
   };
 
   const clearApiError = () => {
@@ -123,7 +123,10 @@ const Form = () => {
               />
             </div>
 
-            <Link href="/user/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4">
+            <Link
+              href="/user/forgot-password"
+              className="label-md mt-4 block text-right uppercase text-action-on-secondary"
+            >
               Forgot your password?
             </Link>
 
