@@ -1,22 +1,19 @@
 import { HttpTypes } from "@medusajs/types"
-import { BaseHit, Hit } from "@/types/search"
 import { ProductCard } from "@/components/organisms"
 
 interface Props {
-  products: Hit<BaseHit>[]
-  apiProducts: HttpTypes.StoreProduct[] | null
+  products: HttpTypes.StoreProduct[]
 }
 
-const ProductListingProductsView = ({ products, apiProducts }: Props) => (
+const ProductListingProductsView = ({ products }: Props) => (
   <div className="w-full">
     <ul className="flex flex-wrap gap-4">
       {products.map(
-        (hit) =>
-          apiProducts?.find((p) => p.id === hit.objectID) && (
-            <li key={hit.objectID} className="w-full lg:w-[calc(25%-1rem)] min-w-[250px]">
+        (product) =>
+           (
+            <li key={product.id} className="w-full lg:w-[calc(25%-1rem)] min-w-[250px]">
               <ProductCard
-                api_product={apiProducts?.find((p) => p.id === hit.objectID)}
-                product={hit}
+                product={product}
                 className="w-full h-full lg:w-full min-w-0"
               />
             </li>

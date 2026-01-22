@@ -3,27 +3,23 @@
 import Image from "next/image"
 import { Button } from "@/components/atoms"
 import { HttpTypes } from "@medusajs/types"
-import { BaseHit, Hit } from "@/types/search"
 import { cn } from "@/lib/utils"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { getProductPrice } from "@/lib/helpers/get-product-price"
+import { Product } from "@/types/product"
 
 export const ProductCard = ({
   product,
-  api_product,
   className,
 }: {
-  product: Hit<HttpTypes.StoreProduct> | Partial<Hit<BaseHit>>
-  api_product?: HttpTypes.StoreProduct | null
+  product: HttpTypes.StoreProduct | Product,
   className?: string
 }) => {
-  if (!api_product) {
+  if (!product) {
     return null
   }
 
-  const { cheapestPrice } = getProductPrice({
-    product: api_product! as HttpTypes.StoreProduct,
-  })
+  const { cheapestPrice } = getProductPrice({ product: product as HttpTypes.StoreProduct })
 
   const productName = String(product.title || "Product")
 

@@ -17,7 +17,6 @@ import { PRODUCT_LIMIT } from "@/const"
 import { ProductListingSkeleton } from "@/components/organisms/ProductListingSkeleton/ProductListingSkeleton"
 import { useEffect, useMemo, useState } from "react"
 import { searchProducts } from "@/lib/data/products"
-import { BaseHit, Hit } from "@/types/search"
 import { FacetModel } from "@/components/organisms/ProductSidebar/AlgoliaProductSidebar"
 
 export const AlgoliaProductsListing = ({
@@ -119,18 +118,6 @@ const ProductsListing = ({
     fetchProducts()
   }, [locale, filters, query, page, currency_code])
 
-  const productHits: Hit[] = useMemo(
-    () =>
-      products.map((product, index) => ({
-        objectID: product.id,
-        title: product.title,
-        handle: product.handle,
-        thumbnail: product.thumbnail,
-        __position: index + 1,
-      })) as unknown as Hit[],
-    [products]
-  )
-
   if (isLoading && products.length === 0) return <ProductListingSkeleton />
 
   return (
@@ -151,10 +138,7 @@ const ProductsListing = ({
           {!isLoading && !products.length && <ProductListingNoResultsView />}
 
           {!isLoading && products.length > 0 && (
-            <ProductListingProductsView
-              products={productHits}
-              apiProducts={products}
-            />
+            <ProductListingProductsView products={products} />
           )}
 
           <div className="mt-auto">
