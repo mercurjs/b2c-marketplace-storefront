@@ -69,8 +69,8 @@ export const ColorFilter = () => {
   };
 
   return (
-    <Accordion heading='Color'>
-      <ul className='px-4'>
+    <Accordion heading='Color' data-testid="filter-color">
+      <ul className='px-4' data-testid="filter-color-options">
         {colorFilters.map(({ label, amount, color }) => (
           <li
             key={label}
@@ -82,6 +82,7 @@ export const ColorFilter = () => {
               onCheck={selectHandler}
               label={label}
               amount={amount}
+              data-testid={`filter-color-checkbox-${label.toLowerCase()}`}
             />
             <div
               className={cn(

@@ -7,12 +7,14 @@ export const FilterCheckboxOption = ({
   checked = false,
   onCheck = () => null,
   disabled = false,
+  ...props
 }: {
   label: string;
   amount?: number;
   checked?: boolean;
   onCheck?: (option: string) => void;
   disabled?: boolean;
+  'data-testid'?: string;
 }) => {
   return (
     <label
@@ -21,6 +23,7 @@ export const FilterCheckboxOption = ({
         disabled && '!cursor-default'
       )}
       onClick={() => (disabled ? null : onCheck(label))}
+      {...props}
     >
       <Checkbox checked={checked} disabled={disabled} />
       <p
