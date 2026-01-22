@@ -3,7 +3,7 @@ import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedL
 
 export function CartEmpty() {
   return (
-    <div className="col-span-12 pt-4 py-6 flex justify-center">
+    <div className="col-span-12 pt-4 py-6 flex justify-center" data-testid="cart-empty">
       <div className="w-[466px] flex flex-col">
         <h2 className="text-primary heading-lg text-center">SHOPPING CART</h2>
         <p className="mt-2 text-lg text-secondary text-center">

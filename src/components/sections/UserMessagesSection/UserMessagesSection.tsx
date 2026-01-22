@@ -17,7 +17,7 @@ export const UserMessagesSection = () => {
     <div className="max-w-full h-[655px]">
       <Inbox
         loadingComponent={
-          <div className="h-96 w-full flex items-center justify-center">
+          <div className="h-96 w-full flex items-center justify-center" data-testid="user-messages-loading">
             Loading..
           </div>
         }

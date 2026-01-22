@@ -1,6 +1,6 @@
 export const ProductListingSkeleton = () => {
   return (
-    <div className='py-4'>
+    <div className='py-4' data-testid="product-listing-skeleton">
       <div className='lg:flex justify-between lg:h-10 items-center'>
         <div className='h-6 bg-secondary w-20 rounded-sm animate-pulse' />
         <div className='h-10 w-[200px] bg-secondary rounded-sm animate-pulse hidden lg:block' />
