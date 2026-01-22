@@ -34,10 +34,11 @@ export const CartItemsProducts = ({
         return (
           <div
             key={product.id}
+            data-testid={`cart-item-${product.id}`}
             className="flex gap-2 rounded-sm border p-1"
           >
             <LocalizedClientLink href={`/products/${product.product_handle}`}>
-              <div className="flex h-[132px] w-[100px] items-center justify-center">
+              <div className="w-[100px] h-[132px] flex items-center justify-center" data-testid="cart-item-image">
                 {product.thumbnail ? (
                   <Image
                     src={decodeURIComponent(product.thumbnail)}
@@ -62,7 +63,7 @@ export const CartItemsProducts = ({
               <div className="flex justify-between lg:mb-4">
                 <LocalizedClientLink href={`/products/${product.product_handle}`}>
                   <div className="mb-4 w-[100px] md:w-[200px] lg:mb-0 lg:w-[280px]">
-                    <h3 className="heading-xs truncate uppercase">
+                    <h3 className="heading-xs truncate uppercase" data-testid="cart-item-title">
                       {product.product_title}
                       {product.subtitle && ` - ${product.subtitle}`}
                     </h3>
@@ -74,8 +75,8 @@ export const CartItemsProducts = ({
                   </div>
                 )}
               </div>
-              <div className="-mt-4 justify-between lg:mt-0 lg:flex">
-                <div className="label-md text-secondary">
+              <div className="lg:flex justify-between -mt-4 lg:mt-0">
+                <div className="label-md text-secondary" data-testid="cart-item-details">
                   {options?.map(({ option, id, value }) => (
                     <p key={id}>
                       {option?.title}: <span className="text-primary">{value}</span>
@@ -93,7 +94,7 @@ export const CartItemsProducts = ({
                   )}
                 </div>
                 <div className="mt-4 flex items-center gap-2 lg:mt-0 lg:block lg:text-right">
-                  <p className="label-lg">{total}</p>
+                  <p className="label-lg" data-testid="cart-item-price">{total}</p>
                 </div>
               </div>
             </div>

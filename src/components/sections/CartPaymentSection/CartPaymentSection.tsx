@@ -113,7 +113,7 @@ const CartPaymentSection = ({
   const isEditEnabled = !isOpen && !!cart?.payment_collection?.payment_sessions?.length;
 
   return (
-    <div className="bg-ui-bg-interactive rounded-sm border p-4">
+    <div className="bg-ui-bg-interactive rounded-sm border p-4" data-testid="checkout-step-payment">
       <div className="mb-6 flex flex-row items-center justify-between">
         <Heading
           level="h2"
@@ -125,6 +125,7 @@ const CartPaymentSection = ({
         {isEditEnabled && (
           <Text>
             <Button
+              data-testid="checkout-payment-edit-button"
               onClick={handleEdit}
               variant="tonal"
             >
@@ -212,7 +213,7 @@ const CartPaymentSection = ({
                   className="txt-medium text-ui-fg-subtle flex items-center gap-2"
                   data-testid="payment-details-summary"
                 >
-                  <Container className="bg-ui-button-neutral-hover flex h-7 w-fit items-center p-2">
+                  <Container className="bg-ui-button-neutral-hover flex h-7 w-fit items-center p-2"     data-testid="payment-details-summary">
                     {paymentInfoMap[selectedPaymentMethod]?.icon || <CreditCard />}
                   </Container>
                   <Text>
