@@ -7,9 +7,14 @@ import useUpdateSearchParams from "@/hooks/useUpdateSearchParams"
 import { cn } from "@/lib/utils"
 import { useSearchParams } from "next/navigation"
 import React, { useEffect, useState } from "react"
-import { useRefinementList } from "react-instantsearch"
 import { ProductListingActiveFilters } from "../ProductListingActiveFilters/ProductListingActiveFilters"
 import useGetAllSearchParams from "@/hooks/useGetAllSearchParams"
+
+export type FacetModel = {
+  count: number
+  value: string
+  label: string
+}
 
 const filters = [
   { label: "5", amount: 40 },
@@ -19,7 +24,7 @@ const filters = [
   { label: "1", amount: 0 },
 ]
 
-export const AlgoliaProductSidebar = () => {
+export const AlgoliaProductSidebar = ({ facets }: { facets: Record<string, FacetModel[]> }) => {
   const [isMobile, setIsMobile] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
 
@@ -47,9 +52,9 @@ export const AlgoliaProductSidebar = () => {
                 allSearchParams.min_price || allSearchParams.max_price
               )}
             />
-            <SizeFilter defaultOpen={Boolean(allSearchParams.size)} />
-            <ColorFilter defaultOpen={Boolean(allSearchParams.color)} />
-            <ConditionFilter defaultOpen={Boolean(allSearchParams.condition)} />
+            <SizeFilter items={facets["variants.size"]} defaultOpen={Boolean(allSearchParams.size)} />
+            <ColorFilter items={facets["variants.color"]} defaultOpen={Boolean(allSearchParams.color)} />
+            <ConditionFilter items={facets["variants.condition"]} defaultOpen={Boolean(allSearchParams.condition)} />
           </div>
         </Modal>
       )}
@@ -57,20 +62,15 @@ export const AlgoliaProductSidebar = () => {
   ) : (
     <div>
       <PriceFilter />
-      <SizeFilter />
-      <ColorFilter />
-      <ConditionFilter />
+      <SizeFilter items={facets["variants.size"]} />
+      <ColorFilter items={facets["variants.color"]} />
+      <ConditionFilter items={facets["variants.condition"]} />
       {/* <RatingFilter /> */}
     </div>
   )
 }
 
-function ConditionFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
-  const { items } = useRefinementList({
-    attribute: "variants.condition",
-    limit: 100,
-    operator: "or",
-  })
+function ConditionFilter({ defaultOpen = true, items }: { defaultOpen?: boolean, items: FacetModel[]}) {
   const { updateFilters, isFilterActive } = useFilters("condition")
 
   const selectHandler = (option: string) => {
@@ -79,7 +79,7 @@ function ConditionFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
   return (
     <Accordion heading="Condition" defaultOpen={defaultOpen}>
       <ul className="px-4">
-        {items.map(({ label, count }) => (
+        {items && Object.entries(items).map(([ label, count ]) => (
           <li key={label} className="mb-4">
             <FilterCheckboxOption
               checked={isFilterActive(label)}
@@ -94,14 +94,7 @@ function ConditionFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
   )
 }
 
-function ColorFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
-  const { items } = useRefinementList({
-    attribute: "variants.color",
-    limit: 100,
-    operator: "and",
-    escapeFacetValues: false,
-    sortBy: ["isRefined", "count", "name"],
-  })
+function ColorFilter({ defaultOpen = true, items }: { defaultOpen?: boolean, items: FacetModel[] }) {
   const { updateFilters, isFilterActive } = useFilters("color")
 
   const selectHandler = (option: string) => {
@@ -110,7 +103,7 @@ function ColorFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
   return (
     <Accordion heading="Color" defaultOpen={defaultOpen}>
       <ul className="px-4">
-        {items.map(({ label, count }) => (
+        {items && Object.entries(items).map(([ label, count ]) => (
           <li key={label} className="mb-4 flex items-center justify-between">
             <FilterCheckboxOption
               checked={isFilterActive(label)}
@@ -132,12 +125,7 @@ function ColorFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
   )
 }
 
-function SizeFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
-  const { items } = useRefinementList({
-    attribute: "variants.size",
-    limit: 100,
-    operator: "or",
-  })
+function SizeFilter({ defaultOpen = true, items }: { defaultOpen?: boolean, items: FacetModel[] }) {
   const { updateFilters, isFilterActive } = useFilters("size")
 
   const selectSizeHandler = (size: string) => {
@@ -147,7 +135,7 @@ function SizeFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
   return (
     <Accordion heading="Size" defaultOpen={defaultOpen}>
       <ul className="grid grid-cols-4 mt-2 gap-2">
-        {items.map(({ label }) => (
+        {items && Object.entries(items).map(([label]) => (
           <li key={label} className="mb-4">
             <Chip
               selected={isFilterActive(label)}
@@ -174,12 +162,16 @@ function PriceFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
     setMax(searchParams.get("max_price") || "")
   }, [searchParams])
 
-  const updateMinPriceHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const updateMinPriceHandler = (
+    e: React.FormEvent<HTMLFormElement> | React.FocusEvent<HTMLInputElement>
+  ) => {
     e.preventDefault()
     updateSearchParams("min_price", min)
   }
 
-  const updateMaxPriceHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const updateMaxPriceHandler = (
+    e: React.FormEvent<HTMLFormElement> | React.FocusEvent<HTMLInputElement>
+  ) => {
     e.preventDefault()
     updateSearchParams("max_price", max)
   }
@@ -193,9 +185,7 @@ function PriceFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
             value={min}
             onBlur={(e) => {
               setTimeout(() => {
-                updateMinPriceHandler(
-                  e as unknown as React.FormEvent<HTMLFormElement>
-                )
+                updateMinPriceHandler(e)
               }, 500)
             }}
             type="number"
@@ -209,9 +199,7 @@ function PriceFilter({ defaultOpen = true }: { defaultOpen?: boolean }) {
             onChange={(e) => setMax(e.target.value)}
             onBlur={(e) => {
               setTimeout(() => {
-                updateMaxPriceHandler(
-                  e as unknown as React.FormEvent<HTMLFormElement>
-                )
+                updateMaxPriceHandler(e)
               }, 500)
             }}
             value={max}

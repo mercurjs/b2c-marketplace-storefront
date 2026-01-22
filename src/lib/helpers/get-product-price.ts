@@ -1,7 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { getPercentageDiff } from "./get-precentage-diff"
 import { convertToLocale } from "./money"
-import { BaseHit, Hit } from "instantsearch.js"
 
 export const getPricesForVariant = (variant: any) => {
   if (
@@ -69,7 +68,7 @@ export function getProductPrice({
   product,
   variantId,
 }: {
-  product: Hit<HttpTypes.StoreProduct> | Partial<Hit<BaseHit>>
+  product: HttpTypes.StoreProduct
   variantId?: string
 }) {
   if (!product || !product.id) {

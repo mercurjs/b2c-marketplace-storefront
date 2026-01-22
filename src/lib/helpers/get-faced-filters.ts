@@ -1,4 +1,3 @@
-import { FacetFilters } from "algoliasearch/lite"
 import { ReadonlyURLSearchParams } from "next/navigation"
 
 const getOption = (label: string) => {
