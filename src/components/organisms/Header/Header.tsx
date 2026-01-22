@@ -35,8 +35,8 @@ export const Header = async ({ locale } : {
     parentCategories: HttpTypes.StoreProductCategory[]
   }
   return (
-    <header>
-      <div className="flex py-2 lg:px-8 px-4 md:px-5">
+    <header data-testid="header">
+      <div className="flex py-2 lg:px-8 px-4 md:px-5" data-testid="header-top">
         <div className="flex items-center lg:w-1/3">
           <MobileNavbar
             parentCategories={parentCategories}
@@ -48,7 +48,7 @@ export const Header = async ({ locale } : {
           />
         </div>
         <div className="flex lg:justify-center lg:w-1/3 items-center pl-4 lg:pl-0">
-          <LocalizedClientLink href="/" className="text-2xl font-bold">
+          <LocalizedClientLink href="/" className="text-2xl font-bold" data-testid="header-logo-link">
             <Image
               src="/Logo.svg"
               width={126}
@@ -58,15 +58,15 @@ export const Header = async ({ locale } : {
             />
           </LocalizedClientLink>
         </div>
-        <div className="flex items-center justify-end gap-2 lg:gap-4 w-full lg:w-1/3 py-2">
+        <div className="flex items-center justify-end gap-2 lg:gap-4 w-full lg:w-1/3 py-2" data-testid="header-actions">
           <CountrySelector regions={regions} />
           {isLoggedIn && <MessageButton />}
           <UserDropdown isLoggedIn={isLoggedIn} />
           {isLoggedIn && (
-            <LocalizedClientLink href="/user/wishlist" className="relative">
+            <LocalizedClientLink href="/user/wishlist" className="relative" data-testid="header-wishlist-link">
               <HeartIcon size={20} />
               {Boolean(wishlistCount) && (
-                <Badge className="absolute -top-2 -right-2 w-4 h-4 p-0">
+                <Badge className="absolute -top-2 -right-2 w-4 h-4 p-0" data-testid="wishlist-count-badge">
                   {wishlistCount}
                 </Badge>
               )}

@@ -90,6 +90,7 @@ export const CategoryNavbar = ({
       <nav
         className="flex md:items-center flex-col md:flex-row md:overflow-x-auto md:scrollbar-hide md:max-w-full gap-2"
         aria-label="Category navigation"
+        data-testid="category-navbar"
       >
         <LocalizedClientLink
           href="/categories"
@@ -97,6 +98,7 @@ export const CategoryNavbar = ({
           className={cn(
             "label-md uppercase px-2 my-1 md:my-0 flex items-center justify-between md:flex-shrink-0 text-primary"
           )}
+          data-testid="category-link-all-products"
         >
           All Products
         </LocalizedClientLink>
@@ -121,6 +123,7 @@ export const CategoryNavbar = ({
                   "label-md uppercase px-2 py-1 my-3 md:my-0 flex items-center justify-between md:whitespace-nowrap text-primary relative z-10",
                   isActive && "md:border-b md:border-primary"
                 )}
+                data-testid={`category-link-${handle}`}
               >
                 {name}
                 {hasChildren && (
