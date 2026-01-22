@@ -11,8 +11,8 @@
   "dependencies": {
     "@headlessui/react": "^2.2.1",
     "@hookform/resolvers": "^3.10.0",
-    "@medusajs/js-sdk": "^2.2.0",
-    "@medusajs/ui": "^4.0.7",
+    "@medusajs/js-sdk": "^2.12.5",
+    "@medusajs/ui": "^4.0.33",
     "@stripe/react-stripe-js": "^3.7.0",
     "@stripe/stripe-js": "^7.1.0",
     "@talkjs/react": "^0.1.11",
@@ -69,5 +69,6 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
