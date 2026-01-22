@@ -85,18 +85,19 @@ const Form = () => {
   const authMessage = getAuthMessage();
 
   return (
-    <main className="container">
+    <main className="container" data-testid="login-page">
       <div className="mx-auto mt-6 w-full max-w-xl space-y-4">
         {authMessage && (
           <Alert
             title={authMessage}
             className="w-full"
             icon
+            data-testid="login-auth-alert"
           />
         )}
-        <div className="rounded-sm border p-4">
+        <div className="rounded-sm border p-4" data-testid="login-form-container">
           <h1 className="heading-md mb-8 uppercase text-primary">Log in</h1>
-          <form onSubmit={handleSubmit(submit)}>
+          <form onSubmit={handleSubmit(submit)} data-testid="login-form">
             <div className="space-y-4">
               <LabeledInput
                 label="E-mail"
@@ -105,6 +106,7 @@ const Form = () => {
                   (errors.email as FieldError) ||
                   (isAuthError ? ({ message: '' } as FieldError) : undefined)
                 }
+                data-testid="login-email-input"
                 {...register('email', {
                   onChange: clearApiError
                 })}
@@ -117,19 +119,21 @@ const Form = () => {
                   (errors.password as FieldError) ||
                   (isAuthError ? ({ message: '' } as FieldError) : undefined)
                 }
+                data-testid="login-password-input"
                 {...register('password', {
                   onChange: clearApiError
                 })}
               />
             </div>
 
-            <Link href="/user/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4">
+            <Link href="/user/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4" data-testid="login-forgot-password-link">
               Forgot your password?
             </Link>
 
             <Button
               className="mt-8 w-full uppercase"
               disabled={isSubmitting}
+              data-testid="login-submit-button"
             >
               Log in
             </Button>
@@ -140,7 +144,7 @@ const Form = () => {
           <h2 className="heading-md mb-4 uppercase text-primary">
             Don&apos;t have an account yet?
           </h2>
-          <Link href="/register">
+          <Link href="/register" data-testid="login-register-link">
             <Button
               variant="tonal"
               className="mt-8 flex w-full justify-center uppercase"

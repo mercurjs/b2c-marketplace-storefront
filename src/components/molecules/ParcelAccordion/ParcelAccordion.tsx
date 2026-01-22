@@ -22,16 +22,16 @@ export const ParcelAccordion = ({
 }) => {
   return (
     <>
-      <div className="grid grid-cols-2 sm:grid-cols-5 text-secondary border bg-component-secondary py-6 px-4 rounded-sm w-full">
+      <div className="grid grid-cols-2 sm:grid-cols-5 text-secondary border bg-component-secondary py-6 px-4 rounded-sm w-full" data-testid={`order-${orderId}`}>
         <div className="sm:col-span-4 flex flex-col lg:flex-row lg:items-center justify-between lg:gap-4 sm:pr-10">
-          <h2 className="heading-sm truncate">ORDER SET {orderDisplayId}</h2>
-          <h2 className="label-md">
+          <h2 className="heading-sm truncate" data-testid="order-display-id">ORDER SET {orderDisplayId}</h2>
+          <h2 className="label-md" data-testid="order-date">
             Order date:{" "}
             <span className="text-primary lg:block xl:inline-block">
               {format(createdAt || "", "yyyy-MM-dd")}
             </span>
           </h2>
-          <h2 className="label-md">
+          <h2 className="label-md" data-testid="order-total">
             Total:{" "}
             <span className="text-primary lg:block xl:inline-block">
               {convertToLocale({ amount: total, currency_code })}
@@ -40,14 +40,14 @@ export const ParcelAccordion = ({
         </div>
         <div className="col-span-1 flex justify-end items-center gap-4">
           <LocalizedClientLink href={`/user/orders/${orderId}`}>
-            <Button variant="tonal">
+            <Button variant="tonal" data-testid="order-view-button">
               <span className="label-md text-primary">VIEW ORDER</span>
             </Button>
           </LocalizedClientLink>
         </div>
       </div>
       <div className="mb-4">
-        <ul className="w-full">
+        <ul className="w-full" data-testid="order-items-list">
           {orders.map((order, index) => (
             <ParcelAccordionItems
               key={order.id}
