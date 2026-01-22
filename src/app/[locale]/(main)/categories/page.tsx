@@ -30,7 +30,7 @@ export async function generateMetadata({
     const regions = await listRegions()
     const locales = Array.from(
       new Set(
-        (regions || []).flatMap((r) => r.countries?.map((c) => c.iso_2) || [])
+        (regions || []).flatMap((r) => r.countries?.map((c: { iso_2: string }) => c.iso_2) || [])
       )
     ) as string[]
     languages = locales.reduce<Record<string, string>>((acc, code) => {
