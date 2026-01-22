@@ -20,15 +20,15 @@ export const ProductVariants = ({
   }
 
   return (
-    <div className="my-4 space-y-2">
+    <div className="my-4 space-y-2" data-testid="product-variants">
       {(product.options || []).map(
         ({ id, title, values }: HttpTypes.StoreProductOption) => (
-          <div key={id}>
+          <div key={id} data-testid={`product-variant-${title.toLowerCase()}`}>
             <span className="label-md text-secondary">{title}: </span>
-            <span className="label-md text-primary">
+            <span className="label-md text-primary" data-testid={`product-variant-selected-${title.toLowerCase()}`}>
               {selectedVariant[title.toLowerCase()]}
             </span>
-            <div className="flex gap-2 mt-2">
+            <div className="flex gap-2 mt-2" data-testid={`product-variant-options-${title.toLowerCase()}`}>
               {(values || []).map(
                 ({
                   id,
@@ -42,6 +42,7 @@ export const ProductVariants = ({
                     onSelect={() =>
                       setOptionValue(title.toLowerCase(), value || "")
                     }
+                    data-testid={`product-variant-chip-${title.toLowerCase()}-${value?.toLowerCase().replace(/\s+/g, '-')}`}
                   />
                 )
               )}

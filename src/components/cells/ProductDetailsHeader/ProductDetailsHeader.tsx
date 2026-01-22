@@ -123,28 +123,28 @@ export const ProductDetailsHeader = ({
   const isAddToCartDisabled = !variantStock || !variantHasPrice || !hasAnyPrice || isVariantStockMaxLimitReached
 
   return (
-    <div className="border rounded-sm p-5">
+    <div className="border rounded-sm p-5" data-testid="product-details-header">
       <div className="flex justify-between">
         <div>
           <h2 className="label-md text-secondary">
             {/* {product?.brand || "No brand"} */}
           </h2>
-          <h1 className="heading-lg text-primary">{product.title}</h1>
-          <div className="mt-2 flex gap-2 items-center">
+          <h1 className="heading-lg text-primary" data-testid="product-title">{product.title}</h1>
+          <div className="mt-2 flex gap-2 items-center" data-testid="product-price-container">
             {hasAnyPrice && variantPrice ? (
               <>
-                <span className="heading-md text-primary">
+                <span className="heading-md text-primary" data-testid="product-price-current">
                   {variantPrice.calculated_price}
                 </span>
                 {variantPrice.calculated_price_number !==
                   variantPrice.original_price_number && (
-                  <span className="label-md text-secondary line-through">
+                  <span className="label-md text-secondary line-through" data-testid="product-price-original">
                     {variantPrice.original_price}
                   </span>
                 )}
               </>
             ) : (
-              <span className="label-md text-secondary pt-2 pb-4">
+              <span className="label-md text-secondary pt-2 pb-4" data-testid="product-price-unavailable">
                 Not available in your region
               </span>
             )}
@@ -170,6 +170,7 @@ export const ProductDetailsHeader = ({
         loading={isAddingItem}
         className="w-full uppercase mb-4 py-3 flex justify-center"
         size="large"
+        data-testid="product-add-to-cart-button"
       >
         {!hasAnyPrice
           ? "NOT AVAILABLE IN YOUR REGION"
