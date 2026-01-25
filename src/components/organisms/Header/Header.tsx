@@ -37,7 +37,7 @@ export const Header = async ({ locale } : {
   return (
     <header>
       <div className="flex py-2 lg:px-8 px-4 md:px-5">
-        <div className="flex items-center lg:w-1/3">
+        <div className="flex items-center">
           <MobileNavbar
             parentCategories={parentCategories}
             categories={categories}
