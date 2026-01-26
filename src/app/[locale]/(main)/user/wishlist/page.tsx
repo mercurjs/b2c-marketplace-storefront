@@ -26,28 +26,28 @@ export default async function Wishlist({ params }: { params: Promise<{ locale: s
   }
 
   return (
-    <main className="container">
+    <main className="container" data-testid="wishlist-page">
       <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-4 md:gap-8">
         <UserNavigation />
-        <div className="space-y-8 md:col-span-3">
+        <div className="space-y-8 md:col-span-3" data-testid="wishlist-container">
           {isEmpty(wishlist?.products) ? (
-            <div className="mx-auto flex w-96 flex-col items-center justify-center">
-              <h2 className="heading-lg mb-2 uppercase text-primary">Wishlist</h2>
-              <p className="mb-6 text-lg text-secondary">Your wishlist is currently empty.</p>
+            <div className="mx-auto flex w-96 flex-col items-center justify-center" data-testid="wishlist-empty-state">
+              <h2 className="heading-lg mb-2 uppercase text-primary" data-testid="wishlist-empty-heading">Wishlist</h2>
+              <p className="mb-6 text-lg text-secondary" data-testid="wishlist-empty-description">Your wishlist is currently empty.</p>
               <LocalizedClientLink
                 href="/categories"
                 className="w-full"
               >
-                <Button className="w-full">Explore</Button>
+                <Button className="w-full" data-testid="wishlist-explore-button">Explore</Button>
               </LocalizedClientLink>
             </div>
           ) : (
             <div className="flex flex-col gap-6">
-              <h2 className="heading-lg uppercase text-primary">Wishlist</h2>
+              <h2 className="heading-lg uppercase text-primary" data-testid="wishlist-heading">Wishlist</h2>
               <div className="flex items-center justify-between">
-                <p>{count} listings</p>
+                <p data-testid="wishlist-count">{count} listings</p>
               </div>
-              <div className="flex flex-wrap gap-4 max-md:justify-center">
+              <div className="flex flex-wrap gap-4 max-md:justify-center" data-testid="wishlist-products-list">
                 {wishlist?.products?.map(product => (
                   <WishlistItem
                     key={product.id}
@@ -59,6 +59,7 @@ export default async function Wishlist({ params }: { params: Promise<{ locale: s
                     }
                     wishlist={wishlist}
                     user={user}
+                    testIdPrefix={`wishlist-item-${product.id}`}
                   />
                 ))}
               </div>

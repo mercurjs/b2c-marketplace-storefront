@@ -1,97 +1,100 @@
-"use client"
-import {
-  FieldError,
-  FieldValues,
-  FormProvider,
-  useForm,
-  useFormContext,
-} from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { profileDetailsSchema, ProfileDetailsFormData } from "./schema"
-import { LabeledInput } from "@/components/cells"
-import { Button } from "@/components/atoms"
-import { updateCustomer } from "@/lib/data/customer"
-import { HttpTypes } from "@medusajs/types"
-import { useState } from "react"
+'use client';
+
+import { FC, useState } from 'react';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { HttpTypes } from '@medusajs/types';
+import { FieldError, FieldValues, FormProvider, useForm, useFormContext } from 'react-hook-form';
+
+import { Button } from '@/components/atoms';
+import { LabeledInput } from '@/components/cells';
+import { updateCustomer } from '@/lib/data/customer';
+
+import { ProfileDetailsFormData, profileDetailsSchema } from './schema';
 
 interface Props {
-  defaultValues?: ProfileDetailsFormData
-  handleClose?: () => void
+  defaultValues?: ProfileDetailsFormData;
+  handleClose?: () => void;
 }
 
-export const ProfileDetailsForm: React.FC<Props> = ({
-  defaultValues,
-  ...props
-}) => {
+export const ProfileDetailsForm: FC<Props> = ({ defaultValues, ...props }) => {
   const methods = useForm<ProfileDetailsFormData>({
     resolver: zodResolver(profileDetailsSchema),
     defaultValues: defaultValues || {
-      firstName: "",
-      lastName: "",
-      phone: "",
-      email: "",
-    },
-  })
+      firstName: '',
+      lastName: '',
+      phone: '',
+      email: ''
+    }
+  });
 
   return (
     <FormProvider {...methods}>
       <Form {...props} />
     </FormProvider>
-  )
-}
+  );
+};
 
 const Form: React.FC<Props> = ({ handleClose }) => {
-  const [error, setError] = useState<string>()
+  const [error, setError] = useState<string>();
   const {
     handleSubmit,
     register,
-    formState: { errors },
-  } = useFormContext()
+    formState: { errors }
+  } = useFormContext();
 
   const submit = async (data: FieldValues) => {
     const body = {
       first_name: data.firstName,
       last_name: data.lastName,
-      phone: data.phone,
-    }
+      phone: data.phone
+    };
     try {
-      await updateCustomer(body as HttpTypes.StoreUpdateCustomer)
+      await updateCustomer(body as HttpTypes.StoreUpdateCustomer);
     } catch (err) {
-      setError((err as Error).message)
-      return
+      setError((err as Error).message);
+      return;
     }
 
-    setError("")
-    handleClose && handleClose()
-  }
+    setError('');
+    handleClose && handleClose();
+  };
 
   return (
-    <form onSubmit={handleSubmit(submit)}>
-      <div className="px-4 space-y-4">
-        <div className="max-w-full grid grid-cols-2 items-top gap-4 mb-4">
+    <form onSubmit={handleSubmit(submit)} data-testid="profile-details-form">
+      <div className="space-y-4 px-4">
+        <div className="items-top mb-4 grid max-w-full grid-cols-2 gap-4">
           <LabeledInput
             label="First name"
             placeholder="Type first name"
             error={errors.firstName as FieldError}
-            {...register("firstName")}
+            data-testid="profile-details-form-first-name-input"
+            {...register('firstName')}
           />
           <LabeledInput
             label="Last name"
             placeholder="Type last name"
             error={errors.lastName as FieldError}
-            {...register("lastName")}
+            data-testid="profile-details-form-last-name-input"
+            {...register('lastName')}
           />
           <LabeledInput
             label="Phone"
             placeholder="Type phone number"
             error={errors.phone as FieldError}
-            {...register("phone")}
+            data-testid="profile-details-form-phone-input"
+            {...register('phone')}
           />
-          <LabeledInput label="Email" disabled {...register("email")} />
+          <LabeledInput
+            label="Email"
+            disabled
+            data-testid="profile-details-form-email-input"
+            {...register('email')}
+          />
         </div>
-        {error && <p className="label-md text-negative">{error}</p>}
-        <Button className="w-full ">Save</Button>
+        {error && <p className="label-md text-negative" data-testid="profile-details-form-error">{error}</p>}
+        <Button className="w-full" data-testid="profile-details-form-submit-button">Save</Button>
       </div>
     </form>
-  )
-}
+  );
+};
