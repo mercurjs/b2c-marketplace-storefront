@@ -18,11 +18,15 @@ export const SingleOrderReturn = ({
   user,
   defaultOpen,
   returnReason,
+  priceTestId,
+  testIdPrefix,
 }: {
   item: any
   user: any
   defaultOpen: boolean
   returnReason: any[]
+  priceTestId?: string
+  testIdPrefix?: string
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
   const [height, setHeight] = useState(0)
@@ -64,24 +68,24 @@ export const SingleOrderReturn = ({
 
   return (
     <>
-      <Card className="bg-secondary p-4 flex justify-between mt-8">
-        <Heading level="h2">Order: #{item.order.display_id}</Heading>
+      <Card className="bg-secondary p-4 flex justify-between mt-8" data-testid={testIdPrefix ? `${testIdPrefix}-header` : undefined}>
+        <Heading level="h2" data-testid={testIdPrefix ? `${testIdPrefix}-order-id` : undefined}>Order: #{item.order.display_id}</Heading>
         <div className="flex flex-col gap-2 items-center">
-          <p className="label-sm text-secondary">
+          <p className="label-sm text-secondary" data-testid={testIdPrefix ? `${testIdPrefix}-requested-date` : undefined}>
             Return requested date:{" "}
             {format(item.line_items[0].created_at, "MMM dd, yyyy")}
           </p>
         </div>
       </Card>
-      <Card className="p-0">
+      <Card className="p-0" data-testid={testIdPrefix ? `${testIdPrefix}-details` : undefined}>
         <div
           className="p-4 flex justify-between items-center cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <Heading level="h3" className="uppercase label-md !font-semibold">
+          <Heading level="h3" className="uppercase label-md !font-semibold" data-testid={testIdPrefix ? `${testIdPrefix}-status` : undefined}>
             {item.status}
           </Heading>
-          <p className="label-sm text-secondary flex gap-2">
+          <p className="label-sm text-secondary flex gap-2" data-testid={testIdPrefix ? `${testIdPrefix}-items-count` : undefined}>
             {item.line_items.length}{" "}
             {item.line_items.length > 1 ? "items" : "item"}
             <CollapseIcon
@@ -111,7 +115,7 @@ export const SingleOrderReturn = ({
               <Avatar
                 src={item.order.seller.photo || "/talkjs-placeholder.jpg"}
               />
-              <p className="label-lg text-primary">{item.order.seller.name}</p>
+              <p className="label-lg text-primary" data-testid={testIdPrefix ? `${testIdPrefix}-seller-name` : undefined}>{item.order.seller.name}</p>
             </div>
             <Chat
               user={user}
@@ -123,21 +127,21 @@ export const SingleOrderReturn = ({
           <Divider />
           <div className="p-4 flex justify-between w-full">
             <div className="flex flex-col gap-4 w-full">
-              {filteredItems.map((item: any) => (
-                <div key={item.id} className="flex items-center gap-2">
+              {filteredItems.map((filteredItem: any) => (
+                <div key={filteredItem.id} className="flex items-center gap-2" data-testid={testIdPrefix ? `${testIdPrefix}-item-${filteredItem.id}` : undefined}>
                   <div className="flex items-center gap-4 w-1/2">
                     <div className="rounded-sm overflow-hidden border">
-                      {item.thumbnail ? (
+                      {filteredItem.thumbnail ? (
                         <Image
-                          src={item.thumbnail}
-                          alt={item.product_title}
+                          src={filteredItem.thumbnail}
+                          alt={filteredItem.product_title}
                           width={60}
                           height={60}
                         />
                       ) : (
                         <Image
                           src="/images/placeholder.svg"
-                          alt={item.product_title}
+                          alt={filteredItem.product_title}
                           width={60}
                           height={60}
                           className="scale-50 opacity-25"
@@ -145,21 +149,21 @@ export const SingleOrderReturn = ({
                       )}
                     </div>
                     <div>
-                      <p className="label-md !font-semibold text-primary">
-                        {item.product_title}
+                      <p className="label-md !font-semibold text-primary" data-testid={testIdPrefix ? `${testIdPrefix}-item-${filteredItem.id}-title` : undefined}>
+                        {filteredItem.product_title}
                       </p>
-                      <p className="label-md text-secondary">{item.subtitle}</p>
+                      <p className="label-md text-secondary" data-testid={testIdPrefix ? `${testIdPrefix}-item-${filteredItem.id}-subtitle` : undefined}>{filteredItem.subtitle}</p>
                     </div>
                   </div>
                   <div className="flex justify-between w-1/2">
-                    <p className="label-md !font-semibold text-primary">
+                    <p className="label-md !font-semibold text-primary" data-testid={testIdPrefix ? `${testIdPrefix}-item-${filteredItem.id}-reason` : undefined}>
                       <Badge className="bg-primary text-primary border rounded-sm">
-                        {item.reason_id || "No reason provided"}
+                        {filteredItem.reason_id || "No reason provided"}
                       </Badge>
                     </p>
-                    <p className="label-md !font-semibold text-primary">
+                    <p className="label-md !font-semibold text-primary" data-testid={testIdPrefix ? `${testIdPrefix}-item-${filteredItem.id}-price` : undefined}>
                       {convertToLocale({
-                        amount: item.unit_price,
+                        amount: filteredItem.unit_price,
                         currency_code,
                       })}
                     </p>
@@ -171,7 +175,7 @@ export const SingleOrderReturn = ({
           <Divider />
           <div className="p-4 flex justify-between">
             <p className="label-md text-secondary">Total:</p>
-            <p className="label-md !font-semibold text-primary">
+            <p className="label-md !font-semibold text-primary" data-testid={priceTestId}>
               {convertToLocale({
                 amount: total,
                 currency_code,

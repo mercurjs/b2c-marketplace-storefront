@@ -65,13 +65,13 @@ export const Addresses = ({
         )}
         data-testid="addresses-container"
       >
-        <h1 className="heading-md uppercase">Addresses</h1>
+        <h1 className="heading-md uppercase" data-testid="addresses-heading">Addresses</h1>
         {isEmpty(user.addresses) ? (
           <div className="text-center" data-testid="addresses-empty-state">
-            <h3 className="heading-lg text-primary uppercase">
+            <h3 className="heading-lg text-primary uppercase" data-testid="addresses-empty-heading">
               No saved shipping addresses
             </h3>
-            <p className="text-lg text-secondary mt-2">
+            <p className="text-lg text-secondary mt-2" data-testid="addresses-empty-description">
               You currently have no saved shipping addresses. <br />
               Add an address to make your checkout process quicker and easier.
             </p>
@@ -89,16 +89,16 @@ export const Addresses = ({
                   data-testid={`address-card-${address.id}`}
                 >
                   <div className="flex flex-col ">
-                    <h4 className="label-md text-primary">
+                    <h4 className="label-md text-primary" data-testid={`address-${address.id}-name`}>
                       {address.address_name}
                     </h4>
-                    <p className="label-md text-secondary">
+                    <p className="label-md text-secondary" data-testid={`address-${address.id}-full-name`}>
                       {`${address.first_name} ${address.last_name}`}
                     </p>
                     {address.company && (
-                      <p className="label-md text-secondary">{address.company}</p>
+                      <p className="label-md text-secondary" data-testid={`address-${address.id}-company`}>{address.company}</p>
                     )}
-                    <p className="label-md text-secondary">
+                    <p className="label-md text-secondary" data-testid={`address-${address.id}-full-address`}>
                       {`${address.address_1}, ${address.postal_code} ${
                         address.city
                       }${address.province ? `, ${address.province}` : ""}${`, ${
@@ -108,7 +108,7 @@ export const Addresses = ({
                         )?.display_name || address.country_code?.toUpperCase()
                       }`}`}
                     </p>
-                    <p className="label-md text-secondary">
+                    <p className="label-md text-secondary" data-testid={`address-${address.id}-contact`}>
                       {`${user.email}, ${address.phone || user.phone}`}
                     </p>
                   </div>
