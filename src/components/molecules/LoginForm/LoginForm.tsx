@@ -126,7 +126,7 @@ const Form = () => {
               />
             </div>
 
-            <Link href="/user/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4" data-testid="login-forgot-password-link">
+            <Link href="/forgot-password" className="block text-right label-md uppercase text-action-on-secondary mt-4" data-testid="login-forgot-password-link">
               Forgot your password?
             </Link>
 
