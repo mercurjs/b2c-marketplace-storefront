@@ -50,7 +50,7 @@ const Form = () => {
     reset({ email: '' });
 
     toast.success({
-      title: `A password reset has been requested for ${data.email}. Check your inbox and spam folder. Remember, the link is only active for one hour.`
+      title: `Password reset was requested. If an account exists for ${data.email}, you’ll receive an email with a reset link. Check your inbox and spam folder - the link is valid for one hour.`
     });
   };
 
