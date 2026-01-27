@@ -26,10 +26,9 @@ export const ProductDetails = async ({
 }) => {
   const user = await retrieveCustomer()
 
-  let wishlist: Wishlist[] = []
+  let wishlist: Wishlist = {products: []}
   if (user) {
-    const response = await getUserWishlists()
-    wishlist = response.wishlists
+    wishlist = await getUserWishlists({countryCode: locale})
   }
 
   return (

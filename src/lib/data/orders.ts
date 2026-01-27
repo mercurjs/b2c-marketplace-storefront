@@ -115,6 +115,7 @@ export const listOrders = async (
         HttpTypes.StoreOrder & {
           seller: { id: string; name: string; reviews?: any[] };
           reviews: any[];
+          order_set: { id: string };
         }
       >;
     }>(`/store/orders`, {
@@ -131,7 +132,7 @@ export const listOrders = async (
       next,
       cache: 'no-cache'
     })
-    .then(({ orders }) => orders)
+    .then(({ orders }) => orders.filter(order => order.order_set))
     .catch(err => medusaError(err));
 };
 

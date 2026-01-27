@@ -26,11 +26,11 @@ export const OrderReturnRequests = ({
 
   if (isEmpty(processedReturns)) {
     return (
-      <div className="mt-8">
-        <Heading level="h2" className="uppercase text-center heading-lg">
+      <div className="mt-8" data-testid="order-return-requests-empty-state">
+        <Heading level="h2" className="uppercase text-center heading-lg" data-testid="no-returns-heading">
           No returns
         </Heading>
-        <p className="text-center text-secondary w-96 mt-8 mx-auto">
+        <p className="text-center text-secondary w-96 mt-8 mx-auto" data-testid="no-returns-description">
           {
             "You haven't requested any returns yet. Once you request a return, it will appear here."
           }
@@ -48,6 +48,8 @@ export const OrderReturnRequests = ({
           user={user}
           defaultOpen={currentReturn === item.id}
           returnReason={returnReasons}
+          priceTestId={`return-${item.id}-price`}
+          testIdPrefix={`return-${item.id}`}
         />
       ))}
       <div className="mt-8 flex justify-center">

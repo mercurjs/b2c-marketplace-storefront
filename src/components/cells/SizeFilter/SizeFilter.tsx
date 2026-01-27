@@ -43,13 +43,13 @@ export const SizeFilter = () => {
     updateFilters(size)
   }
   return (
-    <Accordion heading="Size">
+    <Accordion heading="Size" data-testid="filter-size">
       {/* <SelectField
         options={sizeType}
         selected={size_region}
         selectOption={selectSizeRegionHandler}
       /> */}
-      <ul className="grid grid-cols-3 mt-2 gap-2">
+      <ul className="grid grid-cols-3 mt-2 gap-2" data-testid="filter-size-options">
         {sizeOptions.map((option) => (
           <li key={option}>
             <Chip
@@ -57,6 +57,7 @@ export const SizeFilter = () => {
               onSelect={() => selectSizeHandler(option)}
               value={option}
               className="w-full !justify-center !py-2 !font-normal"
+              data-testid={`filter-size-chip-${option.toLowerCase().replace(/\s+/g, '-')}`}
             />
           </li>
         ))}

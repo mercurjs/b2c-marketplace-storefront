@@ -19,8 +19,8 @@ export const ConditionFilter = () => {
   }
 
   return (
-    <Accordion heading="Condition">
-      <ul className="px-4">
+    <Accordion heading="Condition" data-testid="filter-condition">
+      <ul className="px-4" data-testid="filter-condition-options">
         {filters.map(({ label, amount }) => (
           <li key={label} className="mb-4">
             <FilterCheckboxOption
@@ -29,6 +29,7 @@ export const ConditionFilter = () => {
               onCheck={selectHandler}
               label={label}
               amount={amount}
+              data-testid={`filter-condition-checkbox-${label.toLowerCase().replace(/\s+/g, '-')}`}
             />
           </li>
         ))}

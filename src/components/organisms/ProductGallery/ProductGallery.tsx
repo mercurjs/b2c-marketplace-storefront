@@ -6,8 +6,10 @@ export const ProductGallery = ({
 }: {
   images: HttpTypes.StoreProduct['images'];
 }) => {
+  if (!images || images.length === 0) return null;
+   
   return (
-    <div>
+    <div data-testid="product-gallery">
       <GalleryCarousel images={images} />
     </div>
   );

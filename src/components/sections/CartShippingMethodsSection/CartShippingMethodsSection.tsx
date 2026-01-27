@@ -68,6 +68,8 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
 
   const isOpen = searchParams.get('step') === 'delivery';
 
+  console.log(availableShippingMethods);
+
   const _shippingMethods = availableShippingMethods?.filter(
     sm => sm.rules?.find((rule: any) => rule.attribute === 'is_return')?.value !== 'true'
   );
@@ -164,6 +166,10 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
   };
   const isEditEnabled = !isOpen && !!cart?.shipping_methods?.length;
 
+  const filteredGroupedBySellerId = Object.keys(groupedBySellerId || {}).filter(
+    key => groupedBySellerId?.[key]?.[0]?.seller_name
+  );
+
   return (
     <div className="bg-ui-bg-interactive rounded-sm border p-4">
       <div className="mb-6 flex flex-row items-center justify-between">
@@ -190,81 +196,83 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
           <div className="grid">
             <div data-testid="delivery-options-container">
               <div className="pb-8 pt-2 md:pt-0">
-                {Object.keys(groupedBySellerId).map(key => (
-                  <div
-                    key={key}
-                    className="mb-4"
-                  >
-                    <Heading
-                      level="h3"
-                      className="mb-2"
-                    >
-                      {groupedBySellerId[key][0].seller_name}
-                    </Heading>
-                    <Listbox
-                      value={cart.shipping_methods?.[0]?.id}
-                      onChange={value => {
-                        handleSetShippingMethod(value);
-                      }}
-                    >
-                      <div className="relative">
-                        <Listbox.Button
-                          className={clsx(
-                            'text-base-regular relative flex h-12 w-full cursor-default items-center justify-between rounded-lg border bg-component-secondary px-4 text-left focus:outline-none focus-visible:border-gray-300 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300'
-                          )}
+                {filteredGroupedBySellerId.length === 0
+                  ? 'No shipping options available'
+                  : filteredGroupedBySellerId.map(key => (
+                      <div
+                        key={key}
+                        className="mb-4"
+                      >
+                        <Heading
+                          level="h3"
+                          className="mb-2"
                         >
-                          {({ open }) => (
-                            <>
-                              <span className="block truncate">Choose delivery option</span>
-                              <ChevronUpDown
-                                className={clx('transition-rotate duration-200', {
-                                  'rotate-180 transform': open
-                                })}
-                              />
-                            </>
-                          )}
-                        </Listbox.Button>
-                        <Transition
-                          as={Fragment}
-                          leave="transition ease-in duration-100"
-                          leaveFrom="opacity-100"
-                          leaveTo="opacity-0"
+                          {groupedBySellerId[key][0].seller_name}
+                        </Heading>
+                        <Listbox
+                          value={cart.shipping_methods?.[0]?.id}
+                          onChange={value => {
+                            handleSetShippingMethod(value);
+                          }}
                         >
-                          <Listbox.Options
-                            className="text-small-regular border-top-0 absolute z-20 max-h-60 w-full overflow-auto rounded-lg border bg-white focus:outline-none sm:text-sm"
-                            data-testid="shipping-address-options"
-                          >
-                            {groupedBySellerId[key].map((option: any) => (
-                              <Listbox.Option
-                                className="relative cursor-pointer select-none border-b py-4 pl-6 pr-10 hover:bg-gray-50"
-                                value={option.id}
-                                key={option.id}
+                          <div className="relative">
+                            <Listbox.Button
+                              className={clsx(
+                                'text-base-regular relative flex h-12 w-full cursor-default items-center justify-between rounded-lg border bg-component-secondary px-4 text-left focus:outline-none focus-visible:border-gray-300 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300'
+                              )}
+                            >
+                              {({ open }) => (
+                                <>
+                                  <span className="block truncate">Choose delivery option</span>
+                                  <ChevronUpDown
+                                    className={clx('transition-rotate duration-200', {
+                                      'rotate-180 transform': open
+                                    })}
+                                  />
+                                </>
+                              )}
+                            </Listbox.Button>
+                            <Transition
+                              as={Fragment}
+                              leave="transition ease-in duration-100"
+                              leaveFrom="opacity-100"
+                              leaveTo="opacity-0"
+                            >
+                              <Listbox.Options
+                                className="text-small-regular border-top-0 absolute z-20 max-h-60 w-full overflow-auto rounded-lg border bg-white focus:outline-none sm:text-sm"
+                                data-testid="shipping-address-options"
                               >
-                                {option.name}
-                                {' - '}
-                                {option.price_type === 'flat' ? (
-                                  convertToLocale({
-                                    amount: option.amount!,
-                                    currency_code: cart?.currency_code
-                                  })
-                                ) : calculatedPricesMap[option.id] ? (
-                                  convertToLocale({
-                                    amount: calculatedPricesMap[option.id],
-                                    currency_code: cart?.currency_code
-                                  })
-                                ) : isLoadingPrices ? (
-                                  <Loader />
-                                ) : (
-                                  '-'
-                                )}
-                              </Listbox.Option>
-                            ))}
-                          </Listbox.Options>
-                        </Transition>
+                                {groupedBySellerId[key].map((option: any) => (
+                                  <Listbox.Option
+                                    className="relative cursor-pointer select-none border-b py-4 pl-6 pr-10 hover:bg-gray-50"
+                                    value={option.id}
+                                    key={option.id}
+                                  >
+                                    {option.name}
+                                    {' - '}
+                                    {option.price_type === 'flat' ? (
+                                      convertToLocale({
+                                        amount: option.amount!,
+                                        currency_code: cart?.currency_code
+                                      })
+                                    ) : calculatedPricesMap[option.id] ? (
+                                      convertToLocale({
+                                        amount: calculatedPricesMap[option.id],
+                                        currency_code: cart?.currency_code
+                                      })
+                                    ) : isLoadingPrices ? (
+                                      <Loader />
+                                    ) : (
+                                      '-'
+                                    )}
+                                  </Listbox.Option>
+                                ))}
+                              </Listbox.Options>
+                            </Transition>
+                          </div>
+                        </Listbox>
                       </div>
-                    </Listbox>
-                  </div>
-                ))}
+                    ))}
                 {!!cart?.shipping_methods?.length && (
                   <div className="flex flex-col">
                     {cart.shipping_methods?.map(method => (

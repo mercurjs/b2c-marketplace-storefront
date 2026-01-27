@@ -33,7 +33,7 @@ export const SellerTabs = ({
     <div className="mt-8">
       <TabsList list={tabsList} activeTab={tab} />
       <TabsContent value="products" activeTab={tab}>
-        <Suspense fallback={<ProductListingSkeleton />}>
+        <Suspense fallback={<div data-testid="seller-tabs-products-loading"><ProductListingSkeleton /></div>}>
           {!ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
             <ProductListing showSidebar seller_id={seller_id} />
           ) : (
@@ -46,7 +46,7 @@ export const SellerTabs = ({
         </Suspense>
       </TabsContent>
       <TabsContent value="reviews" activeTab={tab}>
-        <Suspense>
+        <Suspense fallback={<div data-testid="seller-tabs-reviews-loading">Loading...</div>}>
           <SellerReviewTab seller_handle={seller_handle} />
         </Suspense>
       </TabsContent>

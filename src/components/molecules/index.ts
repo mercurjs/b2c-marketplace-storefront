@@ -1,42 +1,42 @@
-import { CategoryNavbar } from "./CategoryNavbar/CategoryNavbar"
-import { PrimeCategoryNavbar } from "./PrimeCategoryNavbar/PrimeCategoryNavbar"
-import { SelectField } from "./SelectField/SelectField"
-import { Accordion } from "./Accordion/Accordion"
-import { FilterCheckboxOption } from "./FilterCheckboxOption/FilterCheckboxOption"
-import { NavbarSearch } from "./NavbarSearch/NavbarSearch"
-import { GalleryCarouselItem } from "./GalleryCarouselItem/GalleryCarouselItem"
-import { ProductPageAccordion } from "./ProductPageAccordion/ProductPageAccordion"
-import { SellerReview } from "./SellerReview/SellerReview"
-import { ProductTags } from "./ProductTags/ProductTags"
-import { ProdutMeasurementRow } from "./ProdutMeasurementRow/ProdutMeasurementRow"
-import { ProductCarouselIndicator } from "./ProductCarouselIndicator/ProductCarouselIndicator"
-import { Modal } from "./Modal/Modal"
-import { ReportListingForm } from "./ReportListingForm/ReportListingForm"
-import { SellerInfo } from "./SellerInfo/SellerInfo"
-import { SellerInfoHeader } from "./SellerInfoHeader/SellerInfoHeader"
-import { TabsList } from "./TabsList/TabsList"
-import { TabsContent } from "./TabsContent/TabsContent"
-import { SellerScore } from "./SellerScore/SellerScore"
-import { SellerReviewList } from "./SellerReviewList/SellerReviewList"
-import { ReportSellerForm } from "./ReportSellerForm/ReportSellerForm"
-import { ProductPostedDate } from "./ProductPostedDate/ProductPostedDate"
-import { ProductReportButton } from "./ProductReportButton/ProductReportButton"
-import { ProductVariants } from "./ProductVariants/ProductVariants"
-import { HeaderCategoryNavbar } from "./HeaderCategoryNavbar/HeaderCategoryNavbar"
-import { DeleteCartItemButton } from "./DeleteCartItemButton/DeleteCartItemButton"
-import { Dropdown } from "./Dropdown/Dropdown"
-import { CartDropdownItem } from "./CartDropdownItem/CartDropdownItem"
-import { LoginForm } from "./LoginForm/LoginForm"
-import { RegisterForm } from "./RegisterForm/RegisterForm"
-import { UserNavigation } from "./UserNavigation/UserNavigation"
-import { ParcelAccordion } from "./ParcelAccordion/ParcelAccordion"
-import { AddressForm } from "./AddressForm/AddressForm"
-import { ReviewForm } from "./ReviewForm/ReviewForm"
-import { ProfileDetails } from "./ProfileDetails/ProfileDetails"
-import { ParentCategoryLinks } from "./ParentCategoryLinks/ParentCategoryLinks"
-import ProductListingLoadingView from "./ProductListingLoadingView/ProductListingLoadingView"
-import ProductListingNoResultsView from "./ProductListingNoResultsView/ProductListingNoResultsView"
-import ProductListingProductsView from "./ProductListingProductsView/ProductListingProductsView"
+import { Accordion } from './Accordion/Accordion';
+import { AddressForm } from './AddressForm/AddressForm';
+import { CartDropdownItem } from './CartDropdownItem/CartDropdownItem';
+import { CategoryNavbar } from './CategoryNavbar/CategoryNavbar';
+import { DeleteCartItemButton } from './DeleteCartItemButton/DeleteCartItemButton';
+import { Dropdown } from './Dropdown/Dropdown';
+import { FilterCheckboxOption } from './FilterCheckboxOption/FilterCheckboxOption';
+import { GalleryCarouselItem } from './GalleryCarouselItem/GalleryCarouselItem';
+import { HeaderCategoryNavbar } from './HeaderCategoryNavbar/HeaderCategoryNavbar';
+import { LoginForm } from './LoginForm/LoginForm';
+import { Modal } from './Modal/Modal';
+import { NavbarSearch } from './NavbarSearch/NavbarSearch';
+import { ParcelAccordion } from './ParcelAccordion/ParcelAccordion';
+import { ParentCategoryLinks } from './ParentCategoryLinks/ParentCategoryLinks';
+import { PrimeCategoryNavbar } from './PrimeCategoryNavbar/PrimeCategoryNavbar';
+import { ProductCarouselIndicator } from './ProductCarouselIndicator/ProductCarouselIndicator';
+import ProductListingLoadingView from './ProductListingLoadingView/ProductListingLoadingView';
+import ProductListingNoResultsView from './ProductListingNoResultsView/ProductListingNoResultsView';
+import ProductListingProductsView from './ProductListingProductsView/ProductListingProductsView';
+import { ProductPageAccordion } from './ProductPageAccordion/ProductPageAccordion';
+import { ProductPostedDate } from './ProductPostedDate/ProductPostedDate';
+import { ProductReportButton } from './ProductReportButton/ProductReportButton';
+import { ProductTags } from './ProductTags/ProductTags';
+import { ProductVariants } from './ProductVariants/ProductVariants';
+import { ProdutMeasurementRow } from './ProdutMeasurementRow/ProdutMeasurementRow';
+import { ProfileDetails } from './ProfileDetails/ProfileDetails';
+import { RegisterForm } from './RegisterForm/RegisterForm';
+import { ReportListingForm } from './ReportListingForm/ReportListingForm';
+import { ReportSellerForm } from './ReportSellerForm/ReportSellerForm';
+import { ReviewForm } from './ReviewForm/ReviewForm';
+import { SelectField } from './SelectField/SelectField';
+import { SellerInfo } from './SellerInfo/SellerInfo';
+import { SellerInfoHeader } from './SellerInfoHeader/SellerInfoHeader';
+import { SellerReview } from './SellerReview/SellerReview';
+import { SellerReviewList } from './SellerReviewList/SellerReviewList';
+import { SellerScore } from './SellerScore/SellerScore';
+import { TabsContent } from './TabsContent/TabsContent';
+import { TabsList } from './TabsList/TabsList';
+import { UserNavigation } from './UserNavigation/UserNavigation';
 
 export {
   PrimeCategoryNavbar,
@@ -77,5 +77,5 @@ export {
   ProfileDetails,
   ProductListingLoadingView,
   ProductListingNoResultsView,
-  ProductListingProductsView,
-}
+  ProductListingProductsView
+};

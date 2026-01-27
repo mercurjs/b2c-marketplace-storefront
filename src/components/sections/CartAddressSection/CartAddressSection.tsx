@@ -54,7 +54,7 @@ export const CartAddressSection = ({
   }
 
   return (
-    <div className="border p-4 rounded-sm bg-ui-bg-interactive">
+    <div className="border p-4 rounded-sm bg-ui-bg-interactive" data-testid="checkout-step-address">
       <div className="flex flex-row items-center justify-between mb-6">
         <Heading
           level="h2"
@@ -64,7 +64,7 @@ export const CartAddressSection = ({
         </Heading>
         {!isOpen && isAddress && (
           <Text>
-            <Button onClick={handleEdit} variant="tonal">
+            <Button onClick={handleEdit} variant="tonal" data-testid="checkout-address-edit-button">
               Edit
             </Button>
           </Text>
