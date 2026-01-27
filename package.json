@@ -69,5 +69,6 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
-  }
+  },
+  "packageManager": "yarn@1.22.22"
 }
