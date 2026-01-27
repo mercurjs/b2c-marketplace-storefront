@@ -1,6 +1,6 @@
 import { toast as sonnerToast } from 'sonner';
 
-import { DoneIcon, ErrorIcon } from '@/icons';
+import { DoneIcon, ErrorIcon, CloseIcon } from '@/icons';
 
 export const toast = {
   info: ({ description, title }: { description?: string; title: string }) => {
@@ -14,6 +14,14 @@ export const toast = {
       description,
       duration: 10000,
       icon: <DoneIcon color="rgb(20, 83, 45)" />,
+      cancel: {
+        label: <CloseIcon size={22} color='rgba(9, 9, 9, 1)' className='cursor-pointer ml-auto' />,
+        onClick: () => {}
+      },
+      cancelButtonStyle: {
+        backgroundColor: 'transparent',
+        border: 'none'
+      },
       classNames: {
         icon: 'self-start pt-2',
         toast: 'items-start gap-3',
@@ -25,10 +33,18 @@ export const toast = {
     sonnerToast.error(title, {
       description,
       icon: <ErrorIcon color="rgb(155, 34, 25)" />,
+      cancel: {
+        label: <CloseIcon size={22} color='rgba(9, 9, 9, 1)' className='cursor-pointer ml-auto' />,
+        onClick: () => {}
+      },
+      cancelButtonStyle: {
+        backgroundColor: 'transparent',
+        border: 'none'
+      },
       classNames: {
         icon: 'self-start pt-2',
         toast: 'items-start gap-3',
-        title: 'text-md text-primary'
+        title: 'text-md text-primary',
       }
     });
   }
