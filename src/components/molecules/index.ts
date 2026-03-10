@@ -23,7 +23,9 @@ import { ProductReportButton } from './ProductReportButton/ProductReportButton';
 import { ProductTags } from './ProductTags/ProductTags';
 import { ProductVariants } from './ProductVariants/ProductVariants';
 import { ProdutMeasurementRow } from './ProdutMeasurementRow/ProdutMeasurementRow';
+import { ProfileDeleteAccount } from './ProfileDetails/ProfileDeleteAccount';
 import { ProfileDetails } from './ProfileDetails/ProfileDetails';
+import { ProfilePassword } from './ProfileDetails/ProfilePassword';
 import { RegisterForm } from './RegisterForm/RegisterForm';
 import { ReportListingForm } from './ReportListingForm/ReportListingForm';
 import { ReportSellerForm } from './ReportSellerForm/ReportSellerForm';
@@ -74,7 +76,9 @@ export {
   ParcelAccordion,
   AddressForm,
   ReviewForm,
+  ProfileDeleteAccount,
   ProfileDetails,
+  ProfilePassword,
   ProductListingLoadingView,
   ProductListingNoResultsView,
   ProductListingProductsView

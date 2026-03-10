@@ -28,10 +28,10 @@ export const retrieveCustomer = async (): Promise<HttpTypes.StoreCustomer | null
   };
 
   return await sdk.client
-    .fetch<{ customer: HttpTypes.StoreCustomer }>(`/store/customers/me`, {
+    .fetch<{ customer: HttpTypes.StoreCustomer }>(`/store/custom/customers/me`, {
       method: 'GET',
       query: {
-        fields: '*orders'
+        fields: '*addresses'
       },
       headers,
       next,
@@ -264,6 +264,77 @@ export const updateCustomerPassword = async (password: string, token: string): P
     });
 
   return res;
+};
+
+export const uploadCustomerAvatar = async (file: File): Promise<{ id: string; url: string }> => {
+  const authHeaders = await getAuthHeaders();
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await fetch(`${process.env.MEDUSA_BACKEND_URL}/store/custom/customers/me/avatar`, {
+    method: 'POST',
+    headers: {
+      'x-publishable-api-key': process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY as string,
+      ...authHeaders
+    },
+    body: formData
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ message: 'Upload failed' }));
+    throw new Error(error.message || 'Upload failed');
+  }
+
+  const { file: uploadedFile } = await res.json();
+
+  const cacheTag = await getCacheTag('customers');
+  revalidateTag(cacheTag);
+
+  return uploadedFile;
+};
+
+export const deleteCustomerAvatar = async (): Promise<void> => {
+  const authHeaders = await getAuthHeaders();
+
+  const res = await fetch(`${process.env.MEDUSA_BACKEND_URL}/store/custom/customers/me/avatar`, {
+    method: 'DELETE',
+    headers: {
+      'x-publishable-api-key': process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY as string,
+      ...authHeaders
+    }
+  });
+
+  if (!res.ok && res.status !== 204) {
+    throw new Error('Failed to delete avatar');
+  }
+
+  const cacheTag = await getCacheTag('customers');
+  revalidateTag(cacheTag);
+};
+
+export const deleteCustomer = async (email: string, password: string) => {
+  const authHeaders = await getAuthHeaders();
+
+  const res = await fetch(`${process.env.MEDUSA_BACKEND_URL}/store/custom/customers/me`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-publishable-api-key': process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY as string,
+      ...authHeaders
+    },
+    body: JSON.stringify({ email, password })
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ message: 'Failed to delete account' }));
+    return { success: false, error: error.message || 'Failed to delete account' };
+  }
+
+  await sdk.auth.logout();
+  await removeAuthToken();
+  await removeCartId();
+
+  redirect('/');
 };
 
 export const sendResetPasswordEmail = async (email: string) => {
