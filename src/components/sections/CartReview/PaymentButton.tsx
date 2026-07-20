@@ -2,13 +2,12 @@
 
 import ErrorMessage from "@/components/molecules/ErrorMessage/ErrorMessage"
 import { isManual, isStripe } from "../../../lib/constants"
-import { placeOrder } from "@/lib/data/cart"
+import { placeOrder } from "@/lib/data/place-order"
 import { HttpTypes } from "@medusajs/types"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
+import { useParams, useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
 import { Button } from "@/components/atoms"
-import { orderErrorFormatter } from "@/lib/helpers/order-error-formatter"
-import { toast } from "@/lib/helpers/toast"
 
 type PaymentButtonProps = {
   cart: HttpTypes.StoreCart
@@ -50,6 +49,16 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
   }
 }
 
+const useOrderNavigation = () => {
+  const router = useRouter()
+  const params = useParams<{ locale?: string }>()
+
+  return (orderId: string) => {
+    const locale = params?.locale ? `/${params.locale}` : ""
+    router.replace(`${locale}/order/${orderId}/confirmed`)
+  }
+}
+
 const StripePaymentButton = ({
   cart,
   notReady,
@@ -62,19 +71,22 @@ const StripePaymentButton = ({
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [disabled, setDisabled] = useState(true)
+  const navigateToOrder = useOrderNavigation()
 
   const onPaymentCompleted = async () => {
     try {
       const res = await placeOrder()
       if (!res.ok) {
-        setErrorMessage(res.error?.message)
+        setErrorMessage(res.error.message)
+        return
       }
+
+      navigateToOrder(res.orderId)
     } catch (error: any) {
-      if (error?.message !== "NEXT_REDIRECT") {
-        setErrorMessage(
-          error?.message?.replace("Error setting up the request: ", "")
-        )
-      }
+      setErrorMessage(
+        error?.message?.replace("Error setting up the request: ", "") ||
+          "Unable to complete the order"
+      )
     } finally {
       setSubmitting(false)
     }
@@ -89,12 +101,17 @@ const StripePaymentButton = ({
   )
 
   useEffect(() => {
-    //@ts-ignore
+    // @ts-ignore
     setDisabled(!card?._complete)
   }, [card, stripe, elements, cart])
 
   const handlePayment = async () => {
+    if (submitting) {
+      return
+    }
+
     setSubmitting(true)
+    setErrorMessage(null)
 
     if (!stripe || !elements || !card || !cart) {
       setSubmitting(false)
@@ -104,7 +121,7 @@ const StripePaymentButton = ({
     await stripe
       .confirmCardPayment(session?.data.client_secret as string, {
         payment_method: {
-          card: card,
+          card,
           billing_details: {
             name:
               cart.billing_address?.first_name +
@@ -131,7 +148,7 @@ const StripePaymentButton = ({
             (pi && pi.status === "requires_capture") ||
             (pi && pi.status === "succeeded")
           ) {
-            onPaymentCompleted()
+            void onPaymentCompleted()
           }
 
           setErrorMessage(error.message || null)
@@ -140,19 +157,17 @@ const StripePaymentButton = ({
 
         if (
           (paymentIntent && paymentIntent.status === "requires_capture") ||
-          paymentIntent.status === "succeeded"
+          paymentIntent?.status === "succeeded"
         ) {
           return onPaymentCompleted()
         }
-
-        return
       })
   }
 
   return (
     <>
       <Button
-        disabled={disabled || notReady}
+        disabled={disabled || notReady || submitting}
         onClick={handlePayment}
         loading={submitting}
         className="w-full"
@@ -170,32 +185,38 @@ const StripePaymentButton = ({
 const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const navigateToOrder = useOrderNavigation()
 
-  const onPaymentCompleted = async () => {
+  const handlePayment = async () => {
+    if (submitting) {
+      return
+    }
+
+    setSubmitting(true)
+    setErrorMessage(null)
+
     try {
       const res = await placeOrder()
       if (!res.ok) {
-        setErrorMessage(res.error?.message)
+        setErrorMessage(res.error.message)
+        return
       }
+
+      navigateToOrder(res.orderId)
     } catch (error: any) {
-      if (error?.message !== "NEXT_REDIRECT") {
-        setErrorMessage(
-          error?.message?.replace("Error setting up the request: ", "")
-        )
-      }
+      setErrorMessage(
+        error?.message?.replace("Error setting up the request: ", "") ||
+          "Unable to complete the order"
+      )
     } finally {
       setSubmitting(false)
     }
   }
 
-  const handlePayment = () => {
-    onPaymentCompleted()
-  }
-
   return (
     <>
       <Button
-        disabled={notReady}
+        disabled={notReady || submitting}
         onClick={handlePayment}
         className="w-full"
         loading={submitting}
