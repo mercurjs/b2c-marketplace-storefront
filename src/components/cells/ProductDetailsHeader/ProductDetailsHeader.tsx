@@ -1,16 +1,18 @@
 "use client"
 
 import { Button } from "@/components/atoms"
-import { HttpTypes } from "@medusajs/types"
 import { ProductVariants } from "@/components/molecules"
-import useGetAllSearchParams from "@/hooks/useGetAllSearchParams"
-import { getProductPrice } from "@/lib/helpers/get-product-price"
 import { Chat } from "@/components/organisms/Chat/Chat"
-import { SellerProps } from "@/types/seller"
-import { WishlistButton } from "../WishlistButton/WishlistButton"
-import { Wishlist } from "@/types/wishlist"
-import { toast } from "@/lib/helpers/toast"
 import { useCartContext } from "@/components/providers"
+import useGetAllSearchParams from "@/hooks/useGetAllSearchParams"
+import { addOfferToCart } from "@/lib/data/offer-cart"
+import { getProductPrice } from "@/lib/helpers/get-product-price"
+import { toast } from "@/lib/helpers/toast"
+import type { StoreOffer } from "@/types/offer"
+import { SellerProps } from "@/types/seller"
+import { Wishlist } from "@/types/wishlist"
+import { HttpTypes } from "@medusajs/types"
+import { WishlistButton } from "../WishlistButton/WishlistButton"
 
 const optionsAsKeymap = (
   variantOptions: HttpTypes.StoreProductVariant["options"]
@@ -21,7 +23,6 @@ const optionsAsKeymap = (
       varopt: HttpTypes.StoreProductOptionValue
     ) => {
       acc[varopt.option?.title.toLowerCase() || ""] = varopt.value
-
       return acc
     },
     {}
@@ -30,26 +31,23 @@ const optionsAsKeymap = (
 
 export const ProductDetailsHeader = ({
   product,
+  offers,
   locale,
   user,
   wishlist,
 }: {
   product: HttpTypes.StoreProduct & { seller?: SellerProps }
+  offers: StoreOffer[]
   locale: string
   user: HttpTypes.StoreCustomer | null
   wishlist?: Wishlist
 }) => {
-  const { addToCart, onAddToCart, cart, isAddingItem } = useCartContext()
+  const { onAddToCart, cart, refreshCart, isAddingItem } = useCartContext()
   const { allSearchParams } = useGetAllSearchParams()
 
-  const { cheapestVariant, cheapestPrice } = getProductPrice({
-    product,
-  })
-
-  // Check if product has any valid prices in current region
+  const { cheapestVariant, cheapestPrice } = getProductPrice({ product })
   const hasAnyPrice = cheapestPrice !== null && cheapestVariant !== null
 
-  // set default variant
   const selectedVariant = hasAnyPrice
     ? {
         ...optionsAsKeymap(cheapestVariant.options ?? null),
@@ -57,7 +55,6 @@ export const ProductDetailsHeader = ({
       }
     : allSearchParams
 
-  // get selected variant id
   const variantId =
     product.variants?.find(({ options }: { options: any }) =>
       options?.every((option: any) =>
@@ -67,26 +64,39 @@ export const ProductDetailsHeader = ({
       )
     )?.id || ""
 
-  // get variant price
-  const { variantPrice } = getProductPrice({
-    product,
-    variantId,
-  })
+  const selectedOffer = offers
+    .filter((offer) => offer.variant_id === variantId)
+    .sort((a, b) => {
+      const aAvailable = a.in_stock !== false && (a.inventory_quantity ?? 0) > 0
+      const bAvailable = b.in_stock !== false && (b.inventory_quantity ?? 0) > 0
+      if (aAvailable !== bAvailable) return aAvailable ? -1 : 1
+      return (
+        (a.calculated_price?.calculated_amount ?? Number.POSITIVE_INFINITY) -
+        (b.calculated_price?.calculated_amount ?? Number.POSITIVE_INFINITY)
+      )
+    })[0]
 
-  const variantStock =
-    product.variants?.find(({ id }) => id === variantId)?.inventory_quantity ||
-    0
-
-  const variantHasPrice = !!product.variants?.find(({ id }) => id === variantId)
-    ?.calculated_price
+  const { variantPrice } = getProductPrice({ product, variantId })
+  const variantStock = selectedOffer?.inventory_quantity ?? 0
+  const variantInStock = selectedOffer?.in_stock ?? variantStock > 0
+  const variantHasPrice =
+    !!selectedOffer?.calculated_price ||
+    !!product.variants?.find(({ id }) => id === variantId)?.calculated_price
 
   const isVariantStockMaxLimitReached =
-    (cart?.items?.find((item) => item.variant_id === variantId)?.quantity ??
-      0) >= variantStock
+    (cart?.items?.find((item) => item.variant_id === variantId)?.quantity ?? 0) >=
+    variantStock
 
-  // add the selected variant to the cart
   const handleAddToCart = async () => {
-    if (!variantId || !hasAnyPrice || isVariantStockMaxLimitReached) return
+    if (
+      !variantId ||
+      !selectedOffer?.id ||
+      !hasAnyPrice ||
+      !variantInStock ||
+      isVariantStockMaxLimitReached
+    ) {
+      return
+    }
 
     const subtotal = +(variantPrice?.calculated_price_without_tax_number || 0)
     const total = +(variantPrice?.calculated_price_number || 0)
@@ -103,33 +113,43 @@ export const ProductDetailsHeader = ({
       variant: product.variants?.find(({ id }) => id === variantId),
     }
 
-    // Optimistic update
     onAddToCart(storeCartLineItem, variantPrice?.currency_code || "eur")
 
     try {
-      await addToCart({
-        variantId: variantId,
+      await addOfferToCart({
+        variantId,
+        offerId: selectedOffer.id,
         quantity: 1,
         countryCode: locale,
       })
+      await refreshCart()
     } catch (error) {
+      await refreshCart()
       toast.error({
         title: "Error adding to cart",
-        description: "Some variant does not have the required inventory",
+        description: "The selected seller offer could not be added to the cart",
       })
     }
   }
 
-  const isAddToCartDisabled = !variantStock || !variantHasPrice || !hasAnyPrice || isVariantStockMaxLimitReached
+  const isAddToCartDisabled =
+    !selectedOffer?.id ||
+    !variantStock ||
+    !variantInStock ||
+    !variantHasPrice ||
+    !hasAnyPrice ||
+    isVariantStockMaxLimitReached
 
   return (
     <div className="border rounded-sm p-5" data-testid="product-details-header">
       <div className="flex justify-between">
         <div>
           <h2 className="label-md text-secondary">
-            {/* {product?.brand || "No brand"} */}
+            {selectedOffer?.seller?.name || product.seller?.name || ""}
           </h2>
-          <h1 className="heading-lg text-primary" data-testid="product-title">{product.title}</h1>
+          <h1 className="heading-lg text-primary" data-testid="product-title">
+            {product.title}
+          </h1>
           <div className="mt-2 flex gap-2 items-center" data-testid="product-price-container">
             {hasAnyPrice && variantPrice ? (
               <>
@@ -150,20 +170,17 @@ export const ProductDetailsHeader = ({
             )}
           </div>
         </div>
-        <div>
-          {/* Add to Wishlist */}
-          <WishlistButton
-            productId={product.id}
-            wishlist={wishlist}
-            user={user}
-          />
-        </div>
+        <WishlistButton
+          productId={product.id}
+          wishlist={wishlist}
+          user={user}
+        />
       </div>
-      {/* Product Variants */}
+
       {hasAnyPrice && (
         <ProductVariants product={product} selectedVariant={selectedVariant} />
       )}
-      {/* Add to Cart */}
+
       <Button
         onClick={handleAddToCart}
         disabled={isAddToCartDisabled}
@@ -174,16 +191,15 @@ export const ProductDetailsHeader = ({
       >
         {!hasAnyPrice
           ? "NOT AVAILABLE IN YOUR REGION"
-          : variantStock && variantHasPrice
+          : variantInStock && variantHasPrice && selectedOffer?.id
           ? "ADD TO CART"
           : "OUT OF STOCK"}
       </Button>
-      {/* Seller message */}
 
-      {user && product.seller && (
+      {user && (selectedOffer?.seller || product.seller) && (
         <Chat
           user={user}
-          seller={product.seller}
+          seller={(selectedOffer?.seller || product.seller) as SellerProps}
           buttonClassNames="w-full uppercase"
           product={product}
         />

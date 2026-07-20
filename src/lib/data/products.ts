@@ -23,7 +23,7 @@ export const listProducts = async ({
   pageParam?: number;
   queryParams?: HttpTypes.FindParams &
     HttpTypes.StoreProductParams & {
-      handle?: string[];
+      handle?: string;
     };
   category_id?: string;
   collection_id?: string;
@@ -74,12 +74,11 @@ export const listProducts = async ({
     }>(`/store/products`, {
       method: 'GET',
       query: {
-        country_code: countryCode,
         category_id,
         collection_id,
         limit,
         offset,
-        region_id: region?.id,
+        region_id: region.id,
         fields:
           '*variants.calculated_price,+variants.inventory_quantity,*seller,*variants,*seller.products,' +
           '*seller.reviews,*seller.reviews.customer,*seller.reviews.seller,*seller.products.variants,*attribute_values,*attribute_values.attribute',
@@ -90,24 +89,26 @@ export const listProducts = async ({
       cache: useCached ? 'force-cache' : 'no-cache'
     })
     .then(({ products: productsRaw, count }) => {
-      const products = productsRaw.filter(product => product.seller?.store_status !== 'SUSPENDED');
+      const products = productsRaw.filter(
+        product => product.seller?.store_status !== 'SUSPENDED'
+      );
 
       const nextPage = count > offset + limit ? pageParam + 1 : null;
 
-      const response = products.filter(prod => {
-        // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
-        const reviews = prod.seller?.reviews.filter(item => !!item) ?? [];
-        return (
-          // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
-          prod?.seller && {
-            ...prod,
-            seller: {
-              // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
-              ...prod.seller,
-              reviews
-            }
+      const response = products.map(prod => {
+        if (!prod.seller) {
+          return prod;
+        }
+
+        const reviews = prod.seller.reviews?.filter(item => !!item) ?? [];
+
+        return {
+          ...prod,
+          seller: {
+            ...prod.seller,
+            reviews
           }
-        );
+        };
       });
 
       return {
@@ -115,11 +116,12 @@ export const listProducts = async ({
           products: response,
           count
         },
-        nextPage: nextPage,
+        nextPage,
         queryParams
       };
     })
-    .catch(() => {
+    .catch(error => {
+      console.error('Failed to retrieve Mercur products:', error);
       return {
         response: {
           products: [],
@@ -131,10 +133,6 @@ export const listProducts = async ({
     });
 };
 
-/**
- * This will fetch 100 products to the Next.js cache and sort them based on the sortBy parameter.
- * It will then return the paginated products based on the page and limit parameters.
- */
 export const listProductsWithSort = async ({
   page = 1,
   queryParams,
@@ -183,11 +181,8 @@ export const listProductsWithSort = async ({
   );
 
   const sortedProducts = sortProducts(pricedProducts, sortBy);
-
   const pageParam = (page - 1) * limit;
-
   const nextPage = count > pageParam + limit ? pageParam + limit : null;
-
   const paginatedProducts = sortedProducts.slice(pageParam, pageParam + limit);
 
   return {
@@ -240,7 +235,6 @@ export const searchProducts = async (params: {
   };
 
   let customer_id = params.customer_id;
-
   if (!customer_id) {
     const customer = await retrieveCustomer();
     if (customer) {
@@ -249,9 +243,8 @@ export const searchProducts = async (params: {
   }
 
   let facets = params.facets;
-
-  if(!facets) {
-    facets = ["variants.condition", "variants.color", "variants.size"];
+  if (!facets) {
+    facets = ['variants.condition', 'variants.color', 'variants.size'];
   }
 
   const { countryCode, ...bodyParams } = params;
@@ -272,15 +265,14 @@ export const searchProducts = async (params: {
         region_id,
         customer_id,
         facets,
-        maxValuesPerFacet: 100,
+        maxValuesPerFacet: 100
       },
       headers,
       cache: 'no-cache'
     })
-    .then((response) => {
-      return response;
-    })
-    .catch(() => {
+    .then(response => response)
+    .catch(error => {
+      console.error('Failed to search Mercur products:', error);
       return {
         products: [],
         nbHits: 0,
