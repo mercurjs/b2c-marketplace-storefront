@@ -7,12 +7,13 @@ import { CartItems } from './CartItems';
 import PaymentButton from './PaymentButton';
 
 const Review = ({ cart }: { cart: any }) => {
-  const paidByGiftcard = cart?.gift_cards && cart?.gift_cards?.length > 0 && cart?.total === 0;
+  const paidByGiftcard =
+    cart?.gift_cards && cart?.gift_cards?.length > 0 && cart?.total === 0;
 
   const previousStepsCompleted =
-    cart.shipping_address &&
-    cart.shipping_methods.length > 0 &&
-    (cart.payment_collection || paidByGiftcard);
+    !!cart?.shipping_address &&
+    (cart?.shipping_methods?.length ?? 0) > 0 &&
+    (!!cart?.payment_collection || paidByGiftcard);
 
   return (
     <div>
@@ -20,7 +21,7 @@ const Review = ({ cart }: { cart: any }) => {
         <CartItems cart={cart} />
       </div>
 
-      <div className={'mb-6'}>
+      <div className="mb-6">
         <PromoCode cart={cart} />
       </div>
 

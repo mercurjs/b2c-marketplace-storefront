@@ -31,7 +31,7 @@ const CartPaymentSection = ({
   cart: any;
   availablePaymentMethods: StoreCardPaymentMethod[] | null;
 }) => {
-  const activeSession = cart.payment_collection?.payment_sessions?.find(
+  const activeSession = cart?.payment_collection?.payment_sessions?.find(
     (paymentSession: any) => paymentSession.status === 'pending'
   );
 
@@ -48,7 +48,6 @@ const CartPaymentSection = ({
   const pathname = usePathname();
 
   const isOpen = searchParams.get('step') === 'payment';
-
   const isStripe = isStripeFunc(selectedPaymentMethod);
 
   const setPaymentMethod = async (method: string) => {
@@ -61,15 +60,16 @@ const CartPaymentSection = ({
     }
   };
 
-  const paidByGiftcard = cart?.gift_cards && cart?.gift_cards?.length > 0 && cart?.total === 0;
+  const paidByGiftcard =
+    cart?.gift_cards && cart?.gift_cards?.length > 0 && cart?.total === 0;
 
-  const paymentReady = (activeSession && cart?.shipping_methods.length !== 0) || paidByGiftcard;
+  const paymentReady =
+    (!!activeSession && (cart?.shipping_methods?.length ?? 0) > 0) || paidByGiftcard;
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams);
       params.set(name, value);
-
       return params.toString();
     },
     [searchParams]
@@ -85,7 +85,6 @@ const CartPaymentSection = ({
     setIsLoading(true);
     try {
       const shouldInputCard = isStripeFunc(selectedPaymentMethod) && !activeSession;
-
       const checkActiveSession = activeSession?.provider_id === selectedPaymentMethod;
 
       if (!checkActiveSession) {
@@ -115,20 +114,13 @@ const CartPaymentSection = ({
   return (
     <div className="bg-ui-bg-interactive rounded-sm border p-4" data-testid="checkout-step-payment">
       <div className="mb-6 flex flex-row items-center justify-between">
-        <Heading
-          level="h2"
-          className="text-3xl-regular flex flex-row items-center items-baseline gap-x-2"
-        >
+        <Heading level="h2" className="text-3xl-regular flex flex-row items-center items-baseline gap-x-2">
           {!isOpen && paymentReady && <CheckCircleSolid />}
           Payment
         </Heading>
         {isEditEnabled && (
           <Text>
-            <Button
-              data-testid="checkout-payment-edit-button"
-              onClick={handleEdit}
-              variant="tonal"
-            >
+            <Button data-testid="checkout-payment-edit-button" onClick={handleEdit} variant="tonal">
               Edit
             </Button>
           </Text>
@@ -136,52 +128,41 @@ const CartPaymentSection = ({
       </div>
       <div>
         <div className={isOpen ? 'block' : 'hidden'}>
-          {!paidByGiftcard && availablePaymentMethods?.length && (
-            <>
-              <RadioGroup
-                value={selectedPaymentMethod}
-                onChange={(value: string) => setPaymentMethod(value)}
-              >
-                {availablePaymentMethods.map(paymentMethod => (
-                  <div key={paymentMethod.id}>
-                    {isStripeFunc(paymentMethod.id) ? (
-                      <StripeCardContainer
-                        paymentProviderId={paymentMethod.id}
-                        selectedPaymentOptionId={selectedPaymentMethod}
-                        paymentInfoMap={paymentInfoMap}
-                        setCardBrand={setCardBrand}
-                        setError={setError}
-                        setCardComplete={setCardComplete}
-                      />
-                    ) : (
-                      <PaymentContainer
-                        paymentInfoMap={paymentInfoMap}
-                        paymentProviderId={paymentMethod.id}
-                        selectedPaymentOptionId={selectedPaymentMethod}
-                      />
-                    )}
-                  </div>
-                ))}
-              </RadioGroup>
-            </>
+          {!paidByGiftcard && !!availablePaymentMethods?.length && (
+            <RadioGroup value={selectedPaymentMethod} onChange={(value: string) => setPaymentMethod(value)}>
+              {availablePaymentMethods.map(paymentMethod => (
+                <div key={paymentMethod.id}>
+                  {isStripeFunc(paymentMethod.id) ? (
+                    <StripeCardContainer
+                      paymentProviderId={paymentMethod.id}
+                      selectedPaymentOptionId={selectedPaymentMethod}
+                      paymentInfoMap={paymentInfoMap}
+                      setCardBrand={setCardBrand}
+                      setError={setError}
+                      setCardComplete={setCardComplete}
+                    />
+                  ) : (
+                    <PaymentContainer
+                      paymentInfoMap={paymentInfoMap}
+                      paymentProviderId={paymentMethod.id}
+                      selectedPaymentOptionId={selectedPaymentMethod}
+                    />
+                  )}
+                </div>
+              ))}
+            </RadioGroup>
           )}
 
           {paidByGiftcard && (
             <div className="flex w-1/3 flex-col">
               <Text className="txt-medium-plus text-ui-fg-base mb-1">Payment method</Text>
-              <Text
-                className="txt-medium text-ui-fg-subtle"
-                data-testid="payment-method-summary"
-              >
+              <Text className="txt-medium text-ui-fg-subtle" data-testid="payment-method-summary">
                 Gift card
               </Text>
             </div>
           )}
 
-          <ErrorMessage
-            error={error}
-            data-testid="payment-method-error-message"
-          />
+          <ErrorMessage error={error} data-testid="payment-method-error-message" />
 
           <Button
             onClick={handleSubmit}
@@ -200,20 +181,14 @@ const CartPaymentSection = ({
             <div className="flex w-full items-start gap-x-1">
               <div className="flex w-1/3 flex-col">
                 <Text className="txt-medium-plus text-ui-fg-base mb-1">Payment method</Text>
-                <Text
-                  className="txt-medium text-ui-fg-subtle"
-                  data-testid="payment-method-summary"
-                >
+                <Text className="txt-medium text-ui-fg-subtle" data-testid="payment-method-summary">
                   {paymentInfoMap[activeSession?.provider_id]?.title || activeSession?.provider_id}
                 </Text>
               </div>
               <div className="flex w-1/3 flex-col">
                 <Text className="txt-medium-plus text-ui-fg-base mb-1">Payment details</Text>
-                <div
-                  className="txt-medium text-ui-fg-subtle flex items-center gap-2"
-                  data-testid="payment-details-summary"
-                >
-                  <Container className="bg-ui-button-neutral-hover flex h-7 w-fit items-center p-2"     data-testid="payment-details-summary">
+                <div className="txt-medium text-ui-fg-subtle flex items-center gap-2" data-testid="payment-details-summary">
+                  <Container className="bg-ui-button-neutral-hover flex h-7 w-fit items-center p-2" data-testid="payment-details-summary">
                     {paymentInfoMap[selectedPaymentMethod]?.icon || <CreditCard />}
                   </Container>
                   <Text>
@@ -227,10 +202,7 @@ const CartPaymentSection = ({
           ) : paidByGiftcard ? (
             <div className="flex w-1/3 flex-col">
               <Text className="txt-medium-plus text-ui-fg-base mb-1">Payment method</Text>
-              <Text
-                className="txt-medium text-ui-fg-subtle"
-                data-testid="payment-method-summary"
-              >
+              <Text className="txt-medium text-ui-fg-subtle" data-testid="payment-method-summary">
                 Gift card
               </Text>
             </div>

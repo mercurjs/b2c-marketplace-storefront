@@ -7,6 +7,31 @@ import { sdk } from '@/lib/config';
 
 import { getAuthHeaders, getCacheOptions } from './cookies';
 
+type GroupedShippingOptions = Record<string, StoreCardShippingMethod[]>;
+
+const normalizeShippingOptions = (
+  shippingOptions: StoreCardShippingMethod[] | GroupedShippingOptions | null
+): StoreCardShippingMethod[] | null => {
+  if (!shippingOptions) {
+    return null;
+  }
+
+  if (Array.isArray(shippingOptions)) {
+    return shippingOptions;
+  }
+
+  return Object.entries(shippingOptions).flatMap(([sellerId, options]) =>
+    (Array.isArray(options) ? options : []).map(option => ({
+      ...option,
+      seller_id: option.seller_id || sellerId,
+      seller_name:
+        (option as any).seller_name ||
+        (option as any).seller?.name ||
+        sellerId
+    }))
+  );
+};
+
 export const listCartShippingMethods = async (cartId: string, is_return: boolean = false) => {
   const headers = {
     ...(await getAuthHeaders())
@@ -17,17 +42,20 @@ export const listCartShippingMethods = async (cartId: string, is_return: boolean
   };
 
   return sdk.client
-    .fetch<{ shipping_options: StoreCardShippingMethod[] | null }>(`/store/shipping-options`, {
+    .fetch<{
+      shipping_options: StoreCardShippingMethod[] | GroupedShippingOptions | null;
+    }>(`/store/shipping-options`, {
       method: 'GET',
       query: {
         cart_id: cartId,
-        fields: '+service_zone.fulfllment_set.type,*service_zone.fulfillment_set.location.address'
+        fields:
+          '+service_zone.fulfllment_set.type,*service_zone.fulfillment_set.location.address,*seller'
       },
       headers,
       next,
       cache: 'no-cache'
     })
-    .then(({ shipping_options }) => shipping_options)
+    .then(({ shipping_options }) => normalizeShippingOptions(shipping_options))
     .catch(() => {
       return null;
     });
@@ -63,7 +91,7 @@ export const calculatePriceForShippingOption = async (
       }
     )
     .then(({ shipping_option }) => shipping_option)
-    .catch(e => {
+    .catch(() => {
       return null;
     });
 };
