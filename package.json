@@ -25,7 +25,7 @@
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "next": "15.5.9",
-    "next-intl": "^3.26.3",
+    "next-intl": "^4.9.2",
     "react": "^19.2.1",
     "react-country-flag": "^3.1.0",
     "react-dom": "^19.0.0",
