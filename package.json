@@ -22,7 +22,7 @@
     "embla-carousel-react": "^8.5.2",
     "i18next": "^25.2.1",
     "i18next-browser-languagedetector": "^8.1.0",
-    "js-cookie": "^3.0.5",
+    "js-cookie": "^3.0.7",
     "lodash": "^4.17.21",
     "next": "15.5.9",
     "next-intl": "^3.26.3",
